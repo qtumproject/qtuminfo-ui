@@ -28,5 +28,9 @@ module.exports = {
         }
       }
     }
-  }
+  },
+  plugins: [
+    '~/plugins/i18n.js',
+    '~/plugins/qtum-utils.js'
+  ]
 };

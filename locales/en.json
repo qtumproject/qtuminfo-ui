@@ -1,0 +1,7 @@
+{
+  "common": {
+    "block": "Block | Blocks",
+    "transaction": "Transaction | Transactions",
+    "block_reward": "Block Reward"
+  }
+}

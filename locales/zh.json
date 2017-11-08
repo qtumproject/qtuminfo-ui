@@ -1,0 +1,7 @@
+{
+  "common": {
+    "block": "区块",
+    "transaction": "交易",
+    "block_reward": "区块奖励"
+  }
+}
