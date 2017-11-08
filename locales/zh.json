@@ -1,7 +1,14 @@
 {
-  "common": {
+  "blockchain": {
     "block": "区块",
-    "transaction": "交易",
-    "block_reward": "区块奖励"
+    "transaction": "交易"
+  },
+  "block": {
+    "brief": {
+      "address": "由 {0} 挖出",
+      "transaction": "{0} 条交易",
+      "duration": "用时 {0} 秒",
+      "reward": "区块奖励 {0} QTUM"
+    }
   }
 }

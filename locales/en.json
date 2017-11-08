@@ -1,7 +1,14 @@
 {
-  "common": {
+  "blockchain": {
     "block": "Block | Blocks",
-    "transaction": "Transaction | Transactions",
-    "block_reward": "Block Reward"
+    "transaction": "Transaction | Transactions"
+  },
+  "block": {
+    "brief": {
+      "address": "Mined by {0}",
+      "transaction": "{0} transactions",
+      "duration": "in {0} secs",
+      "reward": "Block Reward {0} QTUM"
+    }
   }
 }
