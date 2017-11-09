@@ -1,7 +1,9 @@
 {
   "blockchain": {
+    "blockchain": "区块链",
     "block": "区块",
-    "transaction": "交易"
+    "transaction": "交易",
+    "token": "代币"
   },
   "block": {
     "brief": {

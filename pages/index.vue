@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="columns is-multiline is-mobile">
+    <div class="columns is-multiline is-desktop">
       <section class="column is-half">
         <div class="card">
           <div class="card-header">
@@ -15,11 +15,11 @@
             <div v-for="block in recentBlocks" class="qtum-block">
               <div class="level">
                 <div class="level-left">
-                  <div class="level-item qtum-block-box">
+                  <router-link :to="'/block/' + block.height" class="level-item qtum-block-box">
                     {{ $tc('blockchain.block', 1) }} {{ block.height }}
                     <br>
                     {{ $moment(block.time * 1000).fromNow() }}
-                  </div>
+                  </router-link>
                   <div class="level-item">
                     <div>
                       <i18n path="block.brief.address">
@@ -59,6 +59,9 @@
   import Block from "@/models/block"
 
   export default {
+    head() {
+      return {title: 'QtumScan'}
+    },
     data() {
       return {
         recentBlocks: []
@@ -72,13 +75,6 @@
 </script>
 
 <style lang="less" scoped>
-  .navbar-brand {
-    font-size: 1.5rem;
-  }
-  .navbar-item {
-    text-transform: uppercase;
-  }
-
   .card-body {
     max-height: 30em;
     overflow: auto;
@@ -98,5 +94,9 @@
     padding: 1em;
     background-color: #eee;
     text-align: center;
+    color: inherit;
+    &:hover {
+      outline: 1px solid #3273dc;
+    }
   }
 </style>

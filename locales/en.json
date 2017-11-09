@@ -1,7 +1,9 @@
 {
   "blockchain": {
+    "blockchain": "Blockchain",
     "block": "Block | Blocks",
-    "transaction": "Transaction | Transactions"
+    "transaction": "Transaction | Transactions",
+    "token": "Token | Tokens"
   },
   "block": {
     "brief": {
