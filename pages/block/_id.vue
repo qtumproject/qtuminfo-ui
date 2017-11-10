@@ -58,20 +58,64 @@
       </div>
     </div>
 
-    <div class="card">
+    <div class="card transaction-list" v-if="transactions.length">
       <div class="card-header">
         <div class="card-header-icon">
           <span class="fa fa-list-alt"></span>
         </div>
         <div class="card-header-title">Transactions</div>
       </div>
-      <div class="card-body"></div>
+      <div class="card-body">
+        <div class="columns is-multiline transaction-item"
+          v-for="{txid, blockTimestamp, vin, vout} in transactions">
+          <div class="column is-two-thirds">
+            Transaction Hash:
+            <nuxt-link :to="'/transaction/' + txid">{{ txid }}</nuxt-link>
+          </div>
+          <div class="column is-one-third has-text-right">
+            {{ $moment(blockTimestamp * 1000).fromNow() }}
+            ( {{ $moment(time * 1000).toString() }} )
+          </div>
+          <div class="column is-clearfix">
+            <template v-if="vin[0].address">
+              <template v-for="input in mergeInputs(vin)">
+                <span class="pull-left">
+                  From:
+                  <nuxt-link :to="'/address/' + input.address">{{ input.address }}</nuxt-link>
+                </span>
+                <span class="pull-right amount">
+                  {{ $printSatoshis(input.value) }} QTUM
+                </span>
+              </template>
+            </template>
+            <template v-else>From: Newly Generated Coins</template>
+          </div>
+          <span class="column fa fa-arrow-right arrow"></span>
+          <div class="column is-half">
+            <div v-for="output in vout" class="is-clearfix">
+              <span class="pull-left">
+                <template v-if="output.scriptPubKey.addresses">
+                  To:
+                  <nuxt-link :to="'/address/' + output.scriptPubKey.addresses[0]">
+                    {{ output.scriptPubKey.addresses[0] }}
+                  </nuxt-link>
+                </template>
+                <template v-else>To: Unparsed Address</template>
+              </span>
+              <span class="pull-right amount" v-if="output.value">
+                {{ $printSatoshis(output.value) }} QTUM
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 </template>
 
 <script>
   import Block from '@/models/block'
+  import Transaction from '@/models/transaction'
 
   export default {
     head() {
@@ -104,6 +148,9 @@
       }
       try {
         let block = await Block.get(hash)
+        let transactions = block.height == 0 ? [] : await Promise.all(
+          block.tx.map(async hash => Transaction.get(hash))
+        )
         return {
           height: block.height,
           hash: block.hash,
@@ -115,10 +162,27 @@
           minedBy: block.minedBy || null,
           previousBlockHash: block.previousBlockHash || null,
           nextBlockHash: block.nextBlockHash || null,
-          transactions: block.tx.map(hash => ({hash}))
+          transactions
         }
       } catch (err) {
         error({statusCode: 404, message: `Block ${id} not found`})
+      }
+    },
+    methods: {
+      mergeInputs(inputs) {
+        let result = []
+        for (let input of inputs) {
+          let item = result.find(x => x.address === input.address)
+          if (item) {
+            item.value += input.value
+          } else {
+            result.push({
+              address: input.address,
+              value: input.value
+            })
+          }
+        }
+        return result
       }
     }
   }
@@ -127,10 +191,12 @@
 <style lang="less" scoped>
   .card {
     margin-top: 1em;
+    margin-bottom: 1em;
     &:first-child {
       margin-top: 0.5em;
     }
   }
+
   .block-summary {
     .columns:first-child {
       margin-top: 0.25em;
@@ -144,6 +210,34 @@
     }
     .column:first-child {
       font-weight: bold;
+    }
+  }
+
+  .transaction-item {
+    padding-left: 0.75em;
+    padding-right: 0.75em;
+    &::before {
+      display: block;
+      width: 100%;
+      height: 1px;
+      background-color: #ccc;
+      content: "";
+    }
+    &:first-child {
+      margin-top: 0;
+      &::before {
+        display: none;
+      }
+    }
+    &:last-child {
+      margin-bottom: 0;
+    }
+    .arrow {
+      flex: 0;
+      line-height: 1.5em;
+    }
+    .amount {
+      font-family: Monospace;
     }
   }
 </style>
