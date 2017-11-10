@@ -5,6 +5,8 @@ import {locales, messages} from '@/locales'
 
 Vue.use(VueI18N)
 
+export let i18n
+
 export default function({app, isClient, isServer, req}) {
   let i18nLocale = null
   let momentLocale = false
@@ -30,7 +32,7 @@ export default function({app, isClient, isServer, req}) {
     }
   }
 
-  app.i18n = new VueI18N({
+  i18n = app.i18n = new VueI18N({
     locale: i18nLocale || 'en',
     fallbackLocale: 'en',
     messages

@@ -1,18 +1,18 @@
 <template>
   <div id="app">
-    <div class="container">
+    <header class="container">
       <nav class="navbar">
-        <div class="navbar-brand">
-          <router-link to="/" class="navbar-item">QtumScan</router-link>
+        <div class="navbar-brand is-size-4">
+          <nuxt-link to="/" class="navbar-item">QtumScan</nuxt-link>
         </div>
         <div class="navbar-menu">
-          <div class="navbar-start">
-            <router-link to="/" class="navbar-item">
+          <div class="navbar-start is-uppercase">
+            <nuxt-link to="/" class="navbar-item">
               {{ $t('blockchain.blockchain') }}
-            </router-link>
-            <router-link to="/" class="navbar-item">
+            </nuxt-link>
+            <nuxt-link to="/" class="navbar-item">
               {{ $tc('blockchain.token') }}
-            </router-link>
+            </nuxt-link>
           </div>
           <form class="navbar-end" @submit.prevent>
             <div class="navbar-item input-item">
@@ -26,18 +26,21 @@
           </form>
         </div>
       </nav>
-    </div>
+      <Breadcrumb v-if="$route.path !== '/'"></Breadcrumb>
+    </header>
     <nuxt></nuxt>
   </div>
 </template>
 
+<script>
+  import Breadcrumb from "@/components/breadcrumb/index.vue"
+
+  export default {
+    components: {Breadcrumb}
+  }
+</script>
+
 <style lang="less" scoped>
-  .navbar-brand {
-    font-size: 1.5rem;
-  }
-  .navbar-start .navbar-item {
-    text-transform: uppercase;
-  }
   .navbar-end {
     flex: auto;
     align-items: center;

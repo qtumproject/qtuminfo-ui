@@ -11,6 +11,7 @@
       "transaction": "{0} transactions",
       "duration": "in {0} secs",
       "reward": "Block Reward {0} QTUM"
-    }
+    },
+    "summary": "Summary"
   }
 }

@@ -8,6 +8,14 @@ function formatTimestamp(date) {
 }
 
 class Block {
+  static get(hash) {
+    return QtumscanAPI.get(`/block/${hash}`)
+  }
+
+  static getHash(height) {
+    return QtumscanAPI.get(`/block-index/${height}`)
+  }
+
   static async getRecentBlocks(size = 10) {
     let {blocks, currentTs} = await QtumscanAPI.get('/blocks', {params: {limit: size}})
     if (blocks.length < size) {

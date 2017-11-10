@@ -1,0 +1,42 @@
+<template>
+  <div class="breadcrumb">
+    <ul>
+      <li>
+        <nuxt-link to="/">
+          <span class="fa fa-home"></span>
+          QtumScan
+        </nuxt-link>
+      </li>
+      <li v-for="({name}, index) in breadcrumbs" :class="{'is-active': index === breadcrumbs.length - 1}">
+        <nuxt-link :to="{name, params: $route.params}">
+          <component :is='name' v-bind="$route.params"></component>
+        </nuxt-link>
+      </li>
+    </ul>
+  </div>
+</template>
+
+<script>
+  import BlockId from './block-id'
+
+  export default {
+    computed: {
+      breadcrumbs() {
+        let path = []
+        for (let route of this.$route.matched) {
+          path.push({name: route.name})
+        }
+        return path
+      }
+    },
+    components: {
+      'block-id': BlockId
+    }
+  }
+</script>
+
+<style scoped>
+  .breadcrumb span.fa {
+    margin-right: 0.3em;
+  }
+</style>
