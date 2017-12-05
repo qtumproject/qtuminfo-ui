@@ -13,5 +13,8 @@
       "reward": "区块奖励 {0} QTUM"
     },
     "summary": "区块信息"
+  },
+  "transaction": {
+    "summary": "交易信息"
   }
 }

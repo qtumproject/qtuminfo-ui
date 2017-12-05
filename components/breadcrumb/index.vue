@@ -18,6 +18,7 @@
 
 <script>
   import BlockId from './block-id'
+  import TxId from './tx-id'
 
   export default {
     computed: {
@@ -30,7 +31,8 @@
       }
     },
     components: {
-      'block-id': BlockId
+      'block-id': BlockId,
+      'tx-id': TxId
     }
   }
 </script>

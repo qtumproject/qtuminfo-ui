@@ -18,7 +18,7 @@
         </div>
         <div class="columns">
           <div class="column is-one-quarter has-text-right">Block Size</div>
-          <div class="column">{{ size }}</div>
+          <div class="column">{{ size }} bytes</div>
         </div>
         <div class="columns">
           <div class="column is-one-quarter has-text-right">Timestamp</div>
@@ -70,7 +70,7 @@
           v-for="{txid, blockTime, vin, vout, fees} in transactions">
           <div :class="['column', 'collapse-bottom', fees > 0 ? 'is-two-thirds' : 'is-full']">
             Transaction Hash:
-            <nuxt-link :to="'/transaction/' + txid">{{ txid }}</nuxt-link>
+            <nuxt-link :to="'/tx/' + txid">{{ txid }}</nuxt-link>
           </div>
           <div class="column is-one-third has-text-right collapse-bottom" v-if="fees > 0">
             Fee <span class="amount fee">{{ fees | qtum }} QTUM</span>
@@ -135,8 +135,7 @@
       let hash = id
       if (/^(0|[1-9]\d*)$/.test(id)) {
         try {
-          let {blockHash} = await Block.getHash(id)
-          hash = blockHash
+          hash = await Block.getHash(id)
         } catch (err) {
         }
       }
@@ -163,39 +162,8 @@
       }
     },
     methods: {
-      mergeInputs(inputs) {
-        let result = []
-        for (let input of inputs) {
-          let item = result.find(x => x.address === input.address)
-          if (item) {
-            item.value += input.value
-          } else {
-            result.push({
-              address: input.address,
-              value: input.value
-            })
-          }
-        }
-        return result
-      },
-      mergeOutputs(outputs) {
-        let result = []
-        for (let output of outputs) {
-          let cloned = JSON.parse(JSON.stringify(output))
-          if ('addresses' in cloned.scriptPubKey) {
-            let item = result.find(x => (
-              x.scriptPubKey.addresses
-              && x.scriptPubKey.addresses[0] === output.scriptPubKey.addresses[0]
-            ))
-            if (item) {
-              item.value += output.value
-              continue
-            }
-          }
-          result.push(cloned)
-        }
-        return result
-      }
+      mergeInputs: Transaction.mergeInputs,
+      mergeOutputs: Transaction.mergeOutputs
     }
   }
 </script>

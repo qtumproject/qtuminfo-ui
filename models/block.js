@@ -12,8 +12,9 @@ class Block {
     return QtumscanAPI.get(`/block/${hash}`)
   }
 
-  static getHash(height) {
-    return QtumscanAPI.get(`/block-index/${height}`)
+  static async getHash(height) {
+    let {blockHash} = await QtumscanAPI.get(`/block-index/${height}`)
+    return blockHash
   }
 
   static async getRecentBlocks(size = 10) {

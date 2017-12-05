@@ -13,5 +13,8 @@
       "reward": "Block Reward {0} QTUM"
     },
     "summary": "Summary"
+  },
+  "transaction": {
+    "summary": "Summary"
   }
 }
