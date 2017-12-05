@@ -40,65 +40,70 @@
           <div class="column">{{ fees | qtum }} QTUM</div>
         </div>
 
-        <div class="columns is-multiline transaction-item">
-          <div class="column is-full">
-            <span :class="[
-              'fa', 'fa-fw',
-              collapsed ? 'fa-plus-square-o' : 'fa-minus-square-o',
-              'toggle-collapse'
-            ]" @click="collapsed = !collapsed"></span>
-            Transaction Details
-          </div>
-          <div class="column is-clearfix collapse">
-            <template v-if="vin[0].address">
-              <div v-for="input in (collapsed ? mergeInputs(vin) : vin)" class="is-clearfix">
-                <nuxt-link class="pull-left" :to="'/address/' + input.address">
-                  {{ input.address }}
-                </nuxt-link>
-                <span class="pull-right amount">
-                  {{ input.value | qtum(8) }} QTUM
-                </span>
-              </div>
-            </template>
-            <template v-else>Newly Generated Coins</template>
-          </div>
-          <span class="column fa fa-arrow-right arrow collapse"></span>
-          <div class="column is-half collapse">
-            <template v-if="collapsed">
-              <div v-for="output in mergeOutputs(vout)" class="is-clearfix">
-                <nuxt-link :to="'/address/' + output.scriptPubKey.addresses[0]"
-                  v-if="output.scriptPubKey.addresses" class="pull-left">
-                  {{ output.scriptPubKey.addresses[0] }}
-                </nuxt-link>
-                <span v-else class="pull-left">Unparsed Address</span>
-                <span class="pull-right amount" v-if="output.value">
-                  {{ output.value | qtum(8) }} QTUM
-                </span>
-              </div>
-            </template>
-            <template v-else>
-              <div v-for="output in vout" class="is-clearfix">
-                <nuxt-link :to="'/address/' + output.scriptPubKey.addresses[0]"
-                  v-if="output.scriptPubKey.addresses" class="pull-left">
-                  {{ output.scriptPubKey.addresses[0] }}
-                </nuxt-link>
-                <span v-else class="pull-left">Unparsed Address</span>
-                <span class="pull-right amount" v-if="output.value">
-                  {{ output.value | qtum(8) }} QTUM
-                </span>
-                <div class="is-clearfix"></div>
-                <div class="output-script is-clearfix">
-                  <div>
-                    <span class="key">Type</span>
-                    <span class="value">{{ output.scriptPubKey.type }}</span>
-                  </div>
-                  <div>
-                    <span class="key">Script</span>
-                    <code class="value">{{ output.scriptPubKey.asm }}</code>
-                  </div>
+        <div class="columns transaction-item">
+          <div class="column">
+            <div>
+              <span :class="[
+                'fa', 'fa-fw',
+                collapsed ? 'fa-plus-square-o' : 'fa-minus-square-o',
+                'toggle-collapse'
+              ]" @click="collapsed = !collapsed"></span>
+              Transaction Details
+            </div>
+            <div class="transaction-input-list">
+              <div v-if="vin[0].address">
+                <div v-for="input in (collapsed ? mergeInputs(vin) : vin)"
+                  class="transaction-input-item is-clearfix">
+                  <nuxt-link class="pull-left" :to="'/address/' + input.address">
+                    {{ input.address }}
+                  </nuxt-link>
+                  <span class="pull-right amount">
+                    {{ input.value | qtum(8) }} QTUM
+                  </span>
                 </div>
               </div>
-            </template>
+              <div v-else class="transaction-input-item">Newly Generated Coins</div>
+            </div>
+            <div class="has-text-centered">
+              <span class="fa fa-fw fa-arrow-down"></span>
+            </div>
+            <div class="transaction-output-list">
+              <template v-if="collapsed">
+                <div v-for="output in mergeOutputs(vout)" class="transaction-output-item is-clearfix">
+                  <nuxt-link :to="'/address/' + output.scriptPubKey.addresses[0]"
+                    v-if="output.scriptPubKey.addresses" class="pull-left">
+                    {{ output.scriptPubKey.addresses[0] }}
+                  </nuxt-link>
+                  <span v-else class="pull-left">Unparsed Address</span>
+                  <span class="pull-right amount" v-if="output.value">
+                    {{ output.value | qtum(8) }} QTUM
+                  </span>
+                </div>
+              </template>
+              <template v-else>
+                <div v-for="output in vout" class="transaction-output-item detail is-clearfix">
+                  <nuxt-link :to="'/address/' + output.scriptPubKey.addresses[0]"
+                    v-if="output.scriptPubKey.addresses" class="pull-left">
+                    {{ output.scriptPubKey.addresses[0] }}
+                  </nuxt-link>
+                  <span v-else class="pull-left">Unparsed Address</span>
+                  <span class="pull-right amount" v-if="output.value">
+                    {{ output.value | qtum(8) }} QTUM
+                  </span>
+                  <div class="is-clearfix"></div>
+                  <div class="output-script">
+                    <div>
+                      <span class="key">Type</span>
+                      <span class="value">{{ output.scriptPubKey.type }}</span>
+                    </div>
+                    <div>
+                      <span class="key">Script</span>
+                      <code class="value">{{ output.scriptPubKey.asm }}</code>
+                    </div>
+                  </div>
+                </div>
+              </template>
+            </div>
           </div>
         </div>
       </div>
@@ -189,6 +194,10 @@
     padding-left: 1.5em;
     padding-right: 1.5em;
 
+    .column:first-child {
+      font-weight: normal;
+    }
+
     .toggle-collapse {
       cursor: pointer;
       transition: transform 0.2s;
@@ -196,28 +205,15 @@
         transform: scale(1.2);
       }
     }
-
-    .column:first-child {
-      font-weight: normal;
+    .transaction-input-list, .transaction-output-list {
+      margin: 1em;
     }
-    &:first-child {
-      margin-top: 0;
-      &::before {
-        display: none;
+    .transaction-output-item.detail {
+      margin-top: 0.5em;
+      margin-bottom: 0.5em;
+      &:nth-child(even) {
+        background-color: #f8f8f8;
       }
-    }
-    &:last-child {
-      margin-bottom: 0;
-    }
-    .collapse-top {
-      padding-top: 0;
-    }
-    .collapse-bottom {
-      padding-bottom: 0;
-    }
-    .arrow {
-      flex: 0;
-      line-height: 1.5em;
     }
     .amount {
       font-family: Monospace;
@@ -225,10 +221,9 @@
 
     .output-script {
       font-size: 0.8em;
-      word-break: break-all;
       .key {
         display: inline-block;
-        margin-left: 1em;
+        margin-left: 2em;
         margin-right: 1em;
         font-weight: bold;
       }
