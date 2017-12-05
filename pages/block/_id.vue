@@ -47,7 +47,7 @@
           <div class="column is-one-quarter has-text-right">Transactions</div>
           <div class="column">{{ transactions.length }}</div>
         </div>
-        <div class="columns" v-if="previousBlockHash">
+        <div class="columns" v-if="previousBlockHash && previousBlockHash != '0'.repeat(64)">
           <div class="column is-one-quarter has-text-right">Previous Block</div>
           <nuxt-link :to="'/block/' + (height - 1)" class="column">{{ previousBlockHash }}</nuxt-link>
         </div>
