@@ -29,7 +29,7 @@
         </div>
         <div class="columns">
           <div class="column is-one-quarter has-text-right">Block Reward</div>
-          <div class="column">{{ $printSatoshis(reward) }} QTUM</div>
+          <div class="column">{{ reward | qtum }} QTUM</div>
         </div>
         <div class="columns">
           <div class="column is-one-quarter has-text-right">Difficulty</div>
@@ -68,13 +68,12 @@
       <div class="card-body">
         <div class="columns is-multiline transaction-item"
           v-for="{txid, blockTime, vin, vout, fees} in transactions">
-          <div class="column is-two-thirds collapse-bottom">
+          <div :class="['column', 'collapse-bottom', fees > 0 ? 'is-two-thirds' : 'is-full']">
             Transaction Hash:
             <nuxt-link :to="'/transaction/' + txid">{{ txid }}</nuxt-link>
           </div>
-          <div class="column is-one-third has-text-right collapse-bottom">
-            {{ $moment(blockTime * 1000).fromNow() }}
-            ( {{ $moment(time * 1000).toString() }} )
+          <div class="column is-one-third has-text-right collapse-bottom" v-if="fees > 0">
+            Fee <span class="amount fee">{{ fees | qtum }} QTUM</span>
           </div>
           <div class="column is-clearfix collapse">
             <template v-if="vin[0].address">
@@ -83,7 +82,7 @@
                   {{ input.address }}
                 </nuxt-link>
                 <span class="pull-right amount">
-                  {{ $printSatoshis(input.value, 8) }} QTUM
+                  {{ input.value | qtum(8) }} QTUM
                 </span>
               </template>
             </template>
@@ -91,19 +90,16 @@
           </div>
           <span class="column fa fa-arrow-right arrow collapse"></span>
           <div class="column is-half collapse">
-            <div v-for="output in vout" class="is-clearfix">
+            <div v-for="output in mergeOutputs(vout)" class="is-clearfix">
               <nuxt-link :to="'/address/' + output.scriptPubKey.addresses[0]"
                 v-if="output.scriptPubKey.addresses" class="pull-left">
                 {{ output.scriptPubKey.addresses[0] }}
               </nuxt-link>
               <span v-else class="pull-left">Unparsed Address</span>
               <span class="pull-right amount" v-if="output.value">
-                {{ $printSatoshis(output.value, 8) }} QTUM
+                {{ output.value | qtum(8) }} QTUM
               </span>
             </div>
-          </div>
-          <div class="column is-full collapse-top" v-if="fees > 0">
-            Fee <span class="amount fee">{{ $printSatoshis(fees) }} QTUM</span>
           </div>
         </div>
       </div>
@@ -179,6 +175,24 @@
               value: input.value
             })
           }
+        }
+        return result
+      },
+      mergeOutputs(outputs) {
+        let result = []
+        for (let output of outputs) {
+          let cloned = JSON.parse(JSON.stringify(output))
+          if ('addresses' in cloned.scriptPubKey) {
+            let item = result.find(x => (
+              x.scriptPubKey.addresses
+              && x.scriptPubKey.addresses[0] === output.scriptPubKey.addresses[0]
+            ))
+            if (item) {
+              item.value += output.value
+              continue
+            }
+          }
+          result.push(cloned)
         }
         return result
       }

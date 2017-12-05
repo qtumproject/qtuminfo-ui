@@ -29,7 +29,7 @@
                       {{ $t('block.brief.transaction', [block.txLength]) }}
                       {{ $t('block.brief.duration', [block.duration]) }}
                       <br>
-                      {{ $t('block.brief.reward', [$printSatoshis(block.reward)]) }}
+                      {{ $t('block.brief.reward', [$printAmount(block.reward)]) }}
                     </div>
                   </div>
                 </div>
