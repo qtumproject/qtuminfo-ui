@@ -67,45 +67,43 @@
       </div>
       <div class="card-body">
         <div class="columns is-multiline transaction-item"
-          v-for="{txid, blockTimestamp, vin, vout} in transactions">
-          <div class="column is-two-thirds">
+          v-for="{txid, blockTime, vin, vout, fees} in transactions">
+          <div class="column is-two-thirds collapse-bottom">
             Transaction Hash:
             <nuxt-link :to="'/transaction/' + txid">{{ txid }}</nuxt-link>
           </div>
-          <div class="column is-one-third has-text-right">
-            {{ $moment(blockTimestamp * 1000).fromNow() }}
+          <div class="column is-one-third has-text-right collapse-bottom">
+            {{ $moment(blockTime * 1000).fromNow() }}
             ( {{ $moment(time * 1000).toString() }} )
           </div>
-          <div class="column is-clearfix">
+          <div class="column is-clearfix collapse">
             <template v-if="vin[0].address">
               <template v-for="input in mergeInputs(vin)">
-                <span class="pull-left">
-                  From:
-                  <nuxt-link :to="'/address/' + input.address">{{ input.address }}</nuxt-link>
-                </span>
+                <nuxt-link class="pull-left" :to="'/address/' + input.address">
+                  {{ input.address }}
+                </nuxt-link>
                 <span class="pull-right amount">
-                  {{ $printSatoshis(input.value) }} QTUM
+                  {{ $printSatoshis(input.value, 8) }} QTUM
                 </span>
               </template>
             </template>
-            <template v-else>From: Newly Generated Coins</template>
+            <template v-else>Newly Generated Coins</template>
           </div>
-          <span class="column fa fa-arrow-right arrow"></span>
-          <div class="column is-half">
+          <span class="column fa fa-arrow-right arrow collapse"></span>
+          <div class="column is-half collapse">
             <div v-for="output in vout" class="is-clearfix">
-              <span class="pull-left">
-                <template v-if="output.scriptPubKey.addresses">
-                  To:
-                  <nuxt-link :to="'/address/' + output.scriptPubKey.addresses[0]">
-                    {{ output.scriptPubKey.addresses[0] }}
-                  </nuxt-link>
-                </template>
-                <template v-else>To: Unparsed Address</template>
-              </span>
+              <nuxt-link :to="'/address/' + output.scriptPubKey.addresses[0]"
+                v-if="output.scriptPubKey.addresses" class="pull-left">
+                {{ output.scriptPubKey.addresses[0] }}
+              </nuxt-link>
+              <span v-else class="pull-left">Unparsed Address</span>
               <span class="pull-right amount" v-if="output.value">
-                {{ $printSatoshis(output.value) }} QTUM
+                {{ $printSatoshis(output.value, 8) }} QTUM
               </span>
             </div>
+          </div>
+          <div class="column is-full collapse-top" v-if="fees > 0">
+            Fee <span class="amount fee">{{ $printSatoshis(fees) }} QTUM</span>
           </div>
         </div>
       </div>
@@ -232,12 +230,21 @@
     &:last-child {
       margin-bottom: 0;
     }
+    .collapse-top {
+      padding-top: 0;
+    }
+    .collapse-bottom {
+      padding-bottom: 0;
+    }
     .arrow {
       flex: 0;
       line-height: 1.5em;
     }
     .amount {
       font-family: Monospace;
+    }
+    .fee {
+      margin-left: 0.5em;
     }
   }
 </style>
