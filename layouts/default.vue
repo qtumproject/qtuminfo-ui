@@ -14,13 +14,13 @@
               {{ $tc('blockchain.token') }}
             </nuxt-link>
           </div>
-          <form class="navbar-end" @submit.prevent>
+          <form class="navbar-end" @submit.prevent="search">
             <div class="navbar-item input-item">
-              <input
-                type="text" class="input"
+              <input type="text" class="input" v-model="searchString"
                 placeholder="Search by Block / Address / Transaction">
-              <button type="submit" class="button is-primary">
-                <span class="fa fa-search"></span>
+              <button type="submit" class="button is-primary" :disabled="searching">
+                <span v-if="searching" class="fa fa-spinner fa-pulse"></span>
+                <span v-else class="fa fa-search"></span>
               </button>
             </div>
           </form>
@@ -33,9 +33,51 @@
 </template>
 
 <script>
-  import Breadcrumb from "@/components/breadcrumb/index.vue"
+  import Breadcrumb from '@/components/breadcrumb/index.vue'
+  import Block from '@/models/block'
+  import Transaction from '@/models/transaction'
 
   export default {
+    data() {
+      return {
+        searchString: '',
+        searching: false
+      }
+    },
+    methods: {
+      async search() {
+        let searchString = this.searchString
+        if (!searchString || this.searching) {
+          return
+        }
+        this.searching = true
+        if (/^0|[1-9]\d*$/.test(searchString)) {
+          let height = Number(searchString)
+          try {
+            await Block.getHash(height)
+            this.searchString = ''
+            this.searching = false
+            this.$router.push(`/block/${height}`)
+            return
+          } catch (err) {}
+        }
+        try {
+          await Block.get(searchString)
+          this.searchString = ''
+          this.searching = false
+          this.$router.push(`/block/${searchString}`)
+          return
+        } catch (err) {}
+        try {
+          await Transaction.get(searchString)
+          this.searchString = ''
+          this.searching = false
+          this.$router.push(`/tx/${searchString}`)
+          return
+        } catch (err) {}
+        this.searching = false
+      }
+    },
     components: {Breadcrumb}
   }
 </script>
