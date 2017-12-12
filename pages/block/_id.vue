@@ -66,42 +66,8 @@
         <div class="card-header-title">Transactions</div>
       </div>
       <div class="card-body">
-        <div class="columns is-multiline transaction-item"
-          v-for="{txid, blockTime, vin, vout, fees} in transactions">
-          <div :class="['column', 'collapse-bottom', fees > 0 ? 'is-two-thirds' : 'is-full']">
-            Transaction Hash:
-            <nuxt-link :to="'/tx/' + txid">{{ txid }}</nuxt-link>
-          </div>
-          <div class="column is-one-third has-text-right collapse-bottom" v-if="fees > 0">
-            Fee <span class="amount fee">{{ fees | qtum }} QTUM</span>
-          </div>
-          <div class="column is-clearfix collapse">
-            <template v-if="vin[0].address">
-              <template v-for="input in mergeInputs(vin)">
-                <nuxt-link class="pull-left" :to="'/address/' + input.address">
-                  {{ input.address }}
-                </nuxt-link>
-                <span class="pull-right amount">
-                  {{ input.value | qtum(8) }} QTUM
-                </span>
-              </template>
-            </template>
-            <template v-else>Newly Generated Coins</template>
-          </div>
-          <span class="column fa fa-arrow-right arrow collapse"></span>
-          <div class="column is-half collapse">
-            <div v-for="output in mergeOutputs(vout)" class="is-clearfix">
-              <nuxt-link :to="'/address/' + output.scriptPubKey.addresses[0]"
-                v-if="output.scriptPubKey.addresses" class="pull-left">
-                {{ output.scriptPubKey.addresses[0] }}
-              </nuxt-link>
-              <span v-else class="pull-left">Unparsed Address</span>
-              <span class="pull-right amount" v-if="output.value">
-                {{ output.value | qtum(8) }} QTUM
-              </span>
-            </div>
-          </div>
-        </div>
+        <qtum-transaction v-for="transaction in transactions" :key="transaction.txid"
+          :transaction="transaction"></qtum-transaction>
       </div>
     </div>
   </section>
@@ -110,6 +76,7 @@
 <script>
   import Block from '@/models/block'
   import Transaction from '@/models/transaction'
+  import QtumTransaction from '@/components/transaction.vue'
 
   export default {
     head() {
@@ -161,9 +128,8 @@
         error({statusCode: 404, message: `Block ${id} not found`})
       }
     },
-    methods: {
-      mergeInputs: Transaction.mergeInputs,
-      mergeOutputs: Transaction.mergeOutputs
+    components: {
+      'qtum-transaction': QtumTransaction
     }
   }
 </script>
@@ -190,43 +156,6 @@
     }
     .column:first-child {
       font-weight: bold;
-    }
-  }
-
-  .transaction-item {
-    padding-left: 0.75em;
-    padding-right: 0.75em;
-    &::before {
-      display: block;
-      width: 100%;
-      height: 1px;
-      background-color: #ccc;
-      content: "";
-    }
-    &:first-child {
-      margin-top: 0;
-      &::before {
-        display: none;
-      }
-    }
-    &:last-child {
-      margin-bottom: 0;
-    }
-    .collapse-top {
-      padding-top: 0;
-    }
-    .collapse-bottom {
-      padding-bottom: 0;
-    }
-    .arrow {
-      flex: 0;
-      line-height: 1.5em;
-    }
-    .amount {
-      font-family: Monospace;
-    }
-    .fee {
-      margin-left: 0.5em;
     }
   }
 </style>

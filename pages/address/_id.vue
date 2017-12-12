@@ -35,11 +35,26 @@
         </div>
       </div>
     </div>
+
+    <div class="card transaction-list" v-if="transactions.length">
+      <div class="card-header">
+        <div class="card-header-icon">
+          <span class="fa fa-list-alt"></span>
+        </div>
+        <div class="card-header-title">Recent Transactions</div>
+      </div>
+      <div class="card-body">
+        <qtum-transaction v-for="transaction in transactions" :key="transaction.txid"
+          :transaction="transaction" :highlight="id"></qtum-transaction>
+      </div>
+    </div>
   </section>
 </template>
 
 <script>
   import Address from '@/models/address'
+  import Transaction from '@/models/transaction'
+  import QtumTransaction from '@/components/transaction.vue'
 
   export default {
     head() {
@@ -59,14 +74,15 @@
     },
     async asyncData({params, error}) {
       try {
-        let address = await Address.get(params.id)
+        let address = await Address.get(params.id, {from: 0, to: 20})
+        address.transactions = await Promise.all(address.transactions.map(Transaction.get))
         return {
           balance: address.balance,
           totalReceived: address.totalReceived,
           totalSent: address.totalSent,
           unconfirmedBalance: address.unconfirmedBalance,
           totalCount: address.totalCount,
-          transactions: address.transactions.map(tx => ({id: tx, loaded: false}))
+          transactions: address.transactions
         }
       } catch (err) {
         error({statusCode: 404, message: `Address ${params.id} not found`})
@@ -76,6 +92,9 @@
       id() {
         return this.$route.params.id
       }
+    },
+    components: {
+      'qtum-transaction': QtumTransaction
     }
   }
 </script>

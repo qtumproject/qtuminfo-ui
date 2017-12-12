@@ -33,6 +33,7 @@
     },
     components: {
       'address-id': AddressId,
+      'block-id': BlockId,
       'tx-id': TxId
     }
   }
