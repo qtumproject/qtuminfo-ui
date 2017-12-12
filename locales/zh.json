@@ -1,6 +1,7 @@
 {
   "blockchain": {
     "blockchain": "区块链",
+    "address": "地址",
     "block": "区块",
     "transaction": "交易",
     "token": "代币"
@@ -16,5 +17,8 @@
   },
   "transaction": {
     "summary": "交易信息"
+  },
+  "address": {
+    "summary": "账户信息"
   }
 }

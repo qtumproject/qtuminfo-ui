@@ -34,6 +34,7 @@
 
 <script>
   import Breadcrumb from '@/components/breadcrumb/index.vue'
+  import Address from '@/models/address'
   import Block from '@/models/block'
   import Transaction from '@/models/transaction'
 
@@ -73,6 +74,13 @@
           this.searchString = ''
           this.searching = false
           this.$router.push(`/tx/${searchString}`)
+          return
+        } catch (err) {}
+        try {
+          await Address.get(searchString)
+          this.searchString = ''
+          this.searching = false
+          this.$router.push(`/address/${searchString}`)
           return
         } catch (err) {}
         this.searching = false

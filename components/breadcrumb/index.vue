@@ -17,6 +17,7 @@
 </template>
 
 <script>
+  import AddressId from './address-id'
   import BlockId from './block-id'
   import TxId from './tx-id'
 
@@ -31,7 +32,7 @@
       }
     },
     components: {
-      'block-id': BlockId,
+      'address-id': AddressId,
       'tx-id': TxId
     }
   }

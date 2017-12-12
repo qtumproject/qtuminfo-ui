@@ -1,6 +1,7 @@
 {
   "blockchain": {
     "blockchain": "Blockchain",
+    "address": "Address | Addresses",
     "block": "Block | Blocks",
     "transaction": "Transaction | Transactions",
     "token": "Token | Tokens"
@@ -12,9 +13,12 @@
       "duration": "in {0} secs",
       "reward": "Block Reward {0} QTUM"
     },
-    "summary": "Summary"
+    "summary": "Block Summary"
   },
   "transaction": {
-    "summary": "Summary"
+    "summary": "Transaction Summary"
+  },
+  "address": {
+    "summary": "Address Summary"
   }
 }
