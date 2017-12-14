@@ -1,3 +1,5 @@
+const webpack = require('webpack')
+
 module.exports = {
   head: {
     meta: [
@@ -9,15 +11,19 @@ module.exports = {
     'bulma/css/bulma.css',
     'font-awesome/css/font-awesome.css'
   ],
-  env: {
-    qtumscanAPIBase: process.env.QTUMSCAN_API_BASE || 'http://localhost:3001/qtumscan-api/'
-  },
   render: {
     bundleRenderer: {
       shouldPreload: (file, type) => ['script', 'style', 'font'].includes(type)
     }
   },
   build: {
+    extend(config, {isServer}) {
+      config.plugins.push(new webpack.DefinePlugin({
+        'process.env.qtumscanAPIBase': JSON.stringify(process.env.QTUMSCAN_API_BASE
+          || process.env[isServer ? 'QTUMSCAN_API_BASE_SERVER' : 'QTUMSCAN_API_BASE_CLIENT']
+          || 'http://localhost:3001/qtumscan-api/')
+      }))
+    },
     extractCSS: true,
     postcss: {
       plugins: {
