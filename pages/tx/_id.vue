@@ -32,7 +32,7 @@
           </div>
         </div>
         <div class="columns">
-          <div class="column is-one-quarter has-text-right">confirmations</div>
+          <div class="column is-one-quarter has-text-right">Confirmations</div>
           <div class="column">{{ confirmations }}</div>
         </div>
         <div class="columns" v-if="fees > 0">
