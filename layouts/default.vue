@@ -52,7 +52,7 @@
           return
         }
         this.searching = true
-        if (/^0|[1-9]\d*$/.test(searchString)) {
+        if (/^(0|[1-9]\d*)$/.test(searchString)) {
           let height = Number(searchString)
           try {
             await Block.getHash(height)
