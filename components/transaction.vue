@@ -18,7 +18,7 @@
     </div>
     <div class="column is-clearfix collapse">
       <template v-if="inputs[0].address">
-        <template v-for="input in (collapsed ? mergeInputs(inputs) : inputs)">
+        <div v-for="input in (collapsed ? mergeInputs(inputs) : inputs)" class="is-clearfix">
           <span v-if="input.address === highlight" class="pull-left">
             {{ input.address }}
           </span>
@@ -28,7 +28,7 @@
           <span class="pull-right amount">
             {{ input.value | qtum(8) }} QTUM
           </span>
-        </template>
+        </div>
       </template>
       <template v-else>Newly Generated Coins</template>
     </div>

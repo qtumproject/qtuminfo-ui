@@ -44,8 +44,8 @@
         <div class="card-header-title">Recent Transactions</div>
       </div>
       <div class="card-body">
-        <qtum-transaction v-for="transaction in transactions" :key="transaction.txid"
-          :transaction="transaction" :highlight="id"></qtum-transaction>
+        <QtumTransaction v-for="transaction in transactions" :key="transaction.txid"
+          :transaction="transaction" :highlight="id"></QtumTransaction>
       </div>
     </div>
   </section>
@@ -93,9 +93,7 @@
         return this.$route.params.id
       }
     },
-    components: {
-      'qtum-transaction': QtumTransaction
-    }
+    components: {QtumTransaction}
   }
 </script>
 

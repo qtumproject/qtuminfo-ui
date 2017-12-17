@@ -66,8 +66,8 @@
         <div class="card-header-title">Transactions</div>
       </div>
       <div class="card-body">
-        <qtum-transaction v-for="transaction in transactions" :key="transaction.txid"
-          :transaction="transaction"></qtum-transaction>
+        <QtumTransaction v-for="transaction in transactions" :key="transaction.txid"
+          :transaction="transaction"></QtumTransaction>
       </div>
     </div>
   </section>
@@ -128,9 +128,7 @@
         error({statusCode: 404, message: `Block ${id} not found`})
       }
     },
-    components: {
-      'qtum-transaction': QtumTransaction
-    }
+    components: {QtumTransaction}
   }
 </script>
 

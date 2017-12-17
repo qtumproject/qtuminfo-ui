@@ -34,9 +34,7 @@
 
 <script>
   import Breadcrumb from '@/components/breadcrumb/index.vue'
-  import Address from '@/models/address'
-  import Block from '@/models/block'
-  import Transaction from '@/models/transaction'
+  import {get as qtumscanGet} from '@/services/qtumscan-api'
 
   export default {
     data() {
@@ -47,41 +45,25 @@
     },
     methods: {
       async search() {
-        let searchString = this.searchString
+        let searchString = this.searchString.trim()
         if (!searchString || this.searching) {
           return
         }
         this.searching = true
-        if (/^(0|[1-9]\d*)$/.test(searchString)) {
-          let height = Number(searchString)
-          try {
-            await Block.getHash(height)
-            this.searchString = ''
-            this.searching = false
-            this.$router.push(`/block/${height}`)
-            return
-          } catch (err) {}
-        }
         try {
-          await Block.get(searchString)
-          this.searchString = ''
-          this.searching = false
-          this.$router.push(`/block/${searchString}`)
-          return
-        } catch (err) {}
-        try {
-          await Transaction.get(searchString)
-          this.searchString = ''
-          this.searching = false
-          this.$router.push(`/tx/${searchString}`)
-          return
-        } catch (err) {}
-        try {
-          await Address.get(searchString)
-          this.searchString = ''
-          this.searching = false
-          this.$router.push(`/address/${searchString}`)
-          return
+          let {type} = await qtumscanGet(`/search/${searchString}`)
+          switch (type) {
+          case 'address':
+            this.$router.push(`/address/${searchString}`)
+            break
+          case 'block-height':
+          case 'block-hash':
+            this.$router.push(`/block/${searchString}`)
+            break
+          case 'transaction':
+            this.$router.push(`/tx/${searchString}`)
+            break
+          }
         } catch (err) {}
         this.searching = false
       }

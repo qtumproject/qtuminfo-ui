@@ -27,4 +27,4 @@ function post(...args) {
 }
 
 export default resource
-export {reqeust, get, post}
+export {request, get, post}

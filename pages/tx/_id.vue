@@ -40,7 +40,7 @@
           <div class="column">{{ fees | qtum }} QTUM</div>
         </div>
 
-        <qtum-transaction :transaction="{txid: id, vin, vout, fees}"></qtum-transaction>
+        <QtumTransaction :transaction="{txid: id, vin, vout, fees}"></QtumTransaction>
       </div>
     </div>
   </section>
@@ -93,9 +93,7 @@
         return this.$route.params.id
       }
     },
-    components: {
-      'qtum-transaction': QtumTransaction
-    }
+    components: {QtumTransaction}
   }
 </script>
 
