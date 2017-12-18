@@ -6,7 +6,12 @@
         collapsed ? 'fa-chevron-right' : 'fa-chevron-down',
         'toggle-collapse'
       ]" @click="collapsed = !collapsed"></span>
-      Transaction <nuxt-link :to="'/tx/' + hash">{{ hash }}</nuxt-link>
+      Transaction
+      <nuxt-link :to="'/tx/' + hash">{{ hash }}</nuxt-link>
+      <span v-if="blockchainInfo.height"
+        :class="['tag', blockchainInfo.height - height + 1 >= 6 ? 'is-info' : 'is-warning']">
+        {{ blockchainInfo.height - height + 1 }} confirmation(s)
+      </span>
     </div>
     <div class="column is-one-third has-text-right collapse-bottom" v-if="fees">
       <template v-if="fees > 0">
@@ -83,10 +88,12 @@
 
 <script>
   import Transaction from '@/models/transaction'
+  import {get as qtumscanGet} from '@/services/qtumscan-api'
 
   export default {
     data() {
       return {
+        blockchainInfo: {},
         collapsed: true
       }
     },
@@ -106,6 +113,9 @@
       },
       fees() {
         return this.transaction.fees
+      },
+      height() {
+        return this.transaction.blockHeight
       }
     },
     methods: {
@@ -163,6 +173,9 @@
         })
         return result.sort(this.addressSorting)
       }
+    },
+    async mounted() {
+      this.blockchainInfo = await qtumscanGet('/info')
     }
   }
 </script>
@@ -195,6 +208,10 @@
     &:hover {
       transform: scale(1.2);
     }
+  }
+
+  .tag {
+    margin-left: 1em;
   }
 
   .output-script {
