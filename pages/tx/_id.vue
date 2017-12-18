@@ -49,6 +49,7 @@
 <script>
   import Block from '@/models/block'
   import Transaction from '@/models/transaction'
+  import {RequestError} from '@/services/qtumscan-api'
   import QtumTransaction from '@/components/transaction.vue'
 
   export default {
@@ -85,7 +86,15 @@
           block
         }
       } catch (err) {
-        error({statusCode: 404, message: `Transaction ${params.id} not found`})
+        if (err instanceof RequestError) {
+          if (err.code === 404) {
+            error({statusCode: 404, message: `Transaction ${param.id} not found`})
+          } else {
+            error({statusCode: err.code, message: err.message})
+          }
+        } else {
+          throw err
+        }
       }
     },
     computed: {

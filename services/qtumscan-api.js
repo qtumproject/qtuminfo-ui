@@ -1,4 +1,12 @@
 import axios from 'axios'
+import {ExtendableError} from '@/utils/error'
+
+class RequestError extends ExtendableError {
+  constructor(message, code) {
+    super(message)
+    this.code = code
+  }
+}
 
 const resource = axios.create({baseURL: process.env.qtumscanAPIBase})
 
@@ -11,7 +19,7 @@ function get(...args) {
     if (response.status === 200) {
       return response.data
     } else {
-      return Promise.reject(response)
+      return Promise.reject(new RequestError(response.statusText, response.status))
     }
   })
 }
@@ -21,10 +29,9 @@ function post(...args) {
     if (response.status === 200) {
       return response.data
     } else {
-      return Promise.reject(response)
+      return Promise.reject(new RequestError(response.statusText, response.status))
     }
   })
 }
 
-export default resource
-export {request, get, post}
+export {resource as default, request, get, post, RequestError}

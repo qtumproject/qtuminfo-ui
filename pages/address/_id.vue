@@ -54,6 +54,7 @@
 <script>
   import Address from '@/models/address'
   import Transaction from '@/models/transaction'
+  import {RequestError} from '@/services/qtumscan-api'
   import QtumTransaction from '@/components/transaction.vue'
 
   export default {
@@ -85,7 +86,15 @@
           transactions: address.transactions
         }
       } catch (err) {
-        error({statusCode: 404, message: `Address ${params.id} not found`})
+        if (err instanceof RequestError) {
+          if (err.code === 404) {
+            error({statusCode: 404, message: `Address ${param.id} not found`})
+          } else {
+            error({statusCode: err.code, message: err.message})
+          }
+        } else {
+          throw err
+        }
       }
     },
     computed: {

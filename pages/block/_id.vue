@@ -77,6 +77,7 @@
   import Block from '@/models/block'
   import Transaction from '@/models/transaction'
   import QtumTransaction from '@/components/transaction.vue'
+  import RequestError from '@/services/qtumscan-api'
 
   export default {
     head() {
@@ -100,7 +101,7 @@
     async asyncData({params, error}) {
       let id = params.id
       let hash = id
-      if (/^(0|[1-9]\d*)$/.test(id)) {
+      if (/^(0|[1-9]\d{0,9})$/.test(id)) {
         try {
           hash = await Block.getHash(id)
         } catch (err) {
@@ -125,7 +126,15 @@
           transactions
         }
       } catch (err) {
-        error({statusCode: 404, message: `Block ${id} not found`})
+        if (err instanceof RequestError) {
+          if (err.code === 404) {
+            error({statusCode: 404, message: `Block ${id} not found`})
+          } else {
+            error({statusCode: err.code, message: err.message})
+          }
+        } else {
+          throw err
+        }
       }
     },
     components: {QtumTransaction}
