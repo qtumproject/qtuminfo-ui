@@ -36,6 +36,7 @@ module.exports = {
     }
   },
   plugins: [
+    '~/plugins/components.js',
     '~/plugins/i18n.js',
     '~/plugins/qtum-utils.js'
   ]

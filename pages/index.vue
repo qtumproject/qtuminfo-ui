@@ -5,7 +5,7 @@
         <div class="card">
           <div class="card-header">
             <div class="card-header-icon">
-              <span class="fa fa-cubes"></span>
+              <Icon icon="cubes" fixed-width></Icon>
             </div>
             <h3 class="card-header-title">
               {{ $tc('blockchain.block', 2) }}
@@ -43,7 +43,7 @@
         <div class="card">
           <div class="card-header">
             <div class="card-header-icon">
-              <span class="fa fa-list-alt"></span>
+              <Icon icon="list-alt" fixed-width></Icon>
             </div>
             <h3 class="card-header-title">
               {{ $tc('blockchain.transaction', 2) }}

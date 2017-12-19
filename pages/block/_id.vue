@@ -3,7 +3,7 @@
     <div class="card section-card">
       <div class="card-header">
         <div class="card-header-icon">
-          <span class="fa fa-fw fa-info"></span>
+          <Icon icon="info" fixed-width></Icon>
         </div>
         <h3 class="card-header-title">{{ $t('block.summary') }}</h3>
       </div>
@@ -61,7 +61,7 @@
     <div class="card section-card transaction-list" v-if="transactions.length">
       <div class="card-header">
         <div class="card-header-icon">
-          <span class="fa fa-list-alt"></span>
+          <Icon icon="list-alt" fixed-width></Icon>
         </div>
         <div class="card-header-title">Transactions</div>
       </div>

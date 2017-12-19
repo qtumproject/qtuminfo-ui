@@ -20,8 +20,8 @@
           <input type="text" class="input" v-model="searchString"
             placeholder="Search by Block / Address / Transaction">
           <button type="submit" class="button is-primary" :disabled="searching">
-            <span v-if="searching" class="fa fa-spinner fa-pulse"></span>
-            <span v-else class="fa fa-search"></span>
+            <Icon v-if="searching" icon="spinner pulse"></Icon>
+            <Icon v-else icon="search"></Icon>
           </button>
         </div>
       </form>
@@ -51,13 +51,16 @@
           let {type} = await qtumscanGet(`/search/${searchString}`)
           switch (type) {
           case 'address':
+            this.searchString = ''
             this.$router.push(`/address/${searchString}`)
             break
           case 'block-height':
           case 'block-hash':
+            this.searchString = ''
             this.$router.push(`/block/${searchString}`)
             break
           case 'transaction':
+            this.searchString = ''
             this.$router.push(`/tx/${searchString}`)
             break
           }

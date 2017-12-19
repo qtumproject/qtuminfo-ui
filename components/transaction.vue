@@ -2,11 +2,11 @@
   <div class="columns is-multiline transaction-item">
     <div class="column is-full is-clearfix">
       <div class="pull-left collapse-bottom">
-        <span :class="[
-          'fa', 'fa-fw',
-          collapsed ? 'fa-chevron-right' : 'fa-chevron-down',
-          'toggle-collapse'
-        ]" @click="collapsed = !collapsed"></span>
+        <Icon
+          :icon="collapsed ? 'chevron-right' : 'chevron-down'" fixed-width
+          class="toggle-collapse"
+          @click="collapsed = !collapsed"
+        ></Icon>
         Transaction
         <nuxt-link :to="'/tx/' + hash" class="break-words">{{ hash }}</nuxt-link>
       </div>
@@ -26,12 +26,10 @@
     <div class="column is-clearfix collapse">
       <template v-if="inputs[0].address">
         <div v-for="input in (collapsed ? mergeInputs(inputs) : inputs)" class="is-clearfix">
-          <span v-if="input.address === highlight" class="pull-left break-words">
-            {{ input.address }}
-          </span>
-          <nuxt-link v-else :to="'/address/' + input.address" class="pull-left break-words">
-            {{ input.address }}
-          </nuxt-link>
+          <AttributeInjector class="pull-left break-words" v-text="input.address">
+            <span v-if="input.address === highlight"></span>
+            <nuxt-link v-else :to="'/address/' + input.address"></nuxt-link>
+          </AttributeInjector>
           <span class="pull-right amount">
             {{ input.value | qtum(8) }} QTUM
           </span>
@@ -39,17 +37,15 @@
       </template>
       <template v-else>Newly Generated Coins</template>
     </div>
-    <span class="column fa fa-arrow-right arrow collapse"></span>
+    <Icon icon="arrow-right" class="column arrow collapse"></Icon>
     <div class="column is-half collapse">
       <template v-if="collapsed">
         <div v-for="output in mergeOutputs(outputs)" class="is-clearfix">
           <template v-if="output.scriptPubKey.addresses">
-            <span v-if="output.scriptPubKey.addresses[0] === highlight" class="pull-left break-words">
-              {{ output.scriptPubKey.addresses[0] }}
-            </span>
-            <nuxt-link v-else :to="'/address/' + output.scriptPubKey.addresses[0]" class="pull-left break-words">
-              {{ output.scriptPubKey.addresses[0] }}
-            </nuxt-link>
+            <AttributeInjector class="pull-left break-words" v-text="outputAddress(output)">
+              <span v-if="outputAddress(output) === highlight"></span>
+              <nuxt-link v-else :to="'/address/' + outputAddress(output)"></nuxt-link>
+            </AttributeInjector>
           </template>
           <span v-else class="pull-left">Unparsed Address</span>
           <span class="pull-right amount" v-if="output.value">
@@ -60,12 +56,10 @@
       <template v-else>
         <div v-for="output in outputs" class="is-clearfix">
           <template v-if="output.scriptPubKey.addresses">
-            <span v-if="output.scriptPubKey.addresses[0] === highlight" class="pull-left break-words">
-              {{ output.scriptPubKey.addresses[0] }}
-            </span>
-            <nuxt-link v-else :to="'/address/' + output.scriptPubKey.addresses[0]" class="pull-left break-words">
-              {{ output.scriptPubKey.addresses[0] }}
-            </nuxt-link>
+            <AttributeInjector class="pull-left break-words" v-text="outputAddress(output)">
+              <span v-if="outputAddress(output) === highlight"></span>
+              <nuxt-link v-else :to="'/address/' + outputAddress(output)"></nuxt-link>
+            </AttributeInjector>
           </template>
           <span v-else class="pull-left">Unparsed Address</span>
           <span class="pull-right amount" v-if="output.value">
@@ -120,7 +114,7 @@
         return this.transaction.blockHeight
       },
       confirmations() {
-        return this.blockchainInfo.height - this.height
+        return this.blockchainInfo.height - this.height + 1
       }
     },
     methods: {
@@ -154,7 +148,7 @@
           if ('addresses' in cloned.scriptPubKey) {
             let item = result.find(x => (
               x.scriptPubKey.addresses
-              && x.scriptPubKey.addresses[0] === output.scriptPubKey.addresses[0]
+              && this.outputAddress(x) === this.outputAddress(output)
             ))
             if (item) {
               item.value += output.value
@@ -168,15 +162,18 @@
             return -1
           } else if (!('addresses' in y.scriptPubKey)) {
             return 1
-          } else if (x.scriptPubKey.addresses[0] < y.scriptPubKey.addresses[0]) {
+          } else if (this.outputAddress(x) < this.outputAddress(y)) {
             return -1
-          } else if (x.scriptPubKey.addresses[0] > y.scriptPubKey.addresses[0]) {
+          } else if (this.outputAddress(x) > this.outputAddress(y)) {
             return 1
           } else {
             return 0
           }
         })
         return result.sort(this.addressSorting)
+      },
+      outputAddress(output) {
+        return output.scriptPubKey.addresses[0]
       }
     },
     async mounted() {

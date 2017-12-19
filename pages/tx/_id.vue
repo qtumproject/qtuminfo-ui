@@ -3,7 +3,7 @@
     <div class="card section-card">
       <div class="card-header">
         <div class="card-header-icon">
-          <span class="fa fa-fw fa-info"></span>
+          <Icon icon="info" fixed-width></Icon>
         </div>
         <h3 class="card-header-title">{{ $t('transaction.summary') }}</h3>
       </div>
