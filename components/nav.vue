@@ -2,13 +2,16 @@
   <nav class="navbar">
     <div class="navbar-brand is-size-4">
       <nuxt-link to="/" class="navbar-item">QtumScan</nuxt-link>
+      <button type="button" class="button navbar-burger" @click="showMenu = !showMenu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
-    <div class="navbar-menu">
+    <div :class="['navbar-menu', showMenu ? 'is-active' : '']">
       <div class="navbar-start is-uppercase">
-        <nuxt-link to="/" class="navbar-item">
+        <nuxt-link to="/" class="navbar-item" @click.native="showMenu = !showMenu">
           {{ $t('blockchain.blockchain') }}
         </nuxt-link>
-        <nuxt-link to="/" class="navbar-item">
+        <nuxt-link to="/" class="navbar-item" @click.native="showMenu = !showMenu">
           {{ $tc('blockchain.token') }}
         </nuxt-link>
       </div>
@@ -32,6 +35,7 @@
   export default {
     data() {
       return {
+        showMenu: false,
         searchString: '',
         searching: false
       }
@@ -58,6 +62,7 @@
             break
           }
         } catch (err) {}
+        this.showMenu = false
         this.searching = false
       }
     }

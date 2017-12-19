@@ -9,35 +9,35 @@
       </div>
       <div class="card-body">
         <div class="columns">
-          <div class="column is-one-quarter has-text-right">Transaction Hash</div>
-          <div class="column">{{ id }}</div>
+          <div class="column info-title">Transaction Hash</div>
+          <div class="column info-value">{{ id }}</div>
         </div>
         <div class="columns">
-          <div class="column is-one-quarter has-text-right">Included in Block</div>
-          <div class="column">
+          <div class="column info-title">Included in Block</div>
+          <div class="column info-value">
             <nuxt-link :to="'/block/' + blockHeight">
               {{ blockHeight }} ({{ block.hash }})
             </nuxt-link>
           </div>
         </div>
         <div class="columns">
-          <div class="column is-one-quarter has-text-right">Transaction Size</div>
-          <div class="column">{{ size }} bytes</div>
+          <div class="column info-title">Transaction Size</div>
+          <div class="column info-value">{{ size }} bytes</div>
         </div>
         <div class="columns">
-          <div class="column is-one-quarter has-text-right">Timestamp</div>
-          <div class="column">
+          <div class="column info-title">Timestamp</div>
+          <div class="column info-value">
             {{ $moment(time * 1000).fromNow() }}
             ( {{ $moment(time * 1000).toString() }} )
           </div>
         </div>
         <div class="columns">
-          <div class="column is-one-quarter has-text-right">Confirmations</div>
-          <div class="column">{{ confirmations }}</div>
+          <div class="column info-title">Confirmations</div>
+          <div class="column info-value">{{ confirmations }}</div>
         </div>
         <div class="columns" v-if="fees > 0">
-          <div class="column is-one-quarter has-text-right">Transaction Fee</div>
-          <div class="column">{{ fees | qtum }} QTUM</div>
+          <div class="column info-title">Transaction Fee</div>
+          <div class="column info-value">{{ fees | qtum }} QTUM</div>
         </div>
 
         <QtumTransaction :transaction="{txid: id, blockHeight, vin, vout, fees}"></QtumTransaction>
@@ -113,6 +113,8 @@
     &:first-child {
       margin-top: 0.5em;
     }
+    margin-left: 0.75em;
+    margin-right: 0.75em;
   }
 
   .transaction-summary {
@@ -126,8 +128,24 @@
       padding-top: 0.25em;
       padding-bottom: 0.25em;
     }
-    .column:first-child {
+    .info-title {
       font-weight: bold;
+    }
+    .info-value {
+      word-break: break-all;
+    }
+    @media (min-width: 1024px) {
+      .info-title {
+        flex: none;
+        width: 25%;
+        text-align: right;
+      }
+    }
+    @media (max-width: 1023px) {
+      .info-title, .info-value {
+        padding-left: 1.5em;
+        padding-right: 1.5em;
+      }
     }
   }
 </style>

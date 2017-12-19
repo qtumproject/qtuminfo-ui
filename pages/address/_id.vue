@@ -9,12 +9,12 @@
       </div>
       <div class="card-body">
         <div class="columns">
-          <div class="column is-one-quarter has-text-right">Address Hash</div>
-          <div class="column">{{ id }}</div>
+          <div class="column info-title">Address Hash</div>
+          <div class="column info-value">{{ id }}</div>
         </div>
         <div class="columns">
-          <div class="column is-one-quarter has-text-right">Balance</div>
-          <div class="column">
+          <div class="column info-title">Balance</div>
+          <div class="column info-value">
             {{ balance | qtum }} QTUM
             <template v-if="unconfirmedBalance !== '0'">
               ({{ unconfirmedBalance | qtum }} QTUM unconfirmed)
@@ -22,16 +22,16 @@
           </div>
         </div>
         <div class="columns">
-          <div class="column is-one-quarter has-text-right">Total Received</div>
-          <div class="column">{{ totalReceived | qtum }} QTUM</div>
+          <div class="column info-title">Total Received</div>
+          <div class="column info-value">{{ totalReceived | qtum }} QTUM</div>
         </div>
         <div class="columns">
-          <div class="column is-one-quarter has-text-right">Total Sent</div>
-          <div class="column">{{ totalSent | qtum }} QTUM</div>
+          <div class="column info-title">Total Sent</div>
+          <div class="column info-value">{{ totalSent | qtum }} QTUM</div>
         </div>
         <div class="columns">
-          <div class="column is-one-quarter has-text-right">Transaction Count</div>
-          <div class="column">{{ totalCount }}</div>
+          <div class="column info-title">Transaction Count</div>
+          <div class="column info-value">{{ totalCount }}</div>
         </div>
       </div>
     </div>
@@ -113,6 +113,8 @@
     &:first-child {
       margin-top: 0.5em;
     }
+    margin-left: 0.75em;
+    margin-right: 0.75em;
   }
 
   .address-summary {
@@ -126,8 +128,24 @@
       padding-top: 0.25em;
       padding-bottom: 0.25em;
     }
-    .column:first-child {
+    .info-title {
       font-weight: bold;
+    }
+    .info-value {
+      word-break: break-all;
+    }
+    @media (min-width: 1024px) {
+      .info-title {
+        flex: none;
+        width: 25%;
+        text-align: right;
+      }
+    }
+    @media (max-width: 1023px) {
+      .info-title, .info-value {
+        padding-left: 1.5em;
+        padding-right: 1.5em;
+      }
     }
   }
 

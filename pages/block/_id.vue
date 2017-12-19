@@ -9,51 +9,51 @@
       </div>
       <div class="card-body">
         <div class="columns">
-          <div class="column is-one-quarter has-text-right">Block Height</div>
-          <div class="column">{{ height }}</div>
+          <div class="column info-title">Block Height</div>
+          <div class="column info-value">{{ height }}</div>
         </div>
         <div class="columns">
-          <div class="column is-one-quarter has-text-right">Block Hash</div>
-          <div class="column">{{ hash }}</div>
+          <div class="column info-title">Block Hash</div>
+          <div class="column info-value">{{ hash }}</div>
         </div>
         <div class="columns">
-          <div class="column is-one-quarter has-text-right">Block Size</div>
-          <div class="column">{{ size }} bytes</div>
+          <div class="column info-title">Block Size</div>
+          <div class="column info-value">{{ size }} bytes</div>
         </div>
         <div class="columns">
-          <div class="column is-one-quarter has-text-right">Timestamp</div>
-          <div class="column">
+          <div class="column info-title">Timestamp</div>
+          <div class="column info-value">
             {{ $moment(time * 1000).fromNow() }}
             ( {{ $moment(time * 1000).toString() }} )
           </div>
         </div>
         <div class="columns">
-          <div class="column is-one-quarter has-text-right">Block Reward</div>
-          <div class="column">{{ reward | qtum }} QTUM</div>
+          <div class="column info-title">Block Reward</div>
+          <div class="column info-value">{{ reward | qtum }} QTUM</div>
         </div>
         <div class="columns">
-          <div class="column is-one-quarter has-text-right">Difficulty</div>
-          <div class="column">{{ difficulty }}</div>
+          <div class="column info-title">Difficulty</div>
+          <div class="column info-value">{{ difficulty }}</div>
         </div>
         <div class="columns">
-          <div class="column is-one-quarter has-text-right">Merkle Root</div>
-          <div class="column">{{ merkleRoot }}</div>
+          <div class="column info-title">Merkle Root</div>
+          <div class="column info-value">{{ merkleRoot }}</div>
         </div>
         <div class="columns" v-if="minedBy">
-          <div class="column is-one-quarter has-text-right">Mined By</div>
-          <nuxt-link :to="'/address/' + minedBy" class="column">{{ minedBy }}</nuxt-link>
+          <div class="column info-title">Mined By</div>
+          <nuxt-link :to="'/address/' + minedBy" class="column info-value">{{ minedBy }}</nuxt-link>
         </div>
         <div class="columns">
-          <div class="column is-one-quarter has-text-right">Transactions</div>
-          <div class="column">{{ transactions.length }}</div>
+          <div class="column info-title">Transactions</div>
+          <div class="column info-value">{{ transactions.length }}</div>
         </div>
         <div class="columns" v-if="previousBlockHash && previousBlockHash != '0'.repeat(64)">
-          <div class="column is-one-quarter has-text-right">Previous Block</div>
-          <nuxt-link :to="'/block/' + (height - 1)" class="column">{{ previousBlockHash }}</nuxt-link>
+          <div class="column info-title">Previous Block</div>
+          <nuxt-link :to="'/block/' + (height - 1)" class="column info-value">{{ previousBlockHash }}</nuxt-link>
         </div>
         <div class="columns" v-if="nextBlockHash">
-          <div class="column is-one-quarter has-text-right">Next Block</div>
-          <nuxt-link :to="'/block/' + (height + 1)" class="column">{{ nextBlockHash }}</nuxt-link>
+          <div class="column info-title">Next Block</div>
+          <nuxt-link :to="'/block/' + (height + 1)" class="column info-value">{{ nextBlockHash }}</nuxt-link>
         </div>
       </div>
     </div>
@@ -148,6 +148,8 @@
     &:first-child {
       margin-top: 0.5em;
     }
+    margin-left: 0.75em;
+    margin-right: 0.75em;
   }
 
   .block-summary {
@@ -161,8 +163,24 @@
       padding-top: 0.25em;
       padding-bottom: 0.25em;
     }
-    .column:first-child {
+    .info-title {
       font-weight: bold;
+    }
+    .info-value {
+      word-break: break-all;
+    }
+    @media (min-width: 1024px) {
+      .info-title {
+        flex: none;
+        width: 25%;
+        text-align: right;
+      }
+    }
+    @media (max-width: 1023px) {
+      .info-title, .info-value {
+        padding-left: 1.5em;
+        padding-right: 1.5em;
+      }
     }
   }
 </style>

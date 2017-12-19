@@ -8,7 +8,7 @@
           'toggle-collapse'
         ]" @click="collapsed = !collapsed"></span>
         Transaction
-        <nuxt-link :to="'/tx/' + hash">{{ hash }}</nuxt-link>
+        <nuxt-link :to="'/tx/' + hash" class="break-words">{{ hash }}</nuxt-link>
       </div>
       <div class="pull-right collapse-bottom" v-if="fees">
         <template v-if="fees > 0">
@@ -26,10 +26,10 @@
     <div class="column is-clearfix collapse">
       <template v-if="inputs[0].address">
         <div v-for="input in (collapsed ? mergeInputs(inputs) : inputs)" class="is-clearfix">
-          <span v-if="input.address === highlight" class="pull-left">
+          <span v-if="input.address === highlight" class="pull-left break-words">
             {{ input.address }}
           </span>
-          <nuxt-link v-else :to="'/address/' + input.address" class="pull-left">
+          <nuxt-link v-else :to="'/address/' + input.address" class="pull-left break-words">
             {{ input.address }}
           </nuxt-link>
           <span class="pull-right amount">
@@ -44,10 +44,10 @@
       <template v-if="collapsed">
         <div v-for="output in mergeOutputs(outputs)" class="is-clearfix">
           <template v-if="output.scriptPubKey.addresses">
-            <span v-if="output.scriptPubKey.addresses[0] === highlight" class="pull-left">
+            <span v-if="output.scriptPubKey.addresses[0] === highlight" class="pull-left break-words">
               {{ output.scriptPubKey.addresses[0] }}
             </span>
-            <nuxt-link v-else :to="'/address/' + output.scriptPubKey.addresses[0]" class="pull-left">
+            <nuxt-link v-else :to="'/address/' + output.scriptPubKey.addresses[0]" class="pull-left break-words">
               {{ output.scriptPubKey.addresses[0] }}
             </nuxt-link>
           </template>
@@ -60,10 +60,10 @@
       <template v-else>
         <div v-for="output in outputs" class="is-clearfix">
           <template v-if="output.scriptPubKey.addresses">
-            <span v-if="output.scriptPubKey.addresses[0] === highlight" class="pull-left">
+            <span v-if="output.scriptPubKey.addresses[0] === highlight" class="pull-left break-words">
               {{ output.scriptPubKey.addresses[0] }}
             </span>
-            <nuxt-link v-else :to="'/address/' + output.scriptPubKey.addresses[0]" class="pull-left">
+            <nuxt-link v-else :to="'/address/' + output.scriptPubKey.addresses[0]" class="pull-left break-words">
               {{ output.scriptPubKey.addresses[0] }}
             </nuxt-link>
           </template>
@@ -210,6 +210,10 @@
     &:hover {
       transform: scale(1.2);
     }
+  }
+
+  .break-words {
+    word-break: break-all;
   }
 
   .tag {

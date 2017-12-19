@@ -75,6 +75,10 @@
 </script>
 
 <style lang="less" scoped>
+  .columns.is-desktop {
+    margin: 0;
+  }
+
   .card-body {
     height: 30em;
     overflow: auto;

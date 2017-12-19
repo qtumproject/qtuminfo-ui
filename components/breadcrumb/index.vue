@@ -40,7 +40,10 @@
 </script>
 
 <style scoped>
-  .breadcrumb span.fa {
+  .breadcrumb {
+    margin-left: 1em;
+  }
+  span.fa {
     margin-right: 0.3em;
   }
 </style>
