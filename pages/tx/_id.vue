@@ -40,7 +40,7 @@
           <div class="column">{{ fees | qtum }} QTUM</div>
         </div>
 
-        <QtumTransaction :transaction="{txid: id, vin, vout, fees}"></QtumTransaction>
+        <QtumTransaction :transaction="{txid: id, blockHeight, vin, vout, fees}"></QtumTransaction>
       </div>
     </div>
   </section>

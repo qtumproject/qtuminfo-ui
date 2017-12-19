@@ -1,25 +1,27 @@
 <template>
   <div class="columns is-multiline transaction-item">
-    <div :class="['column', 'collapse-bottom', fees ? 'is-two-thirds' : 'is-full']">
-      <span :class="[
-        'fa', 'fa-fw',
-        collapsed ? 'fa-chevron-right' : 'fa-chevron-down',
-        'toggle-collapse'
-      ]" @click="collapsed = !collapsed"></span>
-      Transaction
-      <nuxt-link :to="'/tx/' + hash">{{ hash }}</nuxt-link>
+    <div class="column is-full is-clearfix">
+      <div class="pull-left collapse-bottom">
+        <span :class="[
+          'fa', 'fa-fw',
+          collapsed ? 'fa-chevron-right' : 'fa-chevron-down',
+          'toggle-collapse'
+        ]" @click="collapsed = !collapsed"></span>
+        Transaction
+        <nuxt-link :to="'/tx/' + hash">{{ hash }}</nuxt-link>
+      </div>
+      <div class="pull-right collapse-bottom" v-if="fees">
+        <template v-if="fees > 0">
+          Fee <span class="amount fee">{{ fees | qtum }} QTUM</span>
+        </template>
+        <template v-else>
+          Reward <span class="amount fee">{{ -fees | qtum }} QTUM</span>
+        </template>
+      </div>
       <span v-if="blockchainInfo.height"
-        :class="['tag', blockchainInfo.height - height + 1 >= 6 ? 'is-info' : 'is-warning']">
+        :class="['tag', blockchainInfo.height - height + 1 >= 6 ? 'is-info' : 'is-warning', 'pull-left']">
         {{ blockchainInfo.height - height + 1 }} confirmation(s)
       </span>
-    </div>
-    <div class="column is-one-third has-text-right collapse-bottom" v-if="fees">
-      <template v-if="fees > 0">
-        Fee <span class="amount fee">{{ fees | qtum }} QTUM</span>
-      </template>
-      <template v-else>
-        Reward <span class="amount fee">{{ -fees | qtum }} QTUM</span>
-      </template>
     </div>
     <div class="column is-clearfix collapse">
       <template v-if="inputs[0].address">
