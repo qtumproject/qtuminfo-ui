@@ -1,0 +1,31 @@
+.info-table {
+  .columns:first-child {
+    margin-top: 0.25em;
+  }
+  .columns:last-child {
+    margin-bottom: 0.25em;
+  }
+  .column {
+    padding-top: 0.25em;
+    padding-bottom: 0.25em;
+  }
+  .info-title {
+    font-weight: bold;
+  }
+  .info-value {
+    word-break: break-all;
+  }
+  @media (min-width: 1024px) {
+    .info-title {
+      flex: none;
+      width: 25%;
+      text-align: right;
+    }
+  }
+  @media (max-width: 1023px) {
+    .info-title, .info-value {
+      padding-left: 1.5em;
+      padding-right: 1.5em;
+    }
+  }
+}

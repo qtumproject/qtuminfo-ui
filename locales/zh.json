@@ -16,7 +16,8 @@
     "summary": "区块信息"
   },
   "transaction": {
-    "summary": "交易信息"
+    "summary": "交易信息",
+    "confirmations": "个确认"
   },
   "address": {
     "summary": "账户信息"

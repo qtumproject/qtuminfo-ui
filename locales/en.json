@@ -16,7 +16,8 @@
     "summary": "Block Summary"
   },
   "transaction": {
-    "summary": "Transaction Summary"
+    "summary": "Transaction Summary",
+    "confirmations": "confirmation | confirmations"
   },
   "address": {
     "summary": "Address Summary"

@@ -1,13 +1,13 @@
 <template>
   <section class="container">
-    <div class="card address-summary">
+    <div class="card section-card">
       <div class="card-header">
         <div class="card-header-icon">
           <span class="fa fa-fw fa-info"></span>
         </div>
         <h3 class="card-header-title">{{ $t('address.summary') }}</h3>
       </div>
-      <div class="card-body">
+      <div class="card-body info-table">
         <div class="columns">
           <div class="column info-title">Address Hash</div>
           <div class="column info-value">{{ id }}</div>
@@ -36,7 +36,7 @@
       </div>
     </div>
 
-    <div class="card transaction-list" v-if="transactions.length">
+    <div class="card section-card transaction-list" v-if="transactions.length">
       <div class="card-header">
         <div class="card-header-icon">
           <span class="fa fa-list-alt"></span>
@@ -106,86 +106,5 @@
   }
 </script>
 
-<style lang="less" scoped>
-  .card {
-    margin-top: 1em;
-    margin-bottom: 1em;
-    &:first-child {
-      margin-top: 0.5em;
-    }
-    margin-left: 0.75em;
-    margin-right: 0.75em;
-  }
-
-  .address-summary {
-    .columns:first-child {
-      margin-top: 0.25em;
-    }
-    .columns:last-child {
-      margin-bottom: 0.25em;
-    }
-    .column {
-      padding-top: 0.25em;
-      padding-bottom: 0.25em;
-    }
-    .info-title {
-      font-weight: bold;
-    }
-    .info-value {
-      word-break: break-all;
-    }
-    @media (min-width: 1024px) {
-      .info-title {
-        flex: none;
-        width: 25%;
-        text-align: right;
-      }
-    }
-    @media (max-width: 1023px) {
-      .info-title, .info-value {
-        padding-left: 1.5em;
-        padding-right: 1.5em;
-      }
-    }
-  }
-
-  .transaction-item {
-    padding-left: 1.5em;
-    padding-right: 1.5em;
-
-    .column:first-child {
-      font-weight: normal;
-    }
-
-    .toggle-collapse {
-      cursor: pointer;
-      transition: transform 0.2s;
-      &:hover {
-        transform: scale(1.2);
-      }
-    }
-    .transaction-input-list, .transaction-output-list {
-      margin: 1em;
-    }
-    .transaction-output-item.detail {
-      margin-top: 0.5em;
-      margin-bottom: 0.5em;
-      &:nth-child(even) {
-        background-color: #f8f8f8;
-      }
-    }
-    .amount {
-      font-family: Monospace;
-    }
-
-    .output-script {
-      font-size: 0.8em;
-      .key {
-        display: inline-block;
-        margin-left: 2em;
-        margin-right: 1em;
-        font-weight: bold;
-      }
-    }
-  }
-</style>
+<style lang="less" src="@/styles/card.less"></style>
+<style lang="less" src="@/styles/info-table.less"></style>

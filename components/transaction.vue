@@ -19,8 +19,8 @@
         </template>
       </div>
       <span v-if="blockchainInfo.height"
-        :class="['tag', blockchainInfo.height - height + 1 >= 6 ? 'is-info' : 'is-warning', 'pull-left']">
-        {{ blockchainInfo.height - height + 1 }} confirmation(s)
+        :class="['tag', confirmations >= 6 ? 'is-success' : 'is-warning', 'pull-left']">
+        {{ confirmations }} {{ $tc('transaction.confirmations', confirmations) }}
       </span>
     </div>
     <div class="column is-clearfix collapse">
@@ -118,6 +118,9 @@
       },
       height() {
         return this.transaction.blockHeight
+      },
+      confirmations() {
+        return this.blockchainInfo.height - this.height
       }
     },
     methods: {
