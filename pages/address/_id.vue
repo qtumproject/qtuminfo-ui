@@ -44,8 +44,16 @@
         <div class="card-header-title">Recent Transactions</div>
       </div>
       <div class="card-body">
+        <nav class="pagination" v-if="pages > 1">
+          <a class="pagination-previous" @click="previousPage" :disabled="currentPage === 0">Previous</a>
+          <a class="pagination-next" @click="nextPage" :disabled="currentPage >= pages - 1">Next</a>
+        </nav>
         <QtumTransaction v-for="transaction in transactions" :key="transaction.txid"
           :transaction="transaction" :highlight="id"></QtumTransaction>
+        <nav class="pagination" v-if="pages > 1">
+          <a class="pagination-previous" @click="previousPage" :disabled="currentPage === 0">Previous</a>
+          <a class="pagination-next" @click="nextPage" :disabled="currentPage >= pages - 1">Next</a>
+        </nav>
       </div>
     </div>
   </section>
@@ -70,7 +78,9 @@
         txAppearances: 0,
         unconfirmedTxAppearances: 0,
         totalCount: 0,
-        transactions: []
+        transactions: [],
+        currentPage: 0,
+        querying: false
       }
     },
     async asyncData({params, error}) {
@@ -100,6 +110,32 @@
     computed: {
       id() {
         return this.$route.params.id
+      },
+      pages() {
+        return Math.floor((this.totalCount + 19) / 20)
+      }
+    },
+    methods: {
+      async query(page) {
+        if (page < 0 || page >= this.pages) {
+          return
+        }
+        let {totalCount, transactions} = await Address.getTransactions(
+          this.id,
+          {from: page * 20, to: (page + 1) * 20}
+        )
+        this.totalCount = totalCount
+        if (page >= this.pages && pages > 0) {
+          return this.query(this.pages - 1)
+        }
+        this.transactions = await Promise.all(transactions.map(Transaction.get))
+        this.currentPage = page
+      },
+      previousPage() {
+        this.query(this.currentPage - 1)
+      },
+      nextPage() {
+        this.query(this.currentPage + 1)
       }
     },
     components: {QtumTransaction}
@@ -108,3 +144,8 @@
 
 <style lang="less" src="@/styles/card.less"></style>
 <style lang="less" src="@/styles/info-table.less"></style>
+<style lang="less" scoped>
+  .pagination {
+    padding: 1em;
+  }
+</style>
