@@ -17,7 +17,8 @@
   },
   "transaction": {
     "summary": "Transaction Summary",
-    "confirmations": "confirmation | confirmations"
+    "confirmations": "confirmation | confirmations",
+    "unconfirmed": "unconfirmed"
   },
   "address": {
     "summary": "Address Summary"

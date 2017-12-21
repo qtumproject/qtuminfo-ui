@@ -12,7 +12,7 @@
           <div class="column info-title">Transaction Hash</div>
           <div class="column info-value">{{ id }}</div>
         </div>
-        <div class="columns">
+        <div class="columns" v-if="block">
           <div class="column info-title">Included in Block</div>
           <div class="column info-value">
             <nuxt-link :to="'/block/' + blockHeight">
@@ -40,7 +40,9 @@
           <div class="column info-value">{{ fees | qtum }} QTUM</div>
         </div>
 
-        <QtumTransaction :transaction="{txid: id, blockHeight, vin, vout, fees}"></QtumTransaction>
+        <QtumTransaction :transaction="{
+          txid: id, blockHeight, vin, vout, fees, confirmations
+        }"></QtumTransaction>
       </div>
     </div>
   </section>
@@ -58,8 +60,8 @@
     },
     data() {
       return {
-        blockHeight: 0,
-        block: {},
+        blockHeight: null,
+        block: null,
         time: 0,
         size: 0,
         isCoinbase: false,
@@ -72,8 +74,11 @@
     async asyncData({params, error}) {
       try {
         let transaction = await Transaction.get(params.id)
-        let blockHash = await Block.getHash(transaction.blockHeight)
-        let block = await Block.get(blockHash)
+        let block = null
+        if (transaction.blockHeight != null) {
+          let blockHash = await Block.getHash(transaction.blockHeight)
+          block = await Block.get(blockHash)
+        }
         return {
           blockHeight: transaction.blockHeight,
           time: transaction.time,

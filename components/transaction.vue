@@ -18,10 +18,11 @@
           Reward <span class="amount fee">{{ -fees | qtum }} QTUM</span>
         </template>
       </div>
-      <span v-if="blockchainInfo.height"
+      <span v-if="confirmations"
         :class="['tag', confirmations >= 6 ? 'is-success' : 'is-warning', 'pull-left']">
         {{ confirmations }} {{ $tc('transaction.confirmations', confirmations) }}
       </span>
+      <span v-else class="tag is-danger pull-left">{{ $t('transaction.unconfirmed') }}</span>
     </div>
     <div class="column is-clearfix collapse">
       <template v-if="inputs[0].address">
@@ -84,12 +85,10 @@
 
 <script>
   import Transaction from '@/models/transaction'
-  import {get as qtumscanGet} from '@/services/qtumscan-api'
 
   export default {
     data() {
       return {
-        blockchainInfo: {},
         collapsed: true
       }
     },
@@ -110,11 +109,8 @@
       fees() {
         return this.transaction.fees
       },
-      height() {
-        return this.transaction.blockHeight
-      },
       confirmations() {
-        return this.blockchainInfo.height - this.height + 1
+        return this.transaction.confirmations
       }
     },
     methods: {
@@ -175,9 +171,6 @@
       outputAddress(output) {
         return output.scriptPubKey.addresses[0]
       }
-    },
-    async mounted() {
-      this.blockchainInfo = await qtumscanGet('/info')
     }
   }
 </script>

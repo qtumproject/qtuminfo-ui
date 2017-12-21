@@ -112,7 +112,7 @@
         return this.$route.params.id
       },
       pages() {
-        return Math.floor((this.totalCount + 19) / 20)
+        return Math.ceil(this.totalCount / 20)
       }
     },
     methods: {
