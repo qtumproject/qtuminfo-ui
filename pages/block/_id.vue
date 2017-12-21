@@ -9,50 +9,50 @@
       </div>
       <div class="card-body info-table">
         <div class="columns">
-          <div class="column info-title">Block Height</div>
+          <div class="column info-title">{{ $t('block.block_height') }}</div>
           <div class="column info-value">{{ height }}</div>
         </div>
         <div class="columns">
-          <div class="column info-title">Block Hash</div>
+          <div class="column info-title">{{ $t('block.block_hash') }}</div>
           <div class="column info-value">{{ hash }}</div>
         </div>
         <div class="columns">
-          <div class="column info-title">Block Size</div>
-          <div class="column info-value">{{ size }} bytes</div>
+          <div class="column info-title">{{ $t('block.block_size') }}</div>
+          <div class="column info-value">{{ size.toLocaleString() }} {{ $t('block.bytes') }}</div>
         </div>
         <div class="columns">
-          <div class="column info-title">Timestamp</div>
+          <div class="column info-title">{{ $t('block.timestamp') }}</div>
           <div class="column info-value">
             {{ $moment(time * 1000).fromNow() }}
             ( {{ $moment(time * 1000).toString() }} )
           </div>
         </div>
         <div class="columns">
-          <div class="column info-title">Block Reward</div>
+          <div class="column info-title">{{ $t('block.block_reward') }}</div>
           <div class="column info-value">{{ reward | qtum }} QTUM</div>
         </div>
         <div class="columns">
-          <div class="column info-title">Difficulty</div>
+          <div class="column info-title">{{ $t('block.difficulty') }}</div>
           <div class="column info-value">{{ difficulty }}</div>
         </div>
         <div class="columns">
-          <div class="column info-title">Merkle Root</div>
+          <div class="column info-title">{{ $t('block.merkle_root') }}</div>
           <div class="column info-value">{{ merkleRoot }}</div>
         </div>
         <div class="columns" v-if="minedBy">
-          <div class="column info-title">Mined By</div>
+          <div class="column info-title">{{ $t('block.mined_by') }}</div>
           <nuxt-link :to="'/address/' + minedBy" class="column info-value">{{ minedBy }}</nuxt-link>
         </div>
         <div class="columns">
-          <div class="column info-title">Transactions</div>
+          <div class="column info-title">{{ $t('block.transactions') }}</div>
           <div class="column info-value">{{ transactions.length }}</div>
         </div>
         <div class="columns" v-if="previousBlockHash && previousBlockHash != '0'.repeat(64)">
-          <div class="column info-title">Previous Block</div>
+          <div class="column info-title">{{ $t('block.previous_block') }}</div>
           <nuxt-link :to="'/block/' + (height - 1)" class="column info-value">{{ previousBlockHash }}</nuxt-link>
         </div>
         <div class="columns" v-if="nextBlockHash">
-          <div class="column info-title">Next Block</div>
+          <div class="column info-title">{{ $t('block.next_block') }}</div>
           <nuxt-link :to="'/block/' + (height + 1)" class="column info-value">{{ nextBlockHash }}</nuxt-link>
         </div>
       </div>
@@ -63,7 +63,7 @@
         <div class="card-header-icon">
           <Icon icon="list-alt" fixed-width></Icon>
         </div>
-        <div class="card-header-title">Transactions</div>
+        <div class="card-header-title">{{ $tc('blockchain.transaction', 2) }}</div>
       </div>
       <div class="card-body">
         <QtumTransaction v-for="transaction in transactions" :key="transaction.txid"

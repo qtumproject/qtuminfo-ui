@@ -18,6 +18,10 @@ module.exports = {
   },
   build: {
     extend(config, {isServer}) {
+      config.module.rules.push({
+        test: /\.ya?ml$/,
+        use: ['json-loader', 'yaml-loader']
+      })
       config.plugins.push(new webpack.DefinePlugin({
         'process.env.qtumscanAPIBase': JSON.stringify(process.env.QTUMSCAN_API_BASE
           || process.env[isServer ? 'QTUMSCAN_API_BASE_SERVER' : 'QTUMSCAN_API_BASE_CLIENT']

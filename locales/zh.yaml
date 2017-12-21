@@ -1,26 +1,48 @@
-{
-  "blockchain": {
-    "blockchain": "区块链",
-    "address": "地址",
-    "block": "区块",
-    "transaction": "交易",
-    "token": "代币"
-  },
-  "block": {
-    "brief": {
-      "address": "由 {0} 挖出",
-      "transaction": "{0} 条交易",
-      "duration": "用时 {0} 秒",
-      "reward": "区块奖励 {0} QTUM"
-    },
-    "summary": "区块信息"
-  },
-  "transaction": {
-    "summary": "交易信息",
-    "confirmations": "个确认",
-    "unconfirmed": "未确认"
-  },
-  "address": {
-    "summary": "账户信息"
-  }
-}
+blockchain:
+  blockchain: 区块链
+  address: 地址
+  block: 区块
+  transaction: 交易
+  token: 代币
+block:
+  brief:
+    address: 由 {0} 挖出
+    transaction: '{0} 条交易'
+    duration: 用时 {0} 秒
+    reward: 区块奖励 {0} QTUM
+  summary: 区块信息
+  block_height: 区块高度
+  block_hash: 区块哈希值
+  block_size: 区块大小
+  bytes: 字节
+  timestamp: 时间戳
+  block_reward: 区块奖励
+  difficulty: 难度值
+  merkle_root: Merkle 树根
+  mined_by: 挖矿地址
+  transactions: 交易数
+  previous_block: 上一区块
+  next_block: 下一区块
+transaction:
+  summary: 交易信息
+  confirmations: 个确认
+  unconfirmed: 未确认
+  transaction_hash: 交易哈希值
+  included_in_block: 包含于区块
+  transaction_size: 交易大小
+  bytes: 字节
+  timestamp: 时间戳
+  confirmation: 确认数
+  transaction_fee: 交易手续费
+address:
+  summary: 账户信息
+  address_hash: 账户哈希值
+  balance: 账户余额
+  unconfirmed: 未确认
+  total_received: 收入总计
+  total_sent: 支出总计
+  transaction_count: 交易数
+  transaction_list: 交易列表
+pagination:
+  previous: 上一页
+  next: 下一页

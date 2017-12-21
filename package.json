@@ -32,6 +32,7 @@
     "bulma": "^0.6.1",
     "font-awesome": "^4.7.0",
     "less": "^2.7.3",
-    "less-loader": "^4.0.5"
+    "less-loader": "^4.0.5",
+    "yaml-loader": "^0.5.0"
   }
 }

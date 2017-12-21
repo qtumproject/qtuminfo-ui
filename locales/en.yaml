@@ -1,26 +1,48 @@
-{
-  "blockchain": {
-    "blockchain": "Blockchain",
-    "address": "Address | Addresses",
-    "block": "Block | Blocks",
-    "transaction": "Transaction | Transactions",
-    "token": "Token | Tokens"
-  },
-  "block": {
-    "brief": {
-      "address": "Mined by {0}",
-      "transaction": "{0} transactions",
-      "duration": "in {0} secs",
-      "reward": "Block Reward {0} QTUM"
-    },
-    "summary": "Block Summary"
-  },
-  "transaction": {
-    "summary": "Transaction Summary",
-    "confirmations": "confirmation | confirmations",
-    "unconfirmed": "unconfirmed"
-  },
-  "address": {
-    "summary": "Address Summary"
-  }
-}
+blockchain:
+  blockchain: Blockchain
+  address: Address | Addresses
+  block: Block | Blocks
+  transaction: Transaction | Transactions
+  token: Token | Tokens
+block:
+  brief:
+    address: Mined by {0}
+    transaction: '{0} transactions'
+    duration: in {0} secs
+    reward: Block Reward {0} QTUM
+  summary: Block Summary
+  block_height: Block Height
+  block_hash: Block Hash
+  block_size: Block Size
+  bytes: bytes
+  timestamp: Timestamp
+  block_reward: Block Reward
+  difficulty: Difficulty
+  merkle_root: Merkle Root
+  mined_by: Mined By
+  transactions: Transactions
+  previous_block: Previous Block
+  next_block: Next Block
+transaction:
+  summary: Transaction Summary
+  confirmations: confirmation | confirmations
+  unconfirmed: unconfirmed
+  transaction_hash: Transaction Hash
+  included_in_block: Included In Block
+  transaction_size: Transaction Size
+  bytes: bytes
+  timestamp: Timestamp
+  confirmation: Confirmations
+  transaction_fee: Transaction Fee
+address:
+  summary: Address
+  address_hash: Address Hash
+  balance: Balance
+  unconfirmed: unconfirmed
+  total_received: Total Received
+  total_sent: Total Sent
+  transaction_count: Transaction Count
+  transaction_list: Transaction List
+pagination:
+  previous: Previous
+  next: Next

@@ -9,11 +9,11 @@
       </div>
       <div class="card-body info-table">
         <div class="columns">
-          <div class="column info-title">Transaction Hash</div>
+          <div class="column info-title">{{ $t('transaction.transaction_hash') }}</div>
           <div class="column info-value">{{ id }}</div>
         </div>
         <div class="columns" v-if="block">
-          <div class="column info-title">Included in Block</div>
+          <div class="column info-title">{{ $t('transaction.included_in_block') }}</div>
           <div class="column info-value">
             <nuxt-link :to="'/block/' + blockHeight">
               {{ blockHeight }} ({{ block.hash }})
@@ -21,22 +21,22 @@
           </div>
         </div>
         <div class="columns">
-          <div class="column info-title">Transaction Size</div>
-          <div class="column info-value">{{ size }} bytes</div>
+          <div class="column info-title">{{ $t('transaction.transaction_size') }}</div>
+          <div class="column info-value">{{ size.toLocaleString() }} bytes</div>
         </div>
         <div class="columns">
-          <div class="column info-title">Timestamp</div>
+          <div class="column info-title">{{ $t('transaction.timestamp') }}</div>
           <div class="column info-value">
             {{ $moment(time * 1000).fromNow() }}
             ( {{ $moment(time * 1000).toString() }} )
           </div>
         </div>
         <div class="columns">
-          <div class="column info-title">Confirmations</div>
+          <div class="column info-title">{{ $t('transaction.confirmation') }}</div>
           <div class="column info-value">{{ confirmations }}</div>
         </div>
         <div class="columns" v-if="fees > 0">
-          <div class="column info-title">Transaction Fee</div>
+          <div class="column info-title">{{ $t('transaction.transaction_fee') }}</div>
           <div class="column info-value">{{ fees | qtum }} QTUM</div>
         </div>
 

@@ -9,28 +9,28 @@
       </div>
       <div class="card-body info-table">
         <div class="columns">
-          <div class="column info-title">Address Hash</div>
+          <div class="column info-title">{{ $t('address.address_hash') }}</div>
           <div class="column info-value">{{ id }}</div>
         </div>
         <div class="columns">
-          <div class="column info-title">Balance</div>
+          <div class="column info-title">{{ $t('address.balance') }}</div>
           <div class="column info-value">
             {{ balance | qtum }} QTUM
             <template v-if="unconfirmedBalance !== '0'">
-              ({{ unconfirmedBalance | qtum }} QTUM unconfirmed)
+              ({{ unconfirmedBalance | qtum }} QTUM {{ $t('transaction.unconfirmed') }})
             </template>
           </div>
         </div>
         <div class="columns">
-          <div class="column info-title">Total Received</div>
+          <div class="column info-title">{{ $t('address.total_received') }}</div>
           <div class="column info-value">{{ totalReceived | qtum }} QTUM</div>
         </div>
         <div class="columns">
-          <div class="column info-title">Total Sent</div>
+          <div class="column info-title">{{ $t('address.total_sent') }}</div>
           <div class="column info-value">{{ totalSent | qtum }} QTUM</div>
         </div>
         <div class="columns">
-          <div class="column info-title">Transaction Count</div>
+          <div class="column info-title">{{ $t('address.transaction_count') }}</div>
           <div class="column info-value">{{ totalCount }}</div>
         </div>
       </div>
@@ -41,12 +41,16 @@
         <div class="card-header-icon">
           <Icon icon="list-alt" fixed-width></Icon>
         </div>
-        <div class="card-header-title">Recent Transactions</div>
+        <div class="card-header-title">{{ $t('address.transaction_list') }}</div>
       </div>
       <div class="card-body">
         <nav class="pagination" v-if="pages > 1">
-          <a class="pagination-previous" @click="previousPage" :disabled="currentPage === 0">Previous</a>
-          <a class="pagination-next" @click="nextPage" :disabled="currentPage >= pages - 1">Next</a>
+          <a class="pagination-previous" @click="previousPage" :disabled="currentPage === 0">
+            {{ $t('pagination.previous') }}
+          </a>
+          <a class="pagination-next" @click="nextPage" :disabled="currentPage >= pages - 1">
+            {{ $t('pagination.next') }}
+          </a>
         </nav>
         <QtumTransaction v-for="transaction in transactions" :key="transaction.txid"
           :transaction="transaction" :highlight="id"></QtumTransaction>
