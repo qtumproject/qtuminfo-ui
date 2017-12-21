@@ -7,7 +7,6 @@
           class="toggle-collapse"
           @click="collapsed = !collapsed"
         ></Icon>
-        Transaction
         <nuxt-link :to="'/tx/' + hash" class="break-words">{{ hash }}</nuxt-link>
       </div>
       <div class="pull-right collapse-bottom" v-if="fees">
