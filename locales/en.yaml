@@ -46,3 +46,5 @@ address:
 pagination:
   previous: Previous
   next: Next
+action:
+  copy: Copy

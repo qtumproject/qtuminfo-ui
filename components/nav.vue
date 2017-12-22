@@ -6,7 +6,7 @@
         <span></span><span></span><span></span>
       </button>
     </div>
-    <div :class="['navbar-menu', showMenu ? 'is-active' : '']">
+    <div class="navbar-menu" :class="{'is-active': showMenu}">
       <div class="navbar-start is-uppercase">
         <nuxt-link to="/" class="navbar-item" @click.native="showMenu = !showMenu">
           {{ $t('blockchain.blockchain') }}

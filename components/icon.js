@@ -5,11 +5,12 @@ export default {
   functional: true,
   props: {
     icon: {type: String, required: true},
-    fixedWidth: {type: Boolean, default: false}
+    fixedWidth: {type: Boolean, default: false},
+    tag: {type: String, default: 'span'}
   },
   render(createElement, {data, props, children}) {
     return createElement(
-      'span',
+      props.tag,
       mergeProps(
         data,
         {

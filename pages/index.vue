@@ -23,7 +23,7 @@
                   <div class="level-item">
                     <div>
                       <i18n path="block.brief.address">
-                        <nuxt-link :to="'/address/' + block.minedBy">{{ block.minedBy }}</nuxt-link>
+                        <AddressLink :address="block.minedBy"></AddressLink>
                       </i18n>
                       <br>
                       {{ $t('block.brief.transaction', [block.txLength]) }}

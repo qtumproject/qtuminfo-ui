@@ -10,7 +10,7 @@
       <div class="card-body info-table">
         <div class="columns">
           <div class="column info-title">{{ $t('address.address_hash') }}</div>
-          <div class="column info-value">{{ id }}</div>
+          <AddressLink :address="id" class="column info-value" copyable></AddressLink>
         </div>
         <div class="columns">
           <div class="column info-title">{{ $t('address.balance') }}</div>

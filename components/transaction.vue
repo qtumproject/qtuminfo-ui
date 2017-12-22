@@ -7,7 +7,7 @@
           class="toggle-collapse"
           @click="collapsed = !collapsed"
         ></Icon>
-        <nuxt-link :to="'/tx/' + hash" class="break-words">{{ hash }}</nuxt-link>
+        <TransactionLink :transaction="hash"></TransactionLink>
       </div>
       <div class="pull-right collapse-bottom" v-if="fees">
         <template v-if="fees > 0">
@@ -18,7 +18,7 @@
         </template>
       </div>
       <span v-if="confirmations"
-        :class="['tag', confirmations >= 6 ? 'is-success' : 'is-warning', 'pull-left']">
+        class="tag pull-left" :class="confirmations >= 6 ? 'is-success' : 'is-warning'">
         {{ confirmations }} {{ $tc('transaction.confirmations', confirmations) }}
       </span>
       <span v-else class="tag is-danger pull-left">{{ $t('transaction.unconfirmed') }}</span>
@@ -26,10 +26,10 @@
     <div class="column is-clearfix collapse">
       <template v-if="inputs[0].address">
         <div v-for="input in (collapsed ? mergeInputs(inputs) : inputs)" class="is-clearfix">
-          <AttributeInjector class="pull-left break-words" v-text="input.address">
-            <span v-if="input.address === highlight"></span>
-            <nuxt-link v-else :to="'/address/' + input.address"></nuxt-link>
-          </AttributeInjector>
+          <AddressLink :address="input.address"
+            :highlight="highlight === input.address"
+            class="pull-left"
+          ></AddressLink>
           <span class="pull-right amount">
             {{ input.value | qtum(8) }} QTUM
           </span>
@@ -41,12 +41,11 @@
     <div class="column is-half collapse">
       <template v-if="collapsed">
         <div v-for="output in mergeOutputs(outputs)" class="is-clearfix">
-          <template v-if="output.scriptPubKey.addresses">
-            <AttributeInjector class="pull-left break-words" v-text="outputAddress(output)">
-              <span v-if="outputAddress(output) === highlight"></span>
-              <nuxt-link v-else :to="'/address/' + outputAddress(output)"></nuxt-link>
-            </AttributeInjector>
-          </template>
+          <AddressLink v-if="output.scriptPubKey.addresses"
+            :address="outputAddress(output)"
+            :highlight="highlight === outputAddress(output)"
+            class="pull-left"
+          ></AddressLink>
           <span v-else class="pull-left">Unparsed Address</span>
           <span class="pull-right amount" v-if="output.value">
             {{ output.value | qtum(8) }} QTUM
@@ -55,12 +54,11 @@
       </template>
       <template v-else>
         <div v-for="output in outputs" class="is-clearfix">
-          <template v-if="output.scriptPubKey.addresses">
-            <AttributeInjector class="pull-left break-words" v-text="outputAddress(output)">
-              <span v-if="outputAddress(output) === highlight"></span>
-              <nuxt-link v-else :to="'/address/' + outputAddress(output)"></nuxt-link>
-            </AttributeInjector>
-          </template>
+          <AddressLink v-if="output.scriptPubKey.addresses"
+            :address="outputAddress(output)"
+            :highlight="highlight === outputAddress(output)"
+            class="pull-left"
+          ></AddressLink>
           <span v-else class="pull-left">Unparsed Address</span>
           <span class="pull-right amount" v-if="output.value">
             {{ output.value | qtum(8) }} QTUM
@@ -202,10 +200,6 @@
     &:hover {
       transform: scale(1.2);
     }
-  }
-
-  .break-words {
-    word-break: break-all;
   }
 
   .tag {

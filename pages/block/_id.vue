@@ -41,7 +41,7 @@
         </div>
         <div class="columns" v-if="minedBy">
           <div class="column info-title">{{ $t('block.mined_by') }}</div>
-          <nuxt-link :to="'/address/' + minedBy" class="column info-value">{{ minedBy }}</nuxt-link>
+          <AddressLink :address="minedBy" class="column info-value"></AddressLink>
         </div>
         <div class="columns">
           <div class="column info-title">{{ $t('block.transactions') }}</div>
