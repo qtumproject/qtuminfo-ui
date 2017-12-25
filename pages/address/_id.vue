@@ -80,7 +80,6 @@
         totalSent: '0',
         unconfirmedBalance: '0',
         txAppearances: 0,
-        unconfirmedTxAppearances: 0,
         totalCount: 0,
         transactions: [],
         currentPage: 0,

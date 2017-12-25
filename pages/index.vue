@@ -18,7 +18,7 @@
                   <nuxt-link :to="'/block/' + block.height" class="level-item qtum-block-box has-text-centered">
                     {{ $tc('blockchain.block', 1) }} #{{ block.height }}
                     <br>
-                    {{ $moment(block.time * 1000).fromNow() }}
+                    {{ block.time | from-now }}
                   </nuxt-link>
                   <div class="level-item">
                     <div>

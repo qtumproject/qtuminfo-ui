@@ -15,13 +15,13 @@ Vue.filter('qtum', (satoshis, precision = null) => {
   }
 })
 
+Vue.filter('timestamp', time => moment(time * 1000).format('YYYY-MM-DD HH:mm:ss'))
+Vue.filter('from-now', time => moment(time * 1000).fromNow())
+
 Vue.mixin({
   methods: {
     $printAmount(satoshis, precision = null) {
       return Vue.filter('qtum')(satoshis, precision)
-    },
-    get $moment() {
-      return moment
     }
   }
 })

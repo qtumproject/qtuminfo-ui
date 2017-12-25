@@ -27,8 +27,7 @@
         <div class="columns">
           <div class="column info-title">{{ $t('transaction.timestamp') }}</div>
           <div class="column info-value">
-            {{ $moment(time * 1000).fromNow() }}
-            ( {{ $moment(time * 1000).toString() }} )
+            {{ time | from-now }} ({{ time | timestamp }})
           </div>
         </div>
         <div class="columns">
