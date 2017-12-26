@@ -14,6 +14,7 @@ block:
   block_height: 区块高度
   block_hash: 区块哈希值
   block_size: 区块大小
+  block_weight: 区块权重
   bytes: 字节
   timestamp: 时间戳
   block_reward: 区块奖励

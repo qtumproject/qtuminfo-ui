@@ -14,6 +14,7 @@ block:
   block_height: Block Height
   block_hash: Block Hash
   block_size: Block Size
+  block_weight: Block Weight
   bytes: bytes
   timestamp: Timestamp
   block_reward: Block Reward

@@ -21,6 +21,10 @@
           <div class="column info-value">{{ size.toLocaleString() }} {{ $t('block.bytes') }}</div>
         </div>
         <div class="columns">
+          <div class="column info-title">{{ $t('block.block_weight') }}</div>
+          <div class="column info-value">{{ weight.toLocaleString() }} {{ $t('block.bytes') }}</div>
+        </div>
+        <div class="columns">
           <div class="column info-title">{{ $t('block.timestamp') }}</div>
           <div class="column info-value">
             {{ time | from-now }} ({{ time | timestamp }})
@@ -114,6 +118,7 @@
           hash: block.hash,
           time: block.time,
           size: block.size,
+          weight: block.weight,
           reward: block.reward,
           difficulty: block.difficulty,
           merkleRoot: block.merkleRoot,
