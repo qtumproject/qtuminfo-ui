@@ -53,7 +53,7 @@
           </a>
         </nav>
         <QtumTransaction v-for="transaction in transactions" :key="transaction.txid"
-          :transaction="transaction" :highlight="id"></QtumTransaction>
+          :transaction="transaction"></QtumTransaction>
         <nav class="pagination" v-if="pages > 1">
           <a class="pagination-previous" @click="previousPage" :disabled="currentPage === 0">Previous</a>
           <a class="pagination-next" @click="nextPage" :disabled="currentPage >= pages - 1">Next</a>
@@ -82,8 +82,7 @@
         txAppearances: 0,
         totalCount: 0,
         transactions: [],
-        currentPage: 0,
-        querying: false
+        currentPage: 0
       }
     },
     async asyncData({params, error}) {

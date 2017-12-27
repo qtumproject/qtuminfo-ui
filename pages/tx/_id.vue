@@ -40,7 +40,7 @@
         </div>
 
         <QtumTransaction :transaction="{
-          txid: id, blockHeight, vin, vout, fees, confirmations
+          txid: id, blockHeight, time, vin, vout, fees, confirmations
         }"></QtumTransaction>
       </div>
     </div>

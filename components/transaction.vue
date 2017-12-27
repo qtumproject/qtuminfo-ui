@@ -9,27 +9,19 @@
         ></Icon>
         <TransactionLink :transaction="hash"></TransactionLink>
       </div>
-      <div class="pull-right collapse-bottom" v-if="fees">
-        <template v-if="fees > 0">
-          Fee <span class="amount fee">{{ fees | qtum }} QTUM</span>
-        </template>
-        <template v-else>
-          Reward <span class="amount fee">{{ -fees | qtum }} QTUM</span>
-        </template>
+      <div class="pull-right">
+        <span v-if="confirmations"
+          class="tag" :class="confirmations >= 6 ? 'is-success' : 'is-warning'">
+          {{ confirmations }} {{ $tc('transaction.confirmations', confirmations) }}
+        </span>
+        <span v-else class="tag is-danger">{{ $t('transaction.unconfirmed') }}</span>
+        <span class="timestamp">{{ transaction.time | timestamp }}</span>
       </div>
-      <span v-if="confirmations"
-        class="tag pull-left" :class="confirmations >= 6 ? 'is-success' : 'is-warning'">
-        {{ confirmations }} {{ $tc('transaction.confirmations', confirmations) }}
-      </span>
-      <span v-else class="tag is-danger pull-left">{{ $t('transaction.unconfirmed') }}</span>
     </div>
     <div class="column is-clearfix collapse">
       <template v-if="inputs[0].address">
         <div v-for="input in (collapsed ? mergeInputs(inputs) : inputs)" class="is-clearfix">
-          <AddressLink :address="input.address"
-            :highlight="highlight === input.address"
-            class="pull-left"
-          ></AddressLink>
+          <AddressLink :address="input.address" class="pull-left"></AddressLink>
           <span class="pull-right amount">
             {{ input.value | qtum(8) }} QTUM
           </span>
@@ -41,11 +33,7 @@
     <div class="column is-half collapse">
       <template v-if="collapsed">
         <div v-for="output in mergeOutputs(outputs)" class="is-clearfix">
-          <AddressLink v-if="output.address"
-            :address="output.address"
-            :highlight="highlight === output.address"
-            class="pull-left"
-          ></AddressLink>
+          <AddressLink v-if="output.address" :address="output.address" class="pull-left"></AddressLink>
           <span v-else class="pull-left">Unparsed Address</span>
           <span class="pull-right amount" v-if="output.value">
             {{ output.value | qtum(8) }} QTUM
@@ -57,11 +45,7 @@
       </template>
       <template v-else>
         <div v-for="output in outputs" class="is-clearfix">
-          <AddressLink v-if="output.address"
-            :address="output.address"
-            :highlight="highlight === output.address"
-            class="pull-left"
-          ></AddressLink>
+          <AddressLink v-if="output.address" :address="output.address" class="pull-left"></AddressLink>
           <span v-else class="pull-left">Unparsed Address</span>
           <span class="pull-right amount" v-if="output.value">
             {{ output.value | qtum(8) }} QTUM
@@ -86,6 +70,14 @@
     <code class="column is-full break-word" v-if="contractInfo && !collapsed">
       {{ contractInfo.code }}
     </code>
+    <div class="column is-full has-text-right collapse-bottom" v-if="fees">
+      <template v-if="fees > 0">
+        Fee <span class="amount fee">{{ fees | qtum }} QTUM</span>
+      </template>
+      <template v-else>
+        Reward <span class="amount fee">{{ -fees | qtum }} QTUM</span>
+      </template>
+    </div>
   </div>
 </template>
 
@@ -99,8 +91,7 @@
       }
     },
     props: {
-      transaction: {type: Object, required: true},
-      highlight: String
+      transaction: {type: Object, required: true}
     },
     computed: {
       hash() {
@@ -244,7 +235,7 @@
     }
   }
 
-  .tag {
+  .tag, .timestamp {
     margin-left: 1em;
   }
 
