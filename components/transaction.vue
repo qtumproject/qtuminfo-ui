@@ -41,27 +41,33 @@
     <div class="column is-half collapse">
       <template v-if="collapsed">
         <div v-for="output in mergeOutputs(outputs)" class="is-clearfix">
-          <AddressLink v-if="output.scriptPubKey.addresses"
-            :address="outputAddress(output)"
-            :highlight="highlight === outputAddress(output)"
+          <AddressLink v-if="output.address"
+            :address="output.address"
+            :highlight="highlight === output.address"
             class="pull-left"
           ></AddressLink>
           <span v-else class="pull-left">Unparsed Address</span>
           <span class="pull-right amount" v-if="output.value">
             {{ output.value | qtum(8) }} QTUM
           </span>
+          <span class="pull-right" v-else-if="contractInfo">
+            Contract {{ contractInfo.type[0].toUpperCase() + contractInfo.type.slice(1) }}
+          </span>
         </div>
       </template>
       <template v-else>
         <div v-for="output in outputs" class="is-clearfix">
-          <AddressLink v-if="output.scriptPubKey.addresses"
-            :address="outputAddress(output)"
-            :highlight="highlight === outputAddress(output)"
+          <AddressLink v-if="output.address"
+            :address="output.address"
+            :highlight="highlight === output.address"
             class="pull-left"
           ></AddressLink>
           <span v-else class="pull-left">Unparsed Address</span>
           <span class="pull-right amount" v-if="output.value">
             {{ output.value | qtum(8) }} QTUM
+          </span>
+          <span class="pull-right" v-else-if="contractInfo">
+            Contract {{ contractInfo.type[0].toUpperCase() + contractInfo.type.slice(1) }}
           </span>
           <div class="is-clearfix"></div>
           <div class="output-script">
@@ -71,12 +77,15 @@
             </div>
             <div>
               <span class="key">Script</span>
-              <code class="value">{{ output.scriptPubKey.asm }}</code>
+              <code class="value">{{ output.scriptPubKey.asm | qtum-script }}</code>
             </div>
           </div>
         </div>
       </template>
     </div>
+    <code class="column is-full break-word" v-if="contractInfo && !collapsed">
+      {{ contractInfo.code }}
+    </code>
   </div>
 </template>
 
@@ -108,6 +117,31 @@
       },
       confirmations() {
         return this.transaction.confirmations
+      },
+      contractInfo() {
+        for (let output of this.outputs) {
+          let chunks = output.scriptPubKey.asm.split(' ')
+          switch (chunks[chunks.length - 1]) {
+          case 'OP_CREATE':
+            return {
+              type: 'create',
+              version: chunks[0],
+              gasLimit: chunks[1],
+              gasPrice: chunks[2],
+              code: chunks[3]
+            }
+          case 'OP_CALL':
+            return {
+              type: 'call',
+              version: chunks[0],
+              gasLimit: chunks[1],
+              gasPrice: chunks[2],
+              code: chunks[3],
+              address: chunks[4]
+            }
+          }
+        }
+        return null
       }
     },
     methods: {
@@ -138,11 +172,8 @@
         let result = []
         for (let output of outputs) {
           let cloned = JSON.parse(JSON.stringify(output))
-          if ('addresses' in cloned.scriptPubKey) {
-            let item = result.find(x => (
-              x.scriptPubKey.addresses
-              && this.outputAddress(x) === this.outputAddress(output)
-            ))
+          if ('address' in cloned) {
+            let item = result.find(x => x.address === output.address)
             if (item) {
               item.value += output.value
               continue
@@ -151,22 +182,33 @@
           result.push(cloned)
         }
         return result.sort((x, y) => {
-          if (!('addresses' in x.scriptPubKey)) {
+          if (!x.address) {
             return -1
-          } else if (!('addresses' in y.scriptPubKey)) {
+          } else if (!y.address) {
             return 1
-          } else if (this.outputAddress(x) < this.outputAddress(y)) {
+          } else if (x.address[0] === 'Q' && y.address[0] !== 'Q') {
             return -1
-          } else if (this.outputAddress(x) > this.outputAddress(y)) {
+          } else if (x.address[0] !== 'Q' && y.address[0] === 'Q') {
+            return 1
+          } else if (x.address < y.address) {
+            return -1
+          } else if (x.address > y.address) {
             return 1
           } else {
             return 0
           }
         })
-        return result.sort(this.addressSorting)
-      },
-      outputAddress(output) {
-        return output.scriptPubKey.addresses[0]
+      }
+    },
+    filters: {
+      'qtum-script'(asm) {
+        let chunks = asm.split(' ')
+        if (['OP_CREATE', 'OP_CALL'].includes(chunks[chunks.length - 1])) {
+          chunks[3] = '[byte code]'
+          return chunks.join(' ')
+        } else {
+          return asm
+        }
       }
     }
   }

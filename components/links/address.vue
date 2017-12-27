@@ -1,6 +1,6 @@
 <template>
   <span>
-    <nuxt-link :to="'/address/' + address"
+    <nuxt-link :to="(address[0] === 'Q' ? '/address/' : '/contract/') + address"
       class="break-word" :class="{'has-text-weight-semibold': highlight}">
       {{ address }}
     </nuxt-link>
