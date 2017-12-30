@@ -1,7 +1,6 @@
 <template>
   <span>
-    <nuxt-link :to="(address[0] === 'Q' ? '/address/' : '/contract/') + address"
-      class="break-word" :class="{'has-text-weight-semibold': highlight}">
+    <nuxt-link :to="(address[0] === 'Q' ? '/address/' : '/contract/') + address" class="break-word">
       {{ address }}
     </nuxt-link>
     <Clipboard v-if="copyable" :string="address"></Clipboard>
@@ -15,8 +14,7 @@
     name: 'address-link',
     props: {
       address: {type: String, required: true},
-      copyable: {type: Boolean, default: false},
-      highlight: {type: Boolean, default: false}
+      copyable: {type: Boolean, default: false}
     },
     components: {Clipboard}
   }

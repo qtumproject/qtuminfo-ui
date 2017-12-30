@@ -9,8 +9,12 @@
       </div>
       <div class="card-body info-table">
         <div class="columns">
-          <div class="column info-title">{{ $t('transaction.transaction_hash') }}</div>
+          <div class="column info-title">{{ $t('transaction.transaction_id') }}</div>
           <div class="column info-value">{{ id }}</div>
+        </div>
+        <div class="columns" v-if="id !== hash">
+          <div class="column info-title">{{ $t('transaction.transaction_hash') }}</div>
+          <div class="column info-value">{{ hash }}</div>
         </div>
         <div class="columns" v-if="block">
           <div class="column info-title">{{ $t('transaction.included_in_block') }}</div>
@@ -61,6 +65,7 @@
       return {
         blockHeight: null,
         block: null,
+        hash: '',
         time: 0,
         size: 0,
         isCoinbase: false,
@@ -80,6 +85,7 @@
         }
         return {
           blockHeight: transaction.blockHeight,
+          hash: transaction.hash,
           time: transaction.time,
           size: transaction.size,
           isCoinbase: transaction.isCoinbase,

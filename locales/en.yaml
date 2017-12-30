@@ -28,6 +28,7 @@ transaction:
   summary: Transaction Summary
   confirmations: confirmation | confirmations
   unconfirmed: unconfirmed
+  transaction_id: Transaction ID
   transaction_hash: Transaction Hash
   included_in_block: Included In Block
   transaction_size: Transaction Size

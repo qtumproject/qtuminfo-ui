@@ -7,7 +7,7 @@
           class="toggle-collapse"
           @click="collapsed = !collapsed"
         ></Icon>
-        <TransactionLink :transaction="hash"></TransactionLink>
+        <TransactionLink :transaction="id"></TransactionLink>
       </div>
       <div class="pull-right">
         <span v-if="confirmations"
@@ -59,7 +59,7 @@
               <span class="key">Type</span>
               <span class="value">{{ output.scriptPubKey.type }}</span>
             </div>
-            <div>
+            <div v-if="output.scriptPubKey.asm">
               <span class="key">Script</span>
               <code class="value">{{ output.scriptPubKey.asm | qtum-script }}</code>
             </div>
@@ -67,9 +67,7 @@
         </div>
       </template>
     </div>
-    <code class="column is-full break-word" v-if="contractInfo && !collapsed">
-      {{ contractInfo.code }}
-    </code>
+    <code class="column is-full break-word" v-if="contractInfo && !collapsed">{{ contractInfo.code }}</code>
     <div class="column is-full has-text-right collapse-bottom" v-if="fees">
       <template v-if="fees > 0">
         Fee <span class="amount fee">{{ fees | qtum }} QTUM</span>
@@ -94,7 +92,7 @@
       transaction: {type: Object, required: true}
     },
     computed: {
-      hash() {
+      id() {
         return this.transaction.txid
       },
       inputs() {

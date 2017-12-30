@@ -28,6 +28,7 @@ transaction:
   summary: 交易信息
   confirmations: 个确认
   unconfirmed: 未确认
+  transaction_id: 交易 ID
   transaction_hash: 交易哈希值
   included_in_block: 包含于区块
   transaction_size: 交易大小
