@@ -16,9 +16,9 @@
           <div class="column info-title">{{ $t('address.balance') }}</div>
           <div class="column info-value">
             {{ balance | qtum }} QTUM
-            <template v-if="unconfirmedBalance !== '0'">
+            <span v-if="unconfirmedBalance !== '0'">
               ({{ unconfirmedBalance | qtum }} QTUM {{ $t('transaction.unconfirmed') }})
-            </template>
+            </span>
           </div>
         </div>
         <div class="columns">
