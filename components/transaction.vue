@@ -67,6 +67,38 @@
         </div>
       </template>
     </div>
+    <template v-if="tokenTransfers">
+      <template v-for="({from, to, amount}, index) in tokenTransferList">
+        <div class="column is-full flex-full"></div>
+        <AttributeInjector
+          class="column collapse token-transfer-list"
+          :class="{
+            'first-item': index === 0,
+            'last-item': index === tokenTransferList.length - 1
+          }">
+          <div class="is-clearfix">
+            <template v-if="from">
+              <div class="is-clearfix">
+                <AddressLink :address="from" class="pull-left"></AddressLink>
+                <span class="pull-right amount">
+                  {{ amount | token(token.decimals) }} {{ token.symbol }}
+                </span>
+              </div>
+            </template>
+            <template v-else>Newly Generated Tokens</template>
+          </div>
+          <Icon icon="arrow-right" class="arrow"></Icon>
+          <div class="is-half">
+            <div class="is-clearfix">
+              <AddressLink :address="to" class="pull-left"></AddressLink>
+              <span class="pull-right amount">
+                {{ amount | token(token.decimals) }} {{ token.symbol }}
+              </span>
+            </div>
+          </div>
+        </AttributeInjector>
+      </template>
+    </template>
     <code class="column is-full break-word" v-if="contractInfo && !collapsed">{{ contractInfo.code }}</code>
     <div class="column is-full has-text-right collapse-bottom" v-if="fees">
       <template v-if="fees > 0">
@@ -106,6 +138,15 @@
       },
       confirmations() {
         return this.transaction.confirmations
+      },
+      tokenTransfers() {
+        return this.transaction.tokenTransfers
+      },
+      token() {
+        return this.tokenTransfers && this.tokenTransfers.token
+      },
+      tokenTransferList() {
+        return this.tokenTransfers && this.tokenTransfers.list
       },
       contractInfo() {
         for (let output of this.outputs) {
@@ -225,6 +266,10 @@
     }
   }
 
+  .flex-full {
+    padding: 0;
+  }
+
   .toggle-collapse {
     cursor: pointer;
     transition: transform 0.2s;
@@ -259,5 +304,14 @@
   }
   .fee {
     margin-left: 0.5em;
+  }
+
+  .token-transfer-list {
+    &:not(.first-item) {
+      padding-top: 0;
+    }
+    &:not(.last-item) {
+      padding-bottom: 0;
+    }
   }
 </style>

@@ -44,7 +44,7 @@
         </div>
 
         <QtumTransaction :transaction="{
-          txid: id, blockHeight, time, vin, vout, fees, confirmations
+          txid: id, blockHeight, time, vin, vout, fees, confirmations, tokenTransfers
         }"></QtumTransaction>
       </div>
     </div>
@@ -72,7 +72,8 @@
         fees: 0,
         confirmations: 0,
         vin: [],
-        vout: []
+        vout: [],
+        tokenTransfers: null
       }
     },
     async asyncData({params, error}) {
@@ -93,6 +94,7 @@
           confirmations: transaction.confirmations,
           vin: transaction.vin,
           vout: transaction.vout,
+          tokenTransfers: transaction.tokenTransfers || null,
           block
         }
       } catch (err) {
