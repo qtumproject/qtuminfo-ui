@@ -16,7 +16,7 @@ export default {
         {
           class: [
             'fa',
-            props.icon.split(' ').map(s => 'fa-' + s),
+            ...props.icon.split(' ').map(s => 'fa-' + s),
             {'fa-fw': props.fixedWidth}
           ]
         }

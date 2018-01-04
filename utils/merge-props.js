@@ -22,7 +22,8 @@ export default (...objects) => objects.reduce((a, b = {}) => {
         if (typeof bb === 'string') {
           b[key] = bb = {[bb]: true}
         }
-      } else if (['on', 'nativeOn', 'hook'].includes(key)) {
+      }
+      if (['on', 'nativeOn', 'hook'].includes(key)) {
         for (let nestedKey of Object.keys(bb)) {
           aa[nestedKey] = mergeFn(aa[nestedKey], bb[nestedKey])
         }
@@ -33,6 +34,8 @@ export default (...objects) => objects.reduce((a, b = {}) => {
       } else {
         Object.assign(aa, bb)
       }
+    } else if (key === 'staticClass' && aa && bb) {
+      a[key] = aa + ' ' + bb
     } else {
       a[key] = b[key]
     }
