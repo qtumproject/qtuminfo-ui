@@ -1,6 +1,6 @@
 <template>
   <span>
-    <nuxt-link :to="(address[0] === 'Q' ? '/address/' : '/contract/') + address" class="break-word">
+    <nuxt-link :to="(address.length === 34 ? '/address/' : '/contract/') + address" class="break-word">
       {{ address }}
     </nuxt-link>
     <Clipboard v-if="copyable" :string="address"></Clipboard>
