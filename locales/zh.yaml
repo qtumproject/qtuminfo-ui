@@ -41,6 +41,7 @@ address:
   address_hash: 账户哈希值
   balance: 账户余额
   unconfirmed: 未确认
+  staking: 被锁定
   total_received: 收入总计
   total_sent: 支出总计
   transaction_count: 交易数

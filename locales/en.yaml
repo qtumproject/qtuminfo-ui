@@ -41,6 +41,7 @@ address:
   address_hash: Address Hash
   balance: Balance
   unconfirmed: unconfirmed
+  staking: staking
   total_received: Total Received
   total_sent: Total Sent
   transaction_count: Transaction Count

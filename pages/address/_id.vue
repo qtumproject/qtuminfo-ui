@@ -16,8 +16,15 @@
           <div class="column info-title">{{ $t('address.balance') }}</div>
           <div class="column info-value">
             {{ balance | qtum }} QTUM
-            <span v-if="unconfirmedBalance !== '0'">
-              ({{ unconfirmedBalance | qtum }} QTUM {{ $t('transaction.unconfirmed') }})
+            <span v-if="unconfirmedBalance !== '0' && stakingBalance !== '0'">
+              ({{ unconfirmedBalance | qtum }} QTUM {{ $t('address.unconfirmed') }},
+              {{ stakingBalance | qtum }} QTUM {{ $t('address.staking') }})
+            </span>
+            <span v-else-if="unconfirmedBalance !== '0'">
+              ({{ unconfirmedBalance | qtum }} QTUM {{ $t('address.unconfirmed') }})
+            </span>
+            <span v-else-if="stakingBalance !== '0'">
+              ({{ stakingBalance | qtum }} QTUM {{ $t('address.staking') }})
             </span>
           </div>
         </div>
@@ -53,7 +60,7 @@
           </a>
         </nav>
         <QtumTransaction v-for="transaction in transactions" :key="transaction.txid"
-          :transaction="transaction"></QtumTransaction>
+          :transaction="transaction" :highlight-address="id"></QtumTransaction>
         <nav class="pagination" v-if="pages > 1">
           <a class="pagination-previous" @click="previousPage" :disabled="currentPage === 0">Previous</a>
           <a class="pagination-next" @click="nextPage" :disabled="currentPage >= pages - 1">Next</a>
@@ -79,6 +86,7 @@
         totalReceived: '0',
         totalSent: '0',
         unconfirmedBalance: '0',
+        stakingBalance: '0',
         txAppearances: 0,
         totalCount: 0,
         transactions: [],
@@ -94,6 +102,7 @@
           totalReceived: address.totalReceived,
           totalSent: address.totalSent,
           unconfirmedBalance: address.unconfirmedBalance,
+          stakingBalance: address.stakingBalance,
           totalCount: address.totalCount,
           transactions: address.transactions
         }

@@ -1,8 +1,11 @@
 <template>
   <span>
-    <nuxt-link :to="(address.length === 34 ? '/address/' : '/contract/') + address" class="break-word">
-      {{ address }}
-    </nuxt-link>
+    <AttributeInjector class="break-word">
+      <span v-if="highlight">{{ address }}</span>
+      <nuxt-link v-else :to="(address.length === 34 ? '/address/' : '/contract/') + address">
+        {{ address }}
+      </nuxt-link>
+    </AttributeInjector>
     <Clipboard v-if="copyable" :string="address"></Clipboard>
   </span>
 </template>
@@ -14,7 +17,8 @@
     name: 'address-link',
     props: {
       address: {type: String, required: true},
-      copyable: {type: Boolean, default: false}
+      highlight: Boolean,
+      copyable: {type: Boolean, default: false},
     },
     components: {Clipboard}
   }
