@@ -16,11 +16,16 @@ Vue.filter('qtum', (satoshis, precision = null) => {
   }
 })
 
-Vue.filter('token', (amount, decimals) => {
+Vue.filter('token', (amount, decimals, showDecimals = false) => {
   let s = amount.toString().padStart(decimals + 1, '0')
   let integralPart = s.slice(0, -decimals)
   let decimalPart = s.slice(-decimals)
-  return addAmountDelimiters((integralPart + '.' + decimalPart).replace(/\.?0*$/g, ''))
+  let value = addAmountDelimiters(integralPart + '.' + decimalPart)
+  if (showDecimals) {
+    return value
+  } else {
+    return value.replace(/\.?0*$/g, '')
+  }
 })
 
 Vue.filter('timestamp', time => moment(time * 1000).format('YYYY-MM-DD HH:mm:ss'))

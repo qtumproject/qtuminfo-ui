@@ -3,6 +3,7 @@ blockchain:
   address: Address | Addresses
   block: Block | Blocks
   transaction: Transaction | Transactions
+  contract: Contract | Contracts
   token: Token | Tokens
 block:
   brief:
@@ -38,10 +39,23 @@ transaction:
   transaction_fee: Transaction Fee
 address:
   summary: Address
-  address_hash: Address Hash
+  address: Address
   balance: Balance
   unconfirmed: unconfirmed
   staking: staking
+  total_received: Total Received
+  total_sent: Total Sent
+  transaction_count: Transaction Count
+  transaction_list: Transaction List
+contract:
+  summary: Contract
+  address: Address Hash
+  owner: Owner
+  create_transaction: Created At
+  token:
+    name: Token Name
+    total_supply: Total Supply
+  balance: Balance
   total_received: Total Received
   total_sent: Total Sent
   transaction_count: Transaction Count

@@ -5,39 +5,47 @@
         <div class="card-header-icon">
           <Icon icon="info" fixed-width></Icon>
         </div>
-        <h3 class="card-header-title">{{ $t('address.summary') }}</h3>
+        <h3 class="card-header-title">{{ $t('contract.summary') }}</h3>
       </div>
       <div class="card-body info-table">
         <div class="columns">
-          <div class="column info-title">{{ $t('address.address') }}</div>
+          <div class="column info-title">{{ $t('contract.address') }}</div>
           <AddressLink :address="id" class="column info-value" copyable></AddressLink>
         </div>
         <div class="columns">
-          <div class="column info-title">{{ $t('address.balance') }}</div>
-          <div class="column info-value">
-            {{ balance | qtum }} QTUM
-            <span v-if="unconfirmedBalance !== '0' && stakingBalance !== '0'">
-              ({{ unconfirmedBalance | qtum }} QTUM {{ $t('address.unconfirmed') }},
-              {{ stakingBalance | qtum }} QTUM {{ $t('address.staking') }})
-            </span>
-            <span v-else-if="unconfirmedBalance !== '0'">
-              ({{ unconfirmedBalance | qtum }} QTUM {{ $t('address.unconfirmed') }})
-            </span>
-            <span v-else-if="stakingBalance !== '0'">
-              ({{ stakingBalance | qtum }} QTUM {{ $t('address.staking') }})
-            </span>
-          </div>
+          <div class="column info-title">{{ $t('contract.owner') }}</div>
+          <AddressLink :address="owner" class="column info-value" copyable></AddressLink>
         </div>
         <div class="columns">
-          <div class="column info-title">{{ $t('address.total_received') }}</div>
+          <div class="column info-title">{{ $t('contract.create_transaction') }}</div>
+          <TransactionLink :transaction="txid" class="column info-value" copyable></TransactionLink>
+        </div>
+        <template v-if="token">
+          <div class="columns">
+            <div class="column info-title">{{ $t('contract.token.name') }}</div>
+            <div class="column info-value">{{ token.name }}</div>
+          </div>
+          <div class="columns">
+            <div class="column info-title">{{ $t('contract.token.total_supply') }}</div>
+            <div class="column info-value">
+              {{ token.totalSupply | token(token.decimals, true) }} {{ token.symbol }}
+            </div>
+          </div>
+        </template>
+        <div class="columns">
+          <div class="column info-title">{{ $t('contract.balance') }}</div>
+          <div class="column info-value">{{ balance | qtum }} QTUM</div>
+        </div>
+        <div class="columns">
+          <div class="column info-title">{{ $t('contract.total_received') }}</div>
           <div class="column info-value">{{ totalReceived | qtum }} QTUM</div>
         </div>
         <div class="columns">
-          <div class="column info-title">{{ $t('address.total_sent') }}</div>
+          <div class="column info-title">{{ $t('contract.total_sent') }}</div>
           <div class="column info-value">{{ totalSent | qtum }} QTUM</div>
         </div>
         <div class="columns">
-          <div class="column info-title">{{ $t('address.transaction_count') }}</div>
+          <div class="column info-title">{{ $t('contract.transaction_count') }}</div>
           <div class="column info-value">{{ totalCount }}</div>
         </div>
       </div>
@@ -48,7 +56,7 @@
         <div class="card-header-icon">
           <Icon icon="list-alt" fixed-width></Icon>
         </div>
-        <div class="card-header-title">{{ $t('address.transaction_list') }}</div>
+        <div class="card-header-title">{{ $t('contract.transaction_list') }}</div>
       </div>
       <div class="card-body">
         <nav class="pagination" v-if="pages > 1">
@@ -71,22 +79,23 @@
 </template>
 
 <script>
-  import Address from '@/models/address'
+  import Contract from '@/models/contract'
   import Transaction from '@/models/transaction'
   import {RequestError} from '@/services/qtumscan-api'
   import QtumTransaction from '@/components/transaction.vue'
 
   export default {
     head() {
-      return {title: `Address ${this.id} -- QtumScan`}
+      return {title: `Contract ${this.id} -- QtumScan`}
     },
     data() {
       return {
+        txid: '',
+        owner: '',
+        token: null,
         balance: '0',
         totalReceived: '0',
         totalSent: '0',
-        unconfirmedBalance: '0',
-        stakingBalance: '0',
         totalCount: 0,
         transactions: [],
         currentPage: 0
@@ -94,21 +103,22 @@
     },
     async asyncData({params, error}) {
       try {
-        let address = await Address.get(params.id, {from: 0, to: 20})
-        address.transactions = await Promise.all(address.transactions.map(Transaction.get))
+        let contract = await Contract.get(params.id, {from: 0, to: 20})
+        contract.transactions = await Promise.all(contract.transactions.map(Transaction.get))
         return {
-          balance: address.balance,
-          totalReceived: address.totalReceived,
-          totalSent: address.totalSent,
-          unconfirmedBalance: address.unconfirmedBalance,
-          stakingBalance: address.stakingBalance,
-          totalCount: address.totalCount,
-          transactions: address.transactions
+          txid: contract.txid,
+          owner: contract.owner,
+          token: contract.token,
+          balance: contract.balance,
+          totalReceived: contract.totalReceived,
+          totalSent: contract.totalSent,
+          totalCount: contract.totalCount,
+          transactions: contract.transactions
         }
       } catch (err) {
         if (err instanceof RequestError) {
           if (err.code === 404) {
-            error({statusCode: 404, message: `Address ${param.id} not found`})
+            error({statusCode: 404, message: `Contract ${param.id} not found`})
           } else {
             error({statusCode: err.code, message: err.message})
           }
@@ -130,7 +140,7 @@
         if (page < 0 || page >= this.pages) {
           return
         }
-        let {totalCount, transactions} = await Address.getTransactions(
+        let {totalCount, transactions} = await Contract.getTransactions(
           this.id,
           {from: page * 20, to: (page + 1) * 20}
         )

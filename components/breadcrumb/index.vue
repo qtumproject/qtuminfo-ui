@@ -19,6 +19,7 @@
 <script>
   import AddressId from './address-id'
   import BlockId from './block-id'
+  import ContractId from './contract-id'
   import TxId from './tx-id'
 
   export default {
@@ -34,6 +35,7 @@
     components: {
       'address-id': AddressId,
       'block-id': BlockId,
+      'contract-id': ContractId,
       'tx-id': TxId
     }
   }

@@ -59,6 +59,10 @@
             this.searchString = ''
             this.$router.push(`/block/${searchString}`)
             break
+          case 'contract':
+            this.searchString = ''
+            this.$router.push(`/contract/${searchString}`)
+            break
           case 'transaction':
             this.searchString = ''
             this.$router.push(`/tx/${searchString}`)

@@ -3,6 +3,7 @@ blockchain:
   address: 地址
   block: 区块
   transaction: 交易
+  contract: 合约
   token: 代币
 block:
   brief:
@@ -38,12 +39,25 @@ transaction:
   transaction_fee: 交易手续费
 address:
   summary: 账户信息
-  address_hash: 账户哈希值
+  address: 账户地址
   balance: 账户余额
   unconfirmed: 未确认
   staking: 被锁定
   total_received: 收入总计
   total_sent: 支出总计
+  transaction_count: 交易数
+  transaction_list: 交易列表
+contract:
+  summary: 合约信息
+  address: 合约地址
+  owner: 创建人
+  create_transaction: 创建于
+  token:
+    name: 代币名称
+    total_supply: 发行总量
+  balance: 合约余额
+  total_received: 转入总计
+  total_sent: 转出总计
   transaction_count: 交易数
   transaction_list: 交易列表
 pagination:
