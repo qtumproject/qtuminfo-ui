@@ -18,7 +18,7 @@
         </div>
         <div class="columns">
           <div class="column info-title">{{ $t('contract.create_transaction') }}</div>
-          <TransactionLink :transaction="txid" class="column info-value" copyable></TransactionLink>
+          <TransactionLink :transaction="txid" class="column info-value"></TransactionLink>
         </div>
         <template v-if="token">
           <div class="columns">

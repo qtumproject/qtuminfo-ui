@@ -70,39 +70,42 @@
         </div>
       </template>
     </div>
-    <template v-if="tokenTransfers">
-      <template v-for="({from, to, amount}, index) in tokenTransferList">
-        <div class="column is-full flex-full"></div>
-        <AttributeInjector
-          class="column collapse token-transfer-list"
-          :class="{
-            'first-item': index === 0,
-            'last-item': index === tokenTransferList.length - 1
-          }">
-          <div class="is-clearfix">
-            <template v-if="from">
-              <div class="is-clearfix">
-                <AddressLink :address="from" class="pull-left"
-                  :highlight="from === highlightAddress"></AddressLink>
-                <span class="pull-right amount">
-                  {{ amount | token(token.decimals) }} {{ token.symbol }}
-                </span>
-              </div>
-            </template>
-            <template v-else>Newly Generated Tokens</template>
+    <template v-for="({token, from, to, amount}, index) in tokenTransfers">
+      <div class="column is-full flex-full"></div>
+      <AttributeInjector
+        class="column collapse token-transfer-list"
+        :class="{
+          'first-item': index === 0,
+          'last-item': index === tokenTransfers.length - 1
+        }">
+        <div class="is-clearfix">
+          <div v-if="from" class="is-clearfix">
+            <AddressLink :address="from" class="pull-left"
+              :highlight="from === highlightAddress"></AddressLink>
+            <span class="pull-right amount">
+              {{ amount | token(token.decimals) }}
+              <AddressLink :address="token.address" :highlight="token.address === highlightAddress">
+                {{ token.symbol }}
+              </AddressLink>
+            </span>
           </div>
-          <Icon icon="arrow-right" class="arrow"></Icon>
-          <div class="is-half">
-            <div class="is-clearfix">
-              <AddressLink :address="to" class="pull-left"
-                :highlight="to === highlightAddress"></AddressLink>
-              <span class="pull-right amount">
-                {{ amount | token(token.decimals) }} {{ token.symbol }}
-              </span>
-            </div>
+          <template v-else>Mint Tokens</template>
+        </div>
+        <Icon icon="arrow-right" class="arrow"></Icon>
+        <div class="is-half">
+          <div v-if="to" class="is-clearfix">
+            <AddressLink :address="to" class="pull-left"
+              :highlight="to === highlightAddress"></AddressLink>
+            <span class="pull-right amount">
+              {{ amount | token(token.decimals) }}
+              <AddressLink :address="token.address" :highlight="token.address === highlightAddress">
+                {{ token.symbol }}
+              </AddressLink>
+            </span>
           </div>
-        </AttributeInjector>
-      </template>
+          <template v-else>Burn Tokens</template>
+        </div>
+      </AttributeInjector>
     </template>
     <code class="column is-full break-word" v-if="contractInfo && !collapsed">{{ contractInfo.code }}</code>
     <div class="column is-full has-text-right collapse-bottom" v-if="fees">
@@ -146,13 +149,7 @@
         return this.transaction.confirmations
       },
       tokenTransfers() {
-        return this.transaction.tokenTransfers
-      },
-      token() {
-        return this.tokenTransfers && this.tokenTransfers.token
-      },
-      tokenTransferList() {
-        return this.tokenTransfers && this.tokenTransfers.list
+        return this.transaction.tokenTransfers || []
       },
       contractInfo() {
         for (let output of this.outputs) {

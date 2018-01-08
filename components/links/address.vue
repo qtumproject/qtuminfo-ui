@@ -1,9 +1,15 @@
 <template>
   <span>
     <AttributeInjector class="break-word">
-      <span v-if="highlight">{{ address }}</span>
+      <span v-if="highlight">
+        <slot>
+          {{ address }}
+        </slot>
+      </span>
       <nuxt-link v-else :to="(address.length === 34 ? '/address/' : '/contract/') + address">
-        {{ address }}
+        <slot>
+          {{ address }}
+        </slot>
       </nuxt-link>
     </AttributeInjector>
     <Clipboard v-if="copyable" :string="address"></Clipboard>
