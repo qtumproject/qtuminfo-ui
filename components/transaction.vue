@@ -20,7 +20,7 @@
     </div>
     <div class="column is-clearfix collapse">
       <template v-if="inputs[0].address">
-        <div v-for="input in (collapsed ? mergeInputs(inputs) : inputs)" class="is-clearfix">
+        <div v-for="input in inputs" class="is-clearfix">
           <AddressLink :address="input.address" class="pull-left"
             :highlight="input.address === highlightAddress"></AddressLink>
           <span class="pull-right amount">
@@ -33,7 +33,7 @@
     <Icon icon="arrow-right" class="column arrow collapse"></Icon>
     <div class="column is-half collapse">
       <template v-if="collapsed">
-        <div v-for="output in mergeOutputs(outputs)" class="is-clearfix">
+        <div v-for="output in outputs" class="is-clearfix">
           <AddressLink v-if="output.address" :address="output.address" class="pull-left"
             :highlight="output.address === highlightAddress"></AddressLink>
           <span v-else class="pull-left">Unparsed Address</span>
