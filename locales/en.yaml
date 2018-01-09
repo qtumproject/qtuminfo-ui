@@ -45,6 +45,7 @@ address:
   staking: staking
   total_received: Total Received
   total_sent: Total Sent
+  token_balances: Token Balances
   transaction_count: Transaction Count
   transaction_list: Transaction List
 contract:
