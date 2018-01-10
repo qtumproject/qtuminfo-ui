@@ -7,19 +7,19 @@ Vue.use(VueI18N)
 
 export let i18n
 
-export default function({app, isClient, isServer, req}) {
+export default function({app, req}) {
   let i18nLocale = null
   let momentLocale = false
   let languages = []
 
-  if (isServer) {
+  if (process.server) {
     let languageString = req.headers['accept-language'] || ''
     let index = languageString.indexOf(';')
     if (index >= 0) {
       languageString = languageString.slice(0, index)
     }
     languages = languageString.split(',')
-  } else if (isClient) {
+  } else if (process.client) {
     languages = navigator.languages
   }
 
