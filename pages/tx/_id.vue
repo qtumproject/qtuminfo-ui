@@ -28,10 +28,10 @@
           <div class="column info-title">{{ $t('transaction.transaction_size') }}</div>
           <div class="column info-value">{{ size.toLocaleString() }} bytes</div>
         </div>
-        <div class="columns">
+        <div class="columns" v-if="timestamp">
           <div class="column info-title">{{ $t('transaction.timestamp') }}</div>
           <div class="column info-value">
-            {{ time | from-now }} ({{ time | timestamp }})
+            {{ timestamp | from-now }} ({{ timestamp | timestamp }})
           </div>
         </div>
         <div class="columns">
@@ -44,7 +44,7 @@
         </div>
 
         <QtumTransaction :transaction="{
-          txid: id, blockHeight, time, vin, vout, fees, confirmations, tokenTransfers
+          txid: id, blockHeight, timestamp, vin, vout, fees, confirmations, tokenTransfers
         }"></QtumTransaction>
       </div>
     </div>
@@ -66,14 +66,14 @@
         blockHeight: null,
         block: null,
         hash: '',
-        time: 0,
+        timestamp: 0,
         size: 0,
         isCoinbase: false,
         fees: 0,
         confirmations: 0,
         vin: [],
         vout: [],
-        tokenTransfers: null
+        tokenTransfers: []
       }
     },
     async asyncData({params, error}) {
@@ -87,14 +87,14 @@
         return {
           blockHeight: transaction.blockHeight,
           hash: transaction.hash,
-          time: transaction.time,
+          timestamp: transaction.timestamp,
           size: transaction.size,
           isCoinbase: transaction.isCoinbase,
           fees: transaction.fees,
           confirmations: transaction.confirmations,
           vin: transaction.vin,
           vout: transaction.vout,
-          tokenTransfers: transaction.tokenTransfers || null,
+          tokenTransfers: transaction.tokenTransfers,
           block
         }
       } catch (err) {

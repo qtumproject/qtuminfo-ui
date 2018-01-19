@@ -15,7 +15,7 @@
           {{ confirmations }} {{ $tc('transaction.confirmations', confirmations) }}
         </span>
         <span v-else class="tag is-danger">{{ $t('transaction.unconfirmed') }}</span>
-        <span class="timestamp">{{ transaction.time | timestamp }}</span>
+        <span v-if="transaction.timestamp" class="timestamp">{{ transaction.timestamp | timestamp }}</span>
       </div>
     </div>
     <div class="column is-clearfix collapse">
@@ -83,9 +83,9 @@
             <AddressLink :address="from" class="pull-left"
               :highlight="from === highlightAddress"></AddressLink>
             <span class="pull-right amount">
-              {{ amount | token(token.decimals) }}
+              {{ amount | qrc20(token.decimals) }}
               <AddressLink :address="token.address" :highlight="token.address === highlightAddress">
-                {{ token.symbol }}
+                {{ token.symbol || 'Tokens' }}
               </AddressLink>
             </span>
           </div>
@@ -97,9 +97,9 @@
             <AddressLink :address="to" class="pull-left"
               :highlight="to === highlightAddress"></AddressLink>
             <span class="pull-right amount">
-              {{ amount | token(token.decimals) }}
+              {{ amount | qrc20(token.decimals) }}
               <AddressLink :address="token.address" :highlight="token.address === highlightAddress">
-                {{ token.symbol }}
+                {{ token.symbol || 'Tokens' }}
               </AddressLink>
             </span>
           </div>
@@ -149,7 +149,7 @@
         return this.transaction.confirmations
       },
       tokenTransfers() {
-        return this.transaction.tokenTransfers || []
+        return this.transaction.tokenTransfers
       },
       contractInfo() {
         for (let output of this.outputs) {
@@ -175,62 +175,6 @@
           }
         }
         return null
-      }
-    },
-    methods: {
-      mergeInputs(inputs) {
-        let result = []
-        for (let input of inputs) {
-          let item = result.find(x => x.address === input.address)
-          if (item) {
-            item.value += input.value
-          } else {
-            result.push({
-              address: input.address,
-              value: input.value
-            })
-          }
-        }
-        return result.sort((x, y) => {
-          if (x.address < y.address) {
-            return -1
-          } else if (x.address > y.address) {
-            return 1
-          } else {
-            return 0
-          }
-        })
-      },
-      mergeOutputs(outputs) {
-        let result = []
-        for (let output of outputs) {
-          let cloned = JSON.parse(JSON.stringify(output))
-          if ('address' in cloned) {
-            let item = result.find(x => x.address === output.address)
-            if (item) {
-              item.value += output.value
-              continue
-            }
-          }
-          result.push(cloned)
-        }
-        return result.sort((x, y) => {
-          if (!x.address) {
-            return -1
-          } else if (!y.address) {
-            return 1
-          } else if (x.address[0] === 'Q' && y.address[0] !== 'Q') {
-            return -1
-          } else if (x.address[0] !== 'Q' && y.address[0] === 'Q') {
-            return 1
-          } else if (x.address < y.address) {
-            return -1
-          } else if (x.address > y.address) {
-            return 1
-          } else {
-            return 0
-          }
-        })
       }
     },
     filters: {

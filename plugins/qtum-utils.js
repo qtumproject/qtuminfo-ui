@@ -16,7 +16,10 @@ Vue.filter('qtum', (satoshis, precision = null) => {
   }
 })
 
-Vue.filter('token', (amount, decimals, showDecimals = false) => {
+Vue.filter('qrc20', (amount, decimals = 0, showDecimals = false) => {
+  if (decimals === 0) {
+    return amount
+  }
   let s = amount.toString().padStart(decimals + 1, '0')
   let integralPart = s.slice(0, -decimals)
   let decimalPart = s.slice(-decimals)

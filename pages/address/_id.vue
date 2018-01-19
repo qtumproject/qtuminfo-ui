@@ -40,8 +40,8 @@
           <div class="column info-title">{{ $t('address.token_balances') }}</div>
           <div class="column info-value">
             <div v-for="token in tokenBalances">
-              {{ token.balance | token(token.decimals) }}
-              <AddressLink :address="token.address">{{ token.symbol }}</AddressLink>
+              {{ token.balance | qrc20(token.decimals) }}
+              <AddressLink :address="token.address">{{ token.symbol || 'Tokens' }}</AddressLink>
             </div>
           </div>
         </div>

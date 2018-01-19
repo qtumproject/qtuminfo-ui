@@ -20,15 +20,15 @@
           <div class="column info-title">{{ $t('contract.create_transaction') }}</div>
           <TransactionLink :transaction="txid" class="column info-value"></TransactionLink>
         </div>
-        <template v-if="token">
-          <div class="columns">
+        <template v-if="qrc20">
+          <div class="columns" v-if="qrc20.name">
             <div class="column info-title">{{ $t('contract.token.name') }}</div>
-            <div class="column info-value">{{ token.name }}</div>
+            <div class="column info-value">{{ qrc20.name }}</div>
           </div>
           <div class="columns">
             <div class="column info-title">{{ $t('contract.token.total_supply') }}</div>
             <div class="column info-value">
-              {{ token.totalSupply | token(token.decimals, true) }} {{ token.symbol }}
+              {{ qrc20.totalSupply | qrc20(qrc20.decimals, true) }} {{ qrc20.symbol || 'Tokens' }}
             </div>
           </div>
         </template>
@@ -92,7 +92,8 @@
       return {
         txid: '',
         owner: '',
-        token: null,
+        type: '',
+        qrc20: null,
         balance: '0',
         totalReceived: '0',
         totalSent: '0',
@@ -108,7 +109,8 @@
         return {
           txid: contract.txid,
           owner: contract.owner,
-          token: contract.token,
+          type: contract.type,
+          qrc20: contract.qrc20,
           balance: contract.balance,
           totalReceived: contract.totalReceived,
           totalSent: contract.totalSent,

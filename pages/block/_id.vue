@@ -27,7 +27,7 @@
         <div class="columns">
           <div class="column info-title">{{ $t('block.timestamp') }}</div>
           <div class="column info-value">
-            {{ time | from-now }} ({{ time | timestamp }})
+            {{ timestamp | from-now }} ({{ timestamp | timestamp }})
           </div>
         </div>
         <div class="columns">
@@ -116,7 +116,7 @@
         return {
           height: block.height,
           hash: block.hash,
-          time: block.time,
+          timestamp: block.timestamp,
           size: block.size,
           weight: block.weight,
           reward: block.reward,
