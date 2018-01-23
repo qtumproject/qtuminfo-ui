@@ -1,16 +1,16 @@
-import * as QtumscanAPI from '@/services/qtumscan-api'
+import * as QtuminfoAPI from '@/services/qtuminfo-api'
 
 class Address {
   static get(hash, params = {}) {
-    return QtumscanAPI.get(`/address/${hash}`, {params})
+    return QtuminfoAPI.get(`/address/${hash}`, {params})
   }
 
   static getUtxo(hash) {
-    return QtumscanAPI.get(`/address/${hash}/utxo`)
+    return QtuminfoAPI.get(`/address/${hash}/utxo`)
   }
 
   static getTransactions(hash, {from, to}) {
-    return QtumscanAPI.get(`/addresses/${hash}/txs`, {params: {from, to}})
+    return QtuminfoAPI.get(`/addresses/${hash}/txs`, {params: {from, to}})
   }
 }
 

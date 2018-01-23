@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar">
     <div class="navbar-brand is-size-4">
-      <nuxt-link to="/" class="navbar-item">QtumScan</nuxt-link>
+      <nuxt-link to="/" class="navbar-item">qtum.info</nuxt-link>
       <button type="button" class="button navbar-burger" @click="showMenu = !showMenu">
         <span></span><span></span><span></span>
       </button>
@@ -30,7 +30,7 @@
 </template>
 
 <script>
-  import {get as qtumscanGet} from '@/services/qtumscan-api'
+  import {get as qtuminfoGet} from '@/services/qtuminfo-api'
 
   export default {
     data() {
@@ -48,7 +48,7 @@
         }
         this.searching = true
         try {
-          let {type} = await qtumscanGet(`/search/${searchString}`)
+          let {type} = await qtuminfoGet(`/search/${searchString}`)
           switch (type) {
           case 'address':
             this.searchString = ''

@@ -82,12 +82,12 @@
 <script>
   import Address from '@/models/address'
   import Transaction from '@/models/transaction'
-  import {RequestError} from '@/services/qtumscan-api'
+  import {RequestError} from '@/services/qtuminfo-api'
   import QtumTransaction from '@/components/transaction.vue'
 
   export default {
     head() {
-      return {title: `Address ${this.id} -- QtumScan`}
+      return {title: `Address ${this.id} -- qtum.info`}
     },
     data() {
       return {

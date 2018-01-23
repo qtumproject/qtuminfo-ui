@@ -60,7 +60,7 @@
 
   export default {
     head() {
-      return {title: 'QtumScan'}
+      return {title: 'qtum.info'}
     },
     data() {
       return {

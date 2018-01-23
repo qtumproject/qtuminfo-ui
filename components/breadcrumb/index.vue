@@ -4,7 +4,7 @@
       <li>
         <nuxt-link to="/">
           <span class="fa fa-home"></span>
-          QtumScan
+          qtum.info
         </nuxt-link>
       </li>
       <li v-for="({name}, index) in breadcrumbs" :class="{'is-active': index === breadcrumbs.length - 1}">

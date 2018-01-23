@@ -80,11 +80,11 @@
   import Block from '@/models/block'
   import Transaction from '@/models/transaction'
   import QtumTransaction from '@/components/transaction.vue'
-  import RequestError from '@/services/qtumscan-api'
+  import RequestError from '@/services/qtuminfo-api'
 
   export default {
     head() {
-      return {title: `Block #${this.height} -- QtumScan`}
+      return {title: `Block #${this.height} -- qtum.info`}
     },
     data() {
       return {

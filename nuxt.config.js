@@ -23,9 +23,9 @@ module.exports = {
         use: ['json-loader', 'yaml-loader']
       })
       config.plugins.push(new webpack.DefinePlugin({
-        'process.env.qtumscanAPIBase': JSON.stringify(process.env.QTUMSCAN_API_BASE
-          || process.env[isServer ? 'QTUMSCAN_API_BASE_SERVER' : 'QTUMSCAN_API_BASE_CLIENT']
-          || 'http://localhost:3001/qtumscan-api/')
+        'process.env.qtuminfoAPIBase': JSON.stringify(process.env.QTUMINFO_API_BASE
+          || process.env[isServer ? 'QTUMINFO_API_BASE_SERVER' : 'QTUMINFO_API_BASE_CLIENT']
+          || 'http://localhost:3001/qtuminfo-api/')
       }))
     },
     extractCSS: true,

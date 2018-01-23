@@ -54,12 +54,12 @@
 <script>
   import Block from '@/models/block'
   import Transaction from '@/models/transaction'
-  import {RequestError} from '@/services/qtumscan-api'
+  import {RequestError} from '@/services/qtuminfo-api'
   import QtumTransaction from '@/components/transaction.vue'
 
   export default {
     head() {
-      return {title: `Transaction ${this.id} -- QtumScan`}
+      return {title: `Transaction ${this.id} -- qtum.info`}
     },
     data() {
       return {

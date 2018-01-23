@@ -1,8 +1,8 @@
-import * as QtumscanAPI from '@/services/qtumscan-api'
+import * as QtuminfoAPI from '@/services/qtuminfo-api'
 
 class Transaction {
   static get(hash) {
-    return QtumscanAPI.get(`/tx/${hash}`)
+    return QtuminfoAPI.get(`/tx/${hash}`)
   }
 }
 

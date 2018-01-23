@@ -1,4 +1,4 @@
-import * as QtumscanAPI from '@/services/qtumscan-api'
+import * as QtuminfoAPI from '@/services/qtuminfo-api'
 
 function formatTimestamp(date) {
   let yyyy = date.getUTCFullYear().toString()
@@ -9,18 +9,18 @@ function formatTimestamp(date) {
 
 class Block {
   static get(hash) {
-    return QtumscanAPI.get(`/block/${hash}`)
+    return QtuminfoAPI.get(`/block/${hash}`)
   }
 
   static async getHash(height) {
-    let {blockHash} = await QtumscanAPI.get(`/block-index/${height}`)
+    let {blockHash} = await QtuminfoAPI.get(`/block-index/${height}`)
     return blockHash
   }
 
   static async getRecentBlocks(size = 10) {
-    let {blocks, currentTs} = await QtumscanAPI.get('/blocks', {params: {limit: size}})
+    let {blocks, currentTs} = await QtuminfoAPI.get('/blocks', {params: {limit: size}})
     if (blocks.length < size) {
-      let {block: additionalBlocks} = await QtumscanAPI.get('/blocks', {
+      let {block: additionalBlocks} = await QtuminfoAPI.get('/blocks', {
         params: {
           limit: size - blocks.length,
           blockDate: formatTimestamp(new Date(currentTs * 1000))

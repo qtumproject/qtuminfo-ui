@@ -1,1 +1,1 @@
-# qtumscan-ui
+# qtuminfo-ui
