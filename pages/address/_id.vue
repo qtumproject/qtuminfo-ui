@@ -52,7 +52,7 @@
       </div>
     </div>
 
-    <div class="card section-card transaction-list" v-if="transactions.length">
+    <div class="card section-card transaction-list" v-if="transactions.length" ref="transaction-list">
       <div class="card-header">
         <div class="card-header-icon">
           <Icon icon="list-alt" fixed-width></Icon>
@@ -61,18 +61,22 @@
       </div>
       <div class="card-body">
         <nav class="pagination" v-if="pages > 1">
-          <a class="pagination-previous" @click="previousPage" :disabled="currentPage === 0">
+          <a class="pagination-previous" @click="previousPage(false)" :disabled="currentPage === 0">
             {{ $t('pagination.previous') }}
           </a>
-          <a class="pagination-next" @click="nextPage" :disabled="currentPage >= pages - 1">
+          <a class="pagination-next" @click="nextPage(false)" :disabled="currentPage >= pages - 1">
             {{ $t('pagination.next') }}
           </a>
         </nav>
         <QtumTransaction v-for="transaction in transactions" :key="transaction.txid"
           :transaction="transaction" :highlight-address="id"></QtumTransaction>
         <nav class="pagination" v-if="pages > 1">
-          <a class="pagination-previous" @click="previousPage" :disabled="currentPage === 0">Previous</a>
-          <a class="pagination-next" @click="nextPage" :disabled="currentPage >= pages - 1">Next</a>
+          <a class="pagination-previous" @click="previousPage(true)" :disabled="currentPage === 0">
+            {{ $t('pagination.previous') }}
+          </a>
+          <a class="pagination-next" @click="nextPage(true)" :disabled="currentPage >= pages - 1">
+            {{ $t('pagination.next') }}
+          </a>
         </nav>
       </div>
     </div>
@@ -152,11 +156,17 @@
         this.transactions = await Promise.all(transactions.map(Transaction.get))
         this.currentPage = page
       },
-      previousPage() {
-        this.query(this.currentPage - 1)
+      async previousPage(scroll) {
+        await this.query(this.currentPage - 1)
+        if (scroll) {
+          this.$refs['transaction-list'].scrollIntoView()
+        }
       },
-      nextPage() {
-        this.query(this.currentPage + 1)
+      async nextPage(scroll) {
+        await this.query(this.currentPage + 1)
+        if (scroll) {
+          this.$refs['transaction-list'].scrollIntoView()
+        }
       }
     },
     components: {QtumTransaction}
