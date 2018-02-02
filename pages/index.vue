@@ -12,13 +12,13 @@
             </h3>
           </div>
           <div class="card-body">
-            <div v-for="block in recentBlocks" class="qtum-block is-size-7">
+            <div v-for="block in recentBlocks" class="qtum-block is-size-7" :key="block.hash">
               <div class="level">
                 <div class="level-left">
                   <nuxt-link :to="'/block/' + block.height" class="level-item qtum-block-box has-text-centered">
                     {{ $tc('blockchain.block', 1) }} #{{ block.height }}
                     <br>
-                    {{ block.timestamp | from-now }}
+                    <FromNow :timestamp="block.timestamp"></FromNow>
                   </nuxt-link>
                   <div class="level-item">
                     <div>
@@ -64,7 +64,8 @@
     },
     data() {
       return {
-        recentBlocks: []
+        recentBlocks: [],
+        recentTransactions: []
       }
     },
     async asyncData() {
@@ -105,6 +106,7 @@
   }
 
   .qtum-block-box {
+    display: inline-block;
     min-width: 11em;
     padding: 1em;
     background-color: #eee;

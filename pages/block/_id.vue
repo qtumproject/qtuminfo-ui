@@ -27,7 +27,7 @@
         <div class="columns">
           <div class="column info-title">{{ $t('block.timestamp') }}</div>
           <div class="column info-value">
-            {{ timestamp | from-now }} ({{ timestamp | timestamp }})
+            <FromNow :timestamp="timestamp"></FromNow> ({{ timestamp | timestamp }})
           </div>
         </div>
         <div class="columns">

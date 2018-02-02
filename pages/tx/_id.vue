@@ -31,7 +31,7 @@
         <div class="columns" v-if="timestamp">
           <div class="column info-title">{{ $t('transaction.timestamp') }}</div>
           <div class="column info-value">
-            {{ timestamp | from-now }} ({{ timestamp | timestamp }})
+            <FromNow :timestamp="timestamp"></FromNow> ({{ timestamp | timestamp }})
           </div>
         </div>
         <div class="columns">
@@ -124,6 +124,7 @@
         if (block.tx.includes(this._id)) {
           this.blockHeight = block.height
           this.timestamp = block.header.timestamp
+          this.block = block
         }
       })
     },

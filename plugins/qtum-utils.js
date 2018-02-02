@@ -32,7 +32,23 @@ Vue.filter('qrc20', (amount, decimals = 0, showDecimals = false) => {
 })
 
 Vue.filter('timestamp', time => moment(time * 1000).format('YYYY-MM-DD HH:mm:ss'))
-Vue.filter('from-now', time => moment(time * 1000).fromNow())
+
+Vue.component('FromNow', {
+  name: 'from-now',
+  props: {
+    timestamp: {type: Number, required: true},
+    tag: {type: String, default: 'span'},
+  },
+  render(createElement) {
+    return createElement(this.tag, '\n' + moment(this.timestamp * 1000).fromNow() + '\n')
+  },
+  mounted() {
+    this.$interval = setInterval(() => this.$forceUpdate(), 1000)
+  },
+  beforeDestroy() {
+    clearInterval(this.$interval)
+  }
+})
 
 Vue.mixin({
   methods: {
