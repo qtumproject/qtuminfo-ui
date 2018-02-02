@@ -133,6 +133,9 @@
       highlightAddress: String
     },
     computed: {
+      blockchain() {
+        return this.$store.state.blockchain
+      },
       id() {
         return this.transaction.txid
       },
@@ -146,7 +149,9 @@
         return this.transaction.fees
       },
       confirmations() {
-        return this.transaction.confirmations
+        return this.transaction.blockHeight == null
+          ? 0
+          : this.blockchain.height - this.transaction.blockHeight + 1
       },
       tokenTransfers() {
         return this.transaction.tokenTransfers

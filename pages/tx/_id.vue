@@ -44,7 +44,7 @@
         </div>
 
         <QtumTransaction :transaction="{
-          txid: id, blockHeight, timestamp, vin, vout, fees, confirmations, tokenTransfers
+          txid: id, blockHeight, timestamp, vin, vout, fees, tokenTransfers
         }"></QtumTransaction>
       </div>
     </div>
@@ -70,7 +70,6 @@
         size: 0,
         isCoinbase: false,
         fees: 0,
-        confirmations: 0,
         vin: [],
         vout: [],
         tokenTransfers: []
@@ -91,7 +90,6 @@
           size: transaction.size,
           isCoinbase: transaction.isCoinbase,
           fees: transaction.fees,
-          confirmations: transaction.confirmations,
           vin: transaction.vin,
           vout: transaction.vout,
           tokenTransfers: transaction.tokenTransfers,
@@ -112,7 +110,25 @@
     computed: {
       id() {
         return this.$route.params.id
+      },
+      blockchain() {
+        return this.$store.state.blockchain
+      },
+      confirmations() {
+        return this.blockHeight == null ? 0 : this.blockchain.height - this.blockHeight + 1
       }
+    },
+    mounted() {
+      this.$websocket.send({type: 'subscribe', data: 'block'})
+      this.$websocket.on('block', block => {
+        if (block.tx.includes(this._id)) {
+          this.blockHeight = block.height
+          this.timestamp = block.header.timestamp
+        }
+      })
+    },
+    beforeDestroy() {
+      this.$websocket.send({type: 'subscribe', data: 'block'})
     },
     components: {QtumTransaction}
   }

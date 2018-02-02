@@ -25,7 +25,10 @@ module.exports = {
       config.plugins.push(new webpack.DefinePlugin({
         'process.env.qtuminfoAPIBase': JSON.stringify(process.env.QTUMINFO_API_BASE
           || process.env[isServer ? 'QTUMINFO_API_BASE_SERVER' : 'QTUMINFO_API_BASE_CLIENT']
-          || 'http://localhost:3001/qtuminfo-api/')
+          || 'http://localhost:3001/qtuminfo-api/'),
+        'process.env.qtuminfoWSBase': JSON.stringify(process.env.QTUMINFO_WS_BASE
+          || process.env.QTUMINFO_API_BASE_WS
+          || 'ws://localhost:3002/qtuminfo-ws/')
       }))
     },
     extractCSS: true,
@@ -42,6 +45,7 @@ module.exports = {
   plugins: [
     '~/plugins/components.js',
     '~/plugins/i18n.js',
-    '~/plugins/qtum-utils.js'
+    '~/plugins/qtum-utils.js',
+    {src: '~/plugins/websocket.js', ssr: false}
   ]
 };

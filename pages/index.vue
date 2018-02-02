@@ -70,6 +70,18 @@
     async asyncData() {
       let recentBlocks = await Block.getRecentBlocks()
       return {recentBlocks}
+    },
+    mounted() {
+      this.$websocket.send({type: 'subscribe', data: 'block'})
+      this.$store.subscribe((mutation, state) => {
+        if (mutation.type === 'blockchain/block') {
+          this.recentBlocks.unshift(mutation.payload)
+          this.recentBlocks.pop()
+        }
+      })
+    },
+    beforeDestroy() {
+      this.$websocket.send({type: 'unsubscribe', data: 'block'})
     }
   }
 </script>
