@@ -69,8 +69,8 @@
         <div class="card-header-title">{{ $tc('blockchain.transaction', 2) }}</div>
       </div>
       <div class="card-body">
-        <QtumTransaction v-for="transaction in transactions" :key="transaction.txid"
-          :transaction="transaction"></QtumTransaction>
+        <Transaction v-for="transaction in transactions" :key="transaction.txid"
+          :transaction="transaction"></Transaction>
       </div>
     </div>
   </section>
@@ -79,7 +79,6 @@
 <script>
   import Block from '@/models/block'
   import Transaction from '@/models/transaction'
-  import QtumTransaction from '@/components/transaction.vue'
   import RequestError from '@/services/qtuminfo-api'
 
   export default {
@@ -138,8 +137,7 @@
           throw err
         }
       }
-    },
-    components: {QtumTransaction}
+    }
   }
 </script>
 

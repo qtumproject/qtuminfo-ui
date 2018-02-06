@@ -43,9 +43,9 @@
           <div class="column info-value">{{ fees | qtum }} QTUM</div>
         </div>
 
-        <QtumTransaction :transaction="{
+        <Transaction :transaction="{
           txid: id, blockHeight, timestamp, vin, vout, fees, tokenTransfers
-        }"></QtumTransaction>
+        }"></Transaction>
       </div>
     </div>
   </section>
@@ -55,7 +55,6 @@
   import Block from '@/models/block'
   import Transaction from '@/models/transaction'
   import {RequestError} from '@/services/qtuminfo-api'
-  import QtumTransaction from '@/components/transaction.vue'
 
   export default {
     head() {
@@ -130,8 +129,7 @@
     },
     beforeDestroy() {
       this.$websocket.send({type: 'subscribe', data: 'block'})
-    },
-    components: {QtumTransaction}
+    }
   }
 </script>
 

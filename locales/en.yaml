@@ -61,8 +61,5 @@ contract:
   total_sent: Total Sent
   transaction_count: Transaction Count
   transaction_list: Transaction List
-pagination:
-  previous: Previous
-  next: Next
 action:
   copy: Copy

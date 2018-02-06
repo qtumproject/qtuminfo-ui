@@ -59,20 +59,12 @@
         <div class="card-header-title">{{ $t('contract.transaction_list') }}</div>
       </div>
       <div class="card-body">
-        <nav class="pagination" v-if="pages > 1">
-          <a class="pagination-previous" @click="previousPage" :disabled="currentPage === 0">
-            {{ $t('pagination.previous') }}
-          </a>
-          <a class="pagination-next" @click="nextPage" :disabled="currentPage >= pages - 1">
-            {{ $t('pagination.next') }}
-          </a>
-        </nav>
-        <QtumTransaction v-for="transaction in transactions" :key="transaction.txid"
-          :transaction="transaction" :highlight-address="id"></QtumTransaction>
-        <nav class="pagination" v-if="pages > 1">
-          <a class="pagination-previous" @click="previousPage" :disabled="currentPage === 0">Previous</a>
-          <a class="pagination-next" @click="nextPage" :disabled="currentPage >= pages - 1">Next</a>
-        </nav>
+        <Pagination v-if="pages > 1" :pages="pages" :current-page="currentPage"
+          @page="jumpToPage"></Pagination>
+        <Transaction v-for="transaction in transactions" :key="transaction.txid"
+          :transaction="transaction" :highlight-address="id"></Transaction>
+        <Pagination v-if="pages > 1" :pages="pages" :current-page="currentPage"
+          @page="page => jumpToPage(page, true)"></Pagination>
       </div>
     </div>
   </section>
@@ -82,7 +74,6 @@
   import Contract from '@/models/contract'
   import Transaction from '@/models/transaction'
   import {RequestError} from '@/services/qtuminfo-api'
-  import QtumTransaction from '@/components/transaction.vue'
 
   export default {
     head() {
@@ -157,14 +148,13 @@
         this.transactions = await Promise.all(transactions.map(Transaction.get))
         this.currentPage = page
       },
-      previousPage() {
-        this.query(this.currentPage - 1)
-      },
-      nextPage() {
-        this.query(this.currentPage + 1)
+      async jumpToPage(page, scroll) {
+        await this.query(page)
+        if (scroll) {
+          this.$refs['transaction-list'].scrollIntoView()
+        }
       }
-    },
-    components: {QtumTransaction}
+    }
   }
 </script>
 
