@@ -104,8 +104,12 @@
     },
     async asyncData({params, error}) {
       try {
-        let contract = await Contract.get(params.id, {from: 0, to: 20})
-        contract.transactions = await Promise.all(contract.transactions.map(Transaction.get))
+        let contract = await Contract.get(params.id)
+        let {totalCount, transactions} = await Contract.getTransactions(
+          params.id,
+          {from: 0, to: 20}
+        )
+        transactions = await Promise.all(transactions.map(Transaction.get))
         return {
           txid: contract.txid,
           owner: contract.owner,
@@ -114,8 +118,8 @@
           balance: contract.balance,
           totalReceived: contract.totalReceived,
           totalSent: contract.totalSent,
-          totalCount: contract.totalCount,
-          transactions: contract.transactions
+          totalCount,
+          transactions
         }
       } catch (err) {
         if (err instanceof RequestError) {

@@ -109,7 +109,11 @@
     async asyncData({params, error}) {
       try {
         let address = await Address.get(params.id, {from: 0, to: 20})
-        address.transactions = await Promise.all(address.transactions.map(Transaction.get))
+        let {totalCount, transactions} = await Address.getTransactions(
+          params.id,
+          {from: 0, to: 20}
+        )
+        transactions = await Promise.all(transactions.map(Transaction.get))
         return {
           balance: address.balance,
           totalReceived: address.totalReceived,
@@ -117,8 +121,8 @@
           unconfirmedBalance: address.unconfirmedBalance,
           stakingBalance: address.stakingBalance,
           tokenBalances: address.tokenBalances,
-          totalCount: address.totalCount,
-          transactions: address.transactions
+          totalCount,
+          transactions
         }
       } catch (err) {
         if (err instanceof RequestError) {
