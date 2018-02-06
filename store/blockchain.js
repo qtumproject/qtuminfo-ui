@@ -8,5 +8,6 @@ export const mutations = {
   },
   block(state, block) {
     block.txLength = block.tx.length
-  }
+  },
+  transaction(state, transaction) {}
 }

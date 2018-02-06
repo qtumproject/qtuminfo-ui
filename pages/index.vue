@@ -49,6 +49,16 @@
               {{ $tc('blockchain.transaction', 2) }}
             </h3>
           </div>
+          <div class="card-body">
+            <div v-for="transaction in recentTransactions" :key="transaction.id" class="is-size-7 transaction">
+              <div class="level">
+                <nuxt-link :to="'/tx/' + transaction.id" class="level-left">
+                  {{ transaction.id }}
+                </nuxt-link>
+                <span class="level-right">{{ transaction.valueOut | qtum }} QTUM</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -74,15 +84,22 @@
     },
     mounted() {
       this.$websocket.send({type: 'subscribe', data: 'block'})
+      this.$websocket.send({type: 'subscribe', data: 'transaction'})
       this.$store.subscribe((mutation, state) => {
         if (mutation.type === 'blockchain/block') {
           this.recentBlocks.unshift(mutation.payload)
           this.recentBlocks.pop()
+        } else if (mutation.type === 'blockchain/transaction') {
+          this.recentTransactions.unshift(mutation.payload)
+          if (this.recentTransactions.length > 30) {
+            this.recentTransactions.pop()
+          }
         }
       })
     },
     beforeDestroy() {
       this.$websocket.send({type: 'unsubscribe', data: 'block'})
+      this.$websocket.send({type: 'unsubscribe', data: 'transaction'})
     }
   }
 </script>
@@ -114,5 +131,14 @@
     &:hover {
       outline: 1px solid #3273dc;
     }
+  }
+
+  .transaction {
+    padding: 0.5em 1em;
+    border-top: 1px solid #eee;
+    &:first-child {
+      border-top: none;
+    }
+    font-family: monospace;
   }
 </style>
