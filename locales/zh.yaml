@@ -8,8 +8,7 @@ blockchain:
 block:
   brief:
     address: 由 {0} 挖出
-    transaction: '{0} 条交易'
-    duration: 用时 {0} 秒
+    transaction: '用时 {1} 秒，包含 {0} 条交易'
     reward: 区块奖励 {0} QTUM
   summary: 区块信息
   block_height: 区块高度
@@ -20,7 +19,7 @@ block:
   timestamp: 时间戳
   block_reward: 区块奖励
   difficulty: 难度值
-  merkle_root: Merkle 树根
+  merkle_root: Merkle 树
   mined_by: 挖矿地址
   transactions: 交易数
   previous_block: 上一区块
@@ -37,6 +36,13 @@ transaction:
   timestamp: 时间戳
   confirmation: 确认数
   transaction_fee: 交易手续费
+  coinbase_input: Coinbase 交易输入
+  unparsed_address: 无法解析的地址
+  utxo:
+    type: 类型
+    script: 脚本
+    contract_create: 合约创建
+    contract_call: 合约调用
 address:
   summary: 账户信息
   address: 账户地址

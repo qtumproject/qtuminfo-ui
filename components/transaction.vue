@@ -19,16 +19,17 @@
       </div>
     </div>
     <div class="column is-clearfix collapse">
-      <template v-if="inputs[0].address">
+      <template v-if="inputs[0].coinbase">{{ $t('transaction.coinbase_input') }}</template>
+      <template v-else>
         <div v-for="input in inputs" class="is-clearfix">
-          <AddressLink :address="input.address" class="pull-left"
+          <AddressLink v-if="input.address" :address="input.address" class="pull-left"
             :highlight="input.address === highlightAddress"></AddressLink>
+          <span v-else class="pull-left">{{ $t('transaction.unparsed_address' )}}</span>
           <span class="pull-right amount">
             {{ input.value | qtum(8) }} QTUM
           </span>
         </div>
       </template>
-      <template v-else>Newly Generated Coins</template>
     </div>
     <Icon icon="arrow-right" class="column arrow collapse"></Icon>
     <div class="column is-half collapse">
@@ -36,12 +37,12 @@
         <div v-for="output in outputs" class="is-clearfix">
           <AddressLink v-if="output.address" :address="output.address" class="pull-left"
             :highlight="output.address === highlightAddress"></AddressLink>
-          <span v-else class="pull-left">Unparsed Address</span>
+          <span v-else class="pull-left">{{ $t('transaction.unparsed_address' )}}</span>
           <span class="pull-right amount" v-if="output.value">
             {{ output.value | qtum(8) }} QTUM
           </span>
           <span class="pull-right" v-else-if="contractInfo">
-            Contract {{ contractInfo.type[0].toUpperCase() + contractInfo.type.slice(1) }}
+            {{ $t('transaction.utxo.contract_' + contractInfo.type) }}
           </span>
         </div>
       </template>
@@ -49,21 +50,21 @@
         <div v-for="output in outputs" class="is-clearfix">
           <AddressLink v-if="output.address" :address="output.address" class="pull-left"
             :highlight="output.address === highlightAddress"></AddressLink>
-          <span v-else class="pull-left">Unparsed Address</span>
+          <span v-else class="pull-left">{{ $t('transaction.unparsed_address' )}}</span>
           <span class="pull-right amount" v-if="output.value">
             {{ output.value | qtum(8) }} QTUM
           </span>
           <span class="pull-right" v-else-if="contractInfo">
-            Contract {{ contractInfo.type[0].toUpperCase() + contractInfo.type.slice(1) }}
+            {{ $t('transaction.utxo.contract_' + contractInfo.type) }}
           </span>
           <div class="is-clearfix"></div>
           <div class="output-script">
             <div>
-              <span class="key">Type</span>
+              <span class="key">{{ $t('transaction.utxo.type') }}</span>
               <span class="value">{{ output.scriptPubKey.type }}</span>
             </div>
             <div v-if="output.scriptPubKey.asm">
-              <span class="key">Script</span>
+              <span class="key">{{ $t('transaction.utxo.script') }}</span>
               <code class="value">{{ output.scriptPubKey.asm | qtum-script }}</code>
             </div>
           </div>

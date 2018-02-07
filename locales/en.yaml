@@ -8,8 +8,7 @@ blockchain:
 block:
   brief:
     address: Mined by {0}
-    transaction: '{0} transactions'
-    duration: in {0} secs
+    transaction: '{0} transactions in {1} secs'
     reward: Block Reward {0} QTUM
   summary: Block Summary
   block_height: Block Height
@@ -37,6 +36,13 @@ transaction:
   timestamp: Timestamp
   confirmation: Confirmations
   transaction_fee: Transaction Fee
+  coinbase_input: Coinbase Input
+  unparsed_address: Unparsed Address
+  utxo:
+    type: Type
+    script: Script
+    contract_create: Contract Create
+    contract_call: Contract Call
 address:
   summary: Address
   address: Address

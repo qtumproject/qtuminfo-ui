@@ -26,8 +26,7 @@
                         <AddressLink :address="block.minedBy"></AddressLink>
                       </i18n>
                       <br>
-                      {{ $t('block.brief.transaction', [block.txLength]) }}
-                      {{ $t('block.brief.duration', [block.duration]) }}
+                      {{ $t('block.brief.transaction', [block.txLength, block.duration]) }}
                       <br>
                       {{ $t('block.brief.reward', [$printAmount(block.reward)]) }}
                     </div>
