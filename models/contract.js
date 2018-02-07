@@ -1,8 +1,8 @@
 import * as QtuminfoAPI from '@/services/qtuminfo-api'
 
 class Contract {
-  static get(hash, params = {}) {
-    return QtuminfoAPI.get(`/contract/${hash}`, {params})
+  static get(hash) {
+    return QtuminfoAPI.get(`/contract/${hash}`)
   }
 
   static getUtxo(hash) {

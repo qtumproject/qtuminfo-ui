@@ -1,8 +1,8 @@
 import * as QtuminfoAPI from '@/services/qtuminfo-api'
 
 class Address {
-  static get(hash, params = {}) {
-    return QtuminfoAPI.get(`/address/${hash}`, {params})
+  static get(hash) {
+    return QtuminfoAPI.get(`/address/${hash}`)
   }
 
   static getUtxo(hash) {

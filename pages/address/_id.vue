@@ -95,7 +95,7 @@
     },
     async asyncData({params, error}) {
       try {
-        let address = await Address.get(params.id, {from: 0, to: 20})
+        let address = await Address.get(params.id)
         let {totalCount, transactions} = await Address.getTransactions(
           params.id,
           {from: 0, to: 20}
