@@ -1,6 +1,6 @@
 <template>
   <span>
-    <AttributeInjector class="break-word">
+    <AttributeInjector class="break-word monospace">
       <span v-if="highlight">
         <slot>
           {{ address }}

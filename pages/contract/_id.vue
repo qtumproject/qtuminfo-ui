@@ -27,22 +27,22 @@
           </div>
           <div class="columns">
             <div class="column info-title">{{ $t('contract.token.total_supply') }}</div>
-            <div class="column info-value">
+            <div class="column info-value monospace">
               {{ qrc20.totalSupply | qrc20(qrc20.decimals, true) }} {{ qrc20.symbol || 'Tokens' }}
             </div>
           </div>
         </template>
         <div class="columns">
           <div class="column info-title">{{ $t('contract.balance') }}</div>
-          <div class="column info-value">{{ balance | qtum }} QTUM</div>
+          <div class="column info-value monospace">{{ balance | qtum }} QTUM</div>
         </div>
         <div class="columns">
           <div class="column info-title">{{ $t('contract.total_received') }}</div>
-          <div class="column info-value">{{ totalReceived | qtum }} QTUM</div>
+          <div class="column info-value monospace">{{ totalReceived | qtum }} QTUM</div>
         </div>
         <div class="columns">
           <div class="column info-title">{{ $t('contract.total_sent') }}</div>
-          <div class="column info-value">{{ totalSent | qtum }} QTUM</div>
+          <div class="column info-value monospace">{{ totalSent | qtum }} QTUM</div>
         </div>
         <div class="columns">
           <div class="column info-title">{{ $t('contract.transaction_count') }}</div>

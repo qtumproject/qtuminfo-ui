@@ -14,7 +14,7 @@
         </div>
         <div class="columns">
           <div class="column info-title">{{ $t('address.balance') }}</div>
-          <div class="column info-value">
+          <div class="column info-value monospace">
             {{ balance | qtum }} QTUM
             <span v-if="unconfirmedBalance !== '0' && stakingBalance !== '0'">
               ({{ unconfirmedBalance | qtum }} QTUM {{ $t('address.unconfirmed') }},
@@ -30,16 +30,16 @@
         </div>
         <div class="columns">
           <div class="column info-title">{{ $t('address.total_received') }}</div>
-          <div class="column info-value">{{ totalReceived | qtum }} QTUM</div>
+          <div class="column info-value monospace">{{ totalReceived | qtum }} QTUM</div>
         </div>
         <div class="columns">
           <div class="column info-title">{{ $t('address.total_sent') }}</div>
-          <div class="column info-value">{{ totalSent | qtum }} QTUM</div>
+          <div class="column info-value monospace">{{ totalSent | qtum }} QTUM</div>
         </div>
         <div class="columns" v-if="tokenBalances.length">
           <div class="column info-title">{{ $t('address.token_balances') }}</div>
           <div class="column info-value">
-            <div v-for="token in tokenBalances">
+            <div v-for="token in tokenBalances" class="monospace">
               {{ token.balance | qrc20(token.decimals) }}
               <AddressLink :address="token.address">{{ token.symbol || 'Tokens' }}</AddressLink>
             </div>

@@ -1,6 +1,6 @@
 <template>
   <span>
-    <nuxt-link :to="'/tx/' + transaction" class="break-word">
+    <nuxt-link :to="'/tx/' + transaction" class="break-word monospace">
       {{ transaction }}
     </nuxt-link>
     <Clipboard :string="transaction"></Clipboard>

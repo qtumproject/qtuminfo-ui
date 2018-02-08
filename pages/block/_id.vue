@@ -14,7 +14,7 @@
         </div>
         <div class="columns">
           <div class="column info-title">{{ $t('block.block_hash') }}</div>
-          <div class="column info-value">{{ hash }}</div>
+          <div class="column info-value monospace">{{ hash }}</div>
         </div>
         <div class="columns">
           <div class="column info-title">{{ $t('block.block_size') }}</div>
@@ -32,7 +32,7 @@
         </div>
         <div class="columns">
           <div class="column info-title">{{ $t('block.block_reward') }}</div>
-          <div class="column info-value">{{ reward | qtum }} QTUM</div>
+          <div class="column info-value monospace">{{ reward | qtum }} QTUM</div>
         </div>
         <div class="columns">
           <div class="column info-title">{{ $t('block.difficulty') }}</div>
@@ -40,7 +40,7 @@
         </div>
         <div class="columns">
           <div class="column info-title">{{ $t('block.merkle_root') }}</div>
-          <div class="column info-value">{{ merkleRoot }}</div>
+          <div class="column info-value monospace">{{ merkleRoot }}</div>
         </div>
         <div class="columns" v-if="minedBy">
           <div class="column info-title">{{ $t('block.mined_by') }}</div>

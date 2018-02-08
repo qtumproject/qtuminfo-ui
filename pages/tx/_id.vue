@@ -10,11 +10,11 @@
       <div class="card-body info-table">
         <div class="columns">
           <div class="column info-title">{{ $t('transaction.transaction_id') }}</div>
-          <div class="column info-value">{{ id }}</div>
+          <div class="column info-value monospace">{{ id }}</div>
         </div>
         <div class="columns" v-if="id !== hash">
           <div class="column info-title">{{ $t('transaction.transaction_hash') }}</div>
-          <div class="column info-value">{{ hash }}</div>
+          <div class="column info-value monospace">{{ hash }}</div>
         </div>
         <div class="columns" v-if="block">
           <div class="column info-title">{{ $t('transaction.included_in_block') }}</div>
@@ -40,7 +40,7 @@
         </div>
         <div class="columns" v-if="fees > 0">
           <div class="column info-title">{{ $t('transaction.transaction_fee') }}</div>
-          <div class="column info-value">{{ fees | qtum }} QTUM</div>
+          <div class="column info-value monospace">{{ fees | qtum }} QTUM</div>
         </div>
 
         <Transaction :transaction="{
