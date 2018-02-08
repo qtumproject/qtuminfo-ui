@@ -62,7 +62,9 @@
         <Pagination v-if="pages > 1" :pages="pages" :current-page="currentPage"
           @page="jumpToPage"></Pagination>
         <Transaction v-for="transaction in transactions" :key="transaction.txid"
-          :transaction="transaction" :highlight-address="id"></Transaction>
+          :transaction="transaction" :highlight-address="id"
+          @transaction-change="tx => transactionChange(transaction, tx)"
+          ></Transaction>
         <Pagination v-if="pages > 1" :pages="pages" :current-page="currentPage"
           @page="page => jumpToPage(page, true)"></Pagination>
       </div>
@@ -71,6 +73,7 @@
 </template>
 
 <script>
+  import Vue from 'vue'
   import Contract from '@/models/contract'
   import Transaction from '@/models/transaction'
   import {RequestError} from '@/services/qtuminfo-api'
@@ -153,6 +156,11 @@
         if (scroll) {
           this.$refs['transaction-list'].scrollIntoView()
         }
+      },
+      transactionChange(oldTransaction, newTransaction) {
+        Vue.set(oldTransaction, 'blockHeight', newTransaction.block.height)
+        Vue.set(oldTransaction, 'blockHash', newTransaction.block.hash)
+        oldTransaction.tokenTransfers = newTransaction.tokenTransfers
       }
     }
   }

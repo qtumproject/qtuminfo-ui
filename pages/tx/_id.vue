@@ -19,8 +19,8 @@
         <div class="columns" v-if="block">
           <div class="column info-title">{{ $t('transaction.included_in_block') }}</div>
           <div class="column info-value">
-            <nuxt-link :to="'/block/' + blockHeight">
-              {{ blockHeight }} ({{ block.hash }})
+            <nuxt-link :to="'/block/' + block.height">
+              {{ block.height }} ({{ block.hash }})
             </nuxt-link>
           </div>
         </div>
@@ -28,10 +28,10 @@
           <div class="column info-title">{{ $t('transaction.transaction_size') }}</div>
           <div class="column info-value">{{ size.toLocaleString() }} bytes</div>
         </div>
-        <div class="columns" v-if="timestamp">
+        <div class="columns" v-if="block">
           <div class="column info-title">{{ $t('transaction.timestamp') }}</div>
           <div class="column info-value">
-            <FromNow :timestamp="timestamp"></FromNow> ({{ timestamp | timestamp }})
+            <FromNow :timestamp="block.timestamp"></FromNow> ({{ block.timestamp | timestamp }})
           </div>
         </div>
         <div class="columns">
@@ -43,9 +43,13 @@
           <div class="column info-value monospace">{{ fees | qtum }} QTUM</div>
         </div>
 
-        <Transaction :transaction="{
-          txid: id, blockHeight, timestamp, vin, vout, fees, tokenTransfers
-        }"></Transaction>
+        <Transaction
+          :transaction="{
+            txid: id, blockHeight: block && block.height, timestamp: block && block.timestamp,
+            vin, vout, fees, tokenTransfers
+          }"
+          @transaction-change="refresh"
+        ></Transaction>
       </div>
     </div>
   </section>
@@ -62,10 +66,8 @@
     },
     data() {
       return {
-        blockHeight: null,
         block: null,
         hash: '',
-        timestamp: 0,
         size: 0,
         isCoinbase: false,
         fees: 0,
@@ -79,13 +81,10 @@
         let transaction = await Transaction.get(params.id)
         let block = null
         if (transaction.blockHeight != null) {
-          let blockHash = await Block.getHash(transaction.blockHeight)
-          block = await Block.get(blockHash)
+          block = await Block.get(transaction.blockHash)
         }
         return {
-          blockHeight: transaction.blockHeight,
           hash: transaction.hash,
-          timestamp: transaction.timestamp,
           size: transaction.size,
           isCoinbase: transaction.isCoinbase,
           fees: transaction.fees,
@@ -114,21 +113,15 @@
         return this.$store.state.blockchain
       },
       confirmations() {
-        return this.blockHeight == null ? 0 : this.blockchain.height - this.blockHeight + 1
+        return this.block ? this.blockchain.height - this.block.height + 1 : 0
       }
     },
-    mounted() {
-      this.$websocket.send({type: 'subscribe', data: 'block'})
-      this.$websocket.on('block', block => {
-        if (block.tx.includes(this._id)) {
-          this.blockHeight = block.height
-          this.timestamp = block.header.timestamp
-          this.block = block
-        }
-      })
-    },
-    beforeDestroy() {
-      this.$websocket.send({type: 'subscribe', data: 'block'})
+    methods: {
+      async refresh(transaction) {
+        this.block = transaction.block
+        this.timestamp = transaction.block.timestamp
+        this.tokenTransfers = transaction.tokenTransfers
+      }
     }
   }
 </script>

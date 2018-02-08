@@ -15,7 +15,9 @@
           {{ confirmations }} {{ $tc('transaction.confirmations', confirmations) }}
         </span>
         <span v-else class="tag is-danger">{{ $t('transaction.unconfirmed') }}</span>
-        <span v-if="transaction.timestamp" class="timestamp">{{ transaction.timestamp | timestamp }}</span>
+        <span v-if="transaction.timestamp" class="timestamp">
+          {{ transaction.timestamp | timestamp }}
+        </span>
       </div>
     </div>
     <div class="column is-clearfix collapse">
@@ -193,7 +195,25 @@
           return asm
         }
       }
-    }
+    },
+    mounted() {
+      if (this.transaction.confirmations) {
+        return
+      }
+      this.$websocket.subscribe('transaction/' + this.id)
+      this.$options.subscribing = true
+      this.$websocket.on('transaction/' + this.id, transaction => {
+        this.$emit('transaction-change', transaction)
+        this.$websocket.unsubscribe('transaction/' + this.id)
+        this.$options.subscribing = false
+      })
+    },
+    beforeDestroy() {
+      if (this.$options.subscribing) {
+        this.$websocket.unsubscribe('transaction/' + this.id)
+      }
+    },
+    subscribing: false
   }
 </script>
 

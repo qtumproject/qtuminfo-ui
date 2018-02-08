@@ -5,9 +5,5 @@ export const state = () => ({
 export const mutations = {
   height(state, height) {
     state.height = height
-  },
-  block(state, block) {
-    block.txLength = block.tx.length
-  },
-  transaction(state, transaction) {}
+  }
 }

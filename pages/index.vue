@@ -84,23 +84,23 @@
       return {recentBlocks}
     },
     mounted() {
-      this.$websocket.send({type: 'subscribe', data: 'block'})
-      this.$websocket.send({type: 'subscribe', data: 'transaction'})
-      this.$store.subscribe((mutation, state) => {
-        if (mutation.type === 'blockchain/block') {
-          this.recentBlocks.unshift(mutation.payload)
-          this.recentBlocks.pop()
-        } else if (mutation.type === 'blockchain/transaction') {
-          this.recentTransactions.unshift(mutation.payload)
-          if (this.recentTransactions.length > 30) {
-            this.recentTransactions.pop()
-          }
+      this.$websocket.subscribe('block')
+      this.$websocket.subscribe('mempool/transaction')
+      this.$websocket.on('block', block => {
+        block.txLength = block.tx.length
+        this.recentBlocks.unshift(block)
+        this.recentBlocks.pop()
+      })
+      this.$websocket.on('mempool/transaction', transaction => {
+        this.recentTransactions.unshift(transaction)
+        if (this.recentTransactions.length > 30) {
+          this.recentTransactions.pop()
         }
       })
     },
     beforeDestroy() {
-      this.$websocket.send({type: 'unsubscribe', data: 'block'})
-      this.$websocket.send({type: 'unsubscribe', data: 'transaction'})
+      this.$websocket.unsubscribe('block')
+      this.$websocket.unsubscribe('mempool/transaction')
     }
   }
 </script>

@@ -5,6 +5,7 @@ class WS {
     this._threshold = 20000
     this._lastActiveTime = Date.now()
     this._uri = uri
+    this._subscriptions = {}
     this._connection = null
     this.connect()
     this._timer = setInterval(() => {
@@ -83,6 +84,24 @@ class WS {
       for (let callback of this._eventHandlers[event]) {
         callback(data, origin)
       }
+    }
+  }
+
+  subscribe(event) {
+    if (this._subscriptions[event]) {
+      ++this._subscriptions[event]
+    } else {
+      this.send({type: 'subscribe', data: event})
+      this._subscriptions[event] = 1
+    }
+  }
+
+  unsubscribe(event) {
+    if (!this._subscriptions[event]) {
+      return
+    }
+    if (--this._subscriptions[event] === 0) {
+      this.send({type: 'unsubscribe', data: event})
     }
   }
 }
