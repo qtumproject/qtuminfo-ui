@@ -17,7 +17,6 @@
                 <div class="level-left">
                   <nuxt-link :to="'/block/' + block.height" class="level-item qtum-block-box has-text-centered">
                     {{ $tc('blockchain.block', 1) }} #{{ block.height }}
-                    <br>
                     <FromNow :timestamp="block.timestamp"></FromNow>
                   </nuxt-link>
                   <div class="level-item">
@@ -124,7 +123,7 @@
   }
 
   .qtum-block-box {
-    display: inline-block;
+    flex-direction: column;
     min-width: 11em;
     padding: 1em;
     background-color: #eee;
