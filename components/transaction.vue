@@ -11,7 +11,7 @@
       </div>
       <div class="pull-right">
         <span v-if="confirmations"
-          class="tag" :class="confirmations >= 6 ? 'is-success' : 'is-warning'">
+          class="tag" :class="confirmations >= 10 ? 'is-success' : 'confirmation-' + confirmations">
           {{ confirmations }} {{ $tc('transaction.confirmations', confirmations) }}
         </span>
         <span v-else class="tag is-danger">{{ $t('transaction.unconfirmed') }}</span>
@@ -253,6 +253,40 @@
 
   .tag, .timestamp {
     margin-left: 1em;
+  }
+
+  .confirmation-1 {
+    background-color: #fa4035;
+    color: white;
+  }
+  .confirmation-2 {
+    background-color: #f56f33;
+    color: white;
+  }
+  .confirmation-3 {
+    background-color: #f19d31;
+    color: white;
+  }
+  .confirmation-4 {
+    background-color: #ecca2f;
+  }
+  .confirmation-5 {
+    background-color: #dae72c;
+  }
+  .confirmation-6 {
+    background-color: #a6e32a;
+  }
+  .confirmation-7 {
+    background-color: #74de28;
+    color: white;
+  }
+  .confirmation-8 {
+    background-color: #43da26;
+    color: white;
+  }
+  .confirmation-9 {
+    background-color: #24d535;
+    color: white;
   }
 
   .output-script {
