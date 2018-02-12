@@ -92,7 +92,7 @@
       })
       this.$websocket.on('mempool/transaction', transaction => {
         this.recentTransactions.unshift(transaction)
-        if (this.recentTransactions.length > 30) {
+        if (this.recentTransactions.length > 27) {
           this.recentTransactions.pop()
         }
       })
@@ -107,11 +107,6 @@
 <style lang="less" scoped>
   .columns.is-desktop {
     margin: 0;
-  }
-
-  .card-body {
-    height: 30em;
-    overflow: auto;
   }
 
   .qtum-block {

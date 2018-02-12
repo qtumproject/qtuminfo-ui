@@ -9,7 +9,8 @@ module.exports = {
   },
   css: [
     'bulma/css/bulma.css',
-    'font-awesome/css/font-awesome.css'
+    'font-awesome/css/font-awesome.css',
+    '@/icons/style.css'
   ],
   render: {
     bundleRenderer: {
