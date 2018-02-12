@@ -1,7 +1,9 @@
 <template>
   <nav class="navbar">
     <div class="navbar-brand is-size-4">
-      <nuxt-link to="/" class="navbar-item">qtum.info</nuxt-link>
+      <nuxt-link to="/" class="navbar-item navbar-logo">
+        <span class="qtum-icon qtum-icon--qtum"></span> qtum.info
+      </nuxt-link>
       <button type="button" class="button navbar-burger" @click="showMenu = !showMenu">
         <span></span><span></span><span></span>
       </button>
@@ -81,6 +83,16 @@
 </script>
 
 <style lang="less" scoped>
+  .navbar {
+    padding-left: 1em;
+    padding-right: 1em;
+  }
+  .navbar-logo {
+    display: inline-block;
+    .qtum-icon {
+      vertical-align: middle;
+    }
+  }
   .navbar-end {
     flex: auto;
     align-items: center;
