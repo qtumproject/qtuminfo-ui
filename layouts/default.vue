@@ -30,6 +30,6 @@
     background-color: #f5f6f8;
   }
   .hero-body {
-    padding-top: 1rem;
+    padding: 1rem 0;
   }
 </style>

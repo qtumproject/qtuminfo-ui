@@ -83,10 +83,6 @@
 </script>
 
 <style lang="less" scoped>
-  .navbar {
-    padding-left: 1em;
-    padding-right: 1em;
-  }
   .navbar-logo {
     display: inline-block;
     .qtum-icon {
