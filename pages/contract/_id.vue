@@ -44,6 +44,15 @@
           <div class="column info-title">{{ $t('contract.total_sent') }}</div>
           <div class="column info-value monospace">{{ totalSent | qtum }} QTUM</div>
         </div>
+        <div class="columns" v-if="tokenBalances.length">
+          <div class="column info-title">{{ $t('address.token_balances') }}</div>
+          <div class="column info-value">
+            <div v-for="token in tokenBalances" class="monospace">
+              {{ token.balance | qrc20(token.decimals) }}
+              <AddressLink :address="token.address">{{ token.symbol || 'Tokens' }}</AddressLink>
+            </div>
+          </div>
+        </div>
         <div class="columns">
           <div class="column info-title">{{ $t('contract.transaction_count') }}</div>
           <div class="column info-value">{{ totalCount }}</div>
@@ -91,6 +100,7 @@
         balance: '0',
         totalReceived: '0',
         totalSent: '0',
+        tokenBalances: [],
         totalCount: 0,
         transactions: [],
         currentPage: 0
@@ -112,6 +122,7 @@
           balance: contract.balance,
           totalReceived: contract.totalReceived,
           totalSent: contract.totalSent,
+          tokenBalances: contract.tokenBalances,
           totalCount,
           transactions
         }
