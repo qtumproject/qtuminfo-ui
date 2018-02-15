@@ -10,12 +10,17 @@
     </div>
     <div class="navbar-menu" :class="{'is-active': showMenu}">
       <div class="navbar-start is-uppercase">
-        <nuxt-link to="/" class="navbar-item" @click.native="showMenu = !showMenu">
-          {{ $t('blockchain.blockchain') }}
-        </nuxt-link>
-        <nuxt-link to="/" class="navbar-item" @click.native="showMenu = !showMenu">
-          {{ $tc('blockchain.token') }}
-        </nuxt-link>
+        <AttributeInjector class="navbar-item" @click.native="showMenu = !showMenu">
+          <nuxt-link to="/">
+            {{ $t('blockchain.blockchain') }}
+          </nuxt-link>
+          <nuxt-link to="/">
+            {{ $tc('blockchain.token') }}
+          </nuxt-link>
+          <nuxt-link to="/misc/rich-list">
+            Rich List
+          </nuxt-link>
+        </AttributeInjector>
       </div>
       <form class="navbar-end" @submit.prevent="search">
         <div class="navbar-item input-item">

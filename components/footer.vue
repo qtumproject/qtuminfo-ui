@@ -27,7 +27,7 @@
         </li>
       </ul>
       <div class="copyright">
-        2017 QTUM Project &copy; All rights Reserved
+        2018 QTUM Project &copy; All rights Reserved
       </div>
     </div>
   </footer>

@@ -7,7 +7,7 @@
           qtum.info
         </nuxt-link>
       </li>
-      <li v-for="({name}, index) in breadcrumbs" :class="{'is-active': index === breadcrumbs.length - 1}">
+      <li v-for="({name}, index) in breadcrumbs">
         <nuxt-link :to="{name, params: $route.params}">
           <component :is='name' v-bind="$route.params"></component>
         </nuxt-link>
@@ -21,6 +21,7 @@
   import BlockId from './block-id'
   import ContractId from './contract-id'
   import TxId from './tx-id'
+  import RichList from './misc/rich-list'
 
   export default {
     computed: {
@@ -36,7 +37,9 @@
       'address-id': AddressId,
       'block-id': BlockId,
       'contract-id': ContractId,
-      'tx-id': TxId
+      'tx-id': TxId,
+      'misc': {functional: true, render: () => 'Misc'},
+      'misc-rich-list': RichList
     }
   }
 </script>
