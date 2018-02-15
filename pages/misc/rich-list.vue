@@ -8,7 +8,7 @@
         <div class="card-header-title">Rich List</div>
       </div>
       <div class="card-body">
-        <table class="table">
+        <table class="table is-fullwidth is-striped">
           <thead>
             <tr>
               <th>Rank</th>
@@ -23,8 +23,8 @@
               <td>
                 <AddressLink :address="address" copyable></AddressLink>
               </td>
-              <td>{{ balance | qtum(8) }} QTUM</td>
-              <td>{{ (balance / totalSupply * 100).toFixed(4) + '%' }}</td>
+              <td class="monospace">{{ balance | qtum(8) }} QTUM</td>
+              <td class="monospace">{{ (balance / totalSupply * 100).toFixed(4) + '%' }}</td>
             </tr>
           </tbody>
         </table>
@@ -71,7 +71,7 @@
 
 <style lang="less" src="@/styles/card.less"></style>
 <style scoped>
-  .table {
-    width: 100%;
+  .card-body {
+    overflow-x: auto;
   }
 </style>
