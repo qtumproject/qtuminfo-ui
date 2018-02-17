@@ -53,7 +53,16 @@
         return this.$store.state.blockchain
       },
       totalSupply() {
-        return (this.blockchain.height * 4 + 1e8) * 1e8
+        let supply = 1e16
+        let reward = 4e8
+        let height = this.blockchain.height
+        let interval = 985500
+        while (height >= interval && reward) {
+          supply += reward * interval
+          height -= interval
+          reward >>>= 1
+        }
+        return supply + height * reward
       }
     }
   }
