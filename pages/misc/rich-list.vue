@@ -1,35 +1,25 @@
 <template>
   <section class="container">
-    <div class="card section-card">
-      <div class="card-header">
-        <div class="card-header-icon">
-          <Icon icon="info" fixed-width></Icon>
-        </div>
-        <div class="card-header-title">Rich List</div>
-      </div>
-      <div class="card-body">
-        <table class="table is-fullwidth is-striped">
-          <thead>
-            <tr>
-              <th>Rank</th>
-              <th>Address</th>
-              <th>Balance</th>
-              <th>Percentage</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="({address, balance}, index) of list">
-              <td>{{ index + 1 }}</td>
-              <td>
-                <AddressLink :address="address" copyable></AddressLink>
-              </td>
-              <td class="monospace">{{ balance | qtum(8) }} QTUM</td>
-              <td class="monospace">{{ (balance / totalSupply * 100).toFixed(4) + '%' }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+    <table class="table is-fullwidth is-bordered is-striped">
+      <thead>
+        <tr>
+          <th>{{ $t('misc.rank') }}</th>
+          <th>{{ $t('misc.address') }}</th>
+          <th>{{ $t('misc.balance') }}</th>
+          <th>{{ $t('misc.percentage') }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="({address, balance}, index) of list">
+          <td>{{ index + 1 }}</td>
+          <td>
+            <AddressLink :address="address" copyable></AddressLink>
+          </td>
+          <td class="monospace break-word">{{ balance | qtum(8) }} QTUM</td>
+          <td class="monospace">{{ (balance / totalSupply * 100).toFixed(4) + '%' }}</td>
+        </tr>
+      </tbody>
+    </table>
   </section>
 </template>
 
@@ -70,8 +60,3 @@
 </script>
 
 <style lang="less" src="@/styles/card.less"></style>
-<style scoped>
-  .card-body {
-    overflow-x: auto;
-  }
-</style>

@@ -4,8 +4,8 @@ export default {
   functional: true,
   render(createElement) {
     return [
-      createElement('span', {staticClass: 'qtum-icon qtum-icon--qtum'}),
-      i18n.t('misc.rich_list_title')
+      createElement('Icon', {props: {icon: 'area-chart'}}),
+      i18n.t('blockchain.misc')
     ]
   }
 }

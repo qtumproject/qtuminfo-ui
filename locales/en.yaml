@@ -5,6 +5,7 @@ blockchain:
   transaction: Transaction | Transactions
   contract: Contract | Contracts
   token: Token | Tokens
+  misc: Misc
 block:
   brief:
     address: Mined by {0}
@@ -37,6 +38,8 @@ transaction:
   confirmation: Confirmations
   transaction_fee: Transaction Fee
   coinbase_input: Coinbase Input
+  empty_output: Empty Output
+  op_return_output: OP_RETURN Output
   unparsed_address: Unparsed Address
   utxo:
     type: Type
@@ -67,5 +70,18 @@ contract:
   total_sent: Total Sent
   transaction_count: Transaction Count
   transaction_list: Transaction List
+misc:
+  rich_list_title: Rich List
+  rank: Rank
+  address: Address
+  balance: Balance
+  percentage: Percentage
+nav:
+  search: Search by Block / Transaction / Address / Contract / Token
+footer:
+  contact_us: Contact Us
+  facebook: Facebook
+  twitter: Twitter
+  forum: Forum
 action:
   copy: Copy

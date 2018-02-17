@@ -5,6 +5,7 @@ blockchain:
   transaction: 交易
   contract: 合约
   token: 代币
+  misc: 杂项
 block:
   brief:
     address: 由 {0} 挖出
@@ -37,6 +38,8 @@ transaction:
   confirmation: 确认数
   transaction_fee: 交易手续费
   coinbase_input: Coinbase 交易输入
+  empty_output: 空输出
+  op_return_output: OP_RETURN 输出
   unparsed_address: 无法解析的地址
   utxo:
     type: 类型
@@ -67,5 +70,18 @@ contract:
   total_sent: 转出总计
   transaction_count: 交易数
   transaction_list: 交易列表
+misc:
+  rich_list_title: 富豪榜
+  rank: 排名
+  address: 地址
+  balance: 余额
+  percentage: 占比
+nav:
+  search: 搜索 区块 / 交易 / 地址 / 合约 / 代币
+footer:
+  contact_us: 联系我们
+  facebook: 脸书
+  twitter: 推特
+  forum: 论坛
 action:
   copy: 复制

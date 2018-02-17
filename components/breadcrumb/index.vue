@@ -17,10 +17,12 @@
 </template>
 
 <script>
+  import {i18n} from '@/plugins/i18n'
   import AddressId from './address-id'
   import BlockId from './block-id'
   import ContractId from './contract-id'
   import TxId from './tx-id'
+  import Misc from './misc'
   import RichList from './misc/rich-list'
 
   export default {
@@ -38,7 +40,7 @@
       'block-id': BlockId,
       'contract-id': ContractId,
       'tx-id': TxId,
-      'misc': {functional: true, render: () => 'Misc'},
+      'misc': Misc,
       'misc-rich-list': RichList
     }
   }

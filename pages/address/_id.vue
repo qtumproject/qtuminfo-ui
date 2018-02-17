@@ -3,7 +3,7 @@
     <div class="card section-card">
       <div class="card-header">
         <div class="card-header-icon">
-          <Icon icon="info" fixed-width></Icon>
+          <Icon icon="address-card-o" fixed-width></Icon>
         </div>
         <h3 class="card-header-title">{{ $t('address.summary') }}</h3>
       </div>

@@ -11,21 +11,14 @@
     <div class="navbar-menu" :class="{'is-active': showMenu}">
       <div class="navbar-start is-uppercase">
         <AttributeInjector class="navbar-item" @click.native="showMenu = !showMenu">
-          <nuxt-link to="/">
-            {{ $t('blockchain.blockchain') }}
-          </nuxt-link>
-          <nuxt-link to="/">
-            {{ $tc('blockchain.token') }}
-          </nuxt-link>
-          <nuxt-link to="/misc/rich-list">
-            Rich List
-          </nuxt-link>
+          <nuxt-link to="/">{{ $t('blockchain.blockchain') }}</nuxt-link>
+          <nuxt-link to="/">{{ $tc('blockchain.token') }}</nuxt-link>
+          <nuxt-link to="/misc/rich-list">{{ $t('misc.rich_list_title') }}</nuxt-link>
         </AttributeInjector>
       </div>
       <form class="navbar-end" @submit.prevent="search">
         <div class="navbar-item input-item">
-          <input type="text" class="input" v-model="searchString"
-            placeholder="Search by Block / Address / Transaction">
+          <input type="text" class="input" v-model="searchString" :placeholder="$t('nav.search')">
           <button type="submit" class="button is-primary" :disabled="searching">
             <Icon v-if="searching" icon="spinner pulse"></Icon>
             <Icon v-else icon="search"></Icon>

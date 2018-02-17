@@ -39,6 +39,12 @@
         <div v-for="output in outputs" class="is-clearfix">
           <AddressLink v-if="output.address" :address="output.address" class="pull-left"
             :highlight="output.address === highlightAddress"></AddressLink>
+          <span v-else-if="output.scriptPubKey.type === 'nonstandard'">
+            {{ $t('transaction.empty_output') }}
+          </span>
+          <span v-else-if="output.scriptPubKey.type === 'nulldata'">
+            {{ $t('transaction.op_return_output') }}
+          </span>
           <span v-else class="pull-left">{{ $t('transaction.unparsed_address' )}}</span>
           <span class="pull-right amount" v-if="output.value">
             {{ output.value | qtum(8) }} QTUM
@@ -52,6 +58,12 @@
         <div v-for="output in outputs" class="is-clearfix">
           <AddressLink v-if="output.address" :address="output.address" class="pull-left"
             :highlight="output.address === highlightAddress"></AddressLink>
+          <span v-else-if="output.scriptPubKey.type === 'nonstandard'">
+            {{ $t('transaction.empty_output') }}
+          </span>
+          <span v-else-if="output.scriptPubKey.type === 'nulldata'">
+            {{ $t('transaction.op_return_output') }}
+          </span>
           <span v-else class="pull-left">{{ $t('transaction.unparsed_address' )}}</span>
           <span class="pull-right amount" v-if="output.value">
             {{ output.value | qtum(8) }} QTUM

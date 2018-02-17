@@ -7,7 +7,7 @@ export default {
   },
   render(createElement, {props}) {
     return [
-      createElement('span', {staticClass: 'fa fa-cubes'}),
+      createElement('Icon', {props: {icon: 'cubes'}}),
       createElement('span', {staticClass: 'monospace'}, [i18n.tc('blockchain.block', 1) + ' ' + props.id])
     ]
   }
