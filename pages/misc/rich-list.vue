@@ -1,5 +1,6 @@
 <template>
-  <section class="container">
+  <section class="container" ref="section">
+    <Pagination :pages="100" :current-page="currentPage" @page="jumpToPage"></Pagination>
     <table class="table is-fullwidth is-bordered is-striped">
       <thead>
         <tr>
@@ -11,7 +12,7 @@
       </thead>
       <tbody>
         <tr v-for="({address, balance}, index) of list">
-          <td>{{ index + 1 }}</td>
+          <td>{{ 100 * currentPage + index + 1 }}</td>
           <td>
             <AddressLink :address="address"></AddressLink>
           </td>
@@ -20,6 +21,7 @@
         </tr>
       </tbody>
     </table>
+    <Pagination :pages="100" :current-page="currentPage" @page="jumpToPage"></Pagination>
   </section>
 </template>
 
@@ -33,12 +35,13 @@
     },
     data() {
       return {
-        list: []
+        list: [],
+        currentPage: 0
       }
     },
     async asyncData({error}) {
       try {
-        let list = await Misc.richList()
+        let list = await Misc.richList({from: 0, to: 100})
         return {list}
       } catch (err) {
         if (err instanceof RequestError) {
@@ -68,6 +71,22 @@
         }
         return supply + height * (reward >>> halvings)
       }
+    },
+    methods: {
+      async jumpToPage(page, scroll) {
+        this.list = await Misc.richList({from: page * 100, to: (page + 1) * 100})
+        this.currentPage = page
+        if (scroll) {
+          this.$refs.section.scrollIntoView()
+        }
+      }
     }
   }
 </script>
+
+<style scoped>
+  .table {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+</style>
