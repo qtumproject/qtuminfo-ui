@@ -13,7 +13,7 @@
         <tr v-for="({address, balance}, index) of list">
           <td>{{ index + 1 }}</td>
           <td>
-            <AddressLink :address="address" copyable></AddressLink>
+            <AddressLink :address="address"></AddressLink>
           </td>
           <td class="monospace break-word">{{ balance | qtum(8) }} QTUM</td>
           <td class="monospace">{{ (balance / totalSupply * 100).toFixed(4) + '%' }}</td>
@@ -53,19 +53,21 @@
         return this.$store.state.blockchain
       },
       totalSupply() {
+        let height = this.blockchain.height
+        if (height <= 5000) {
+          return height * 20000
+        }
         let supply = 1e16
         let reward = 4e8
-        let height = this.blockchain.height
         let interval = 985500
-        while (height >= interval && reward) {
-          supply += reward * interval
+        height -= 5000
+        let halvings = 0
+        while (halvings < 7 && height > interval) {
+          supply += interval * (reward >>> halvings++)
           height -= interval
-          reward >>>= 1
         }
-        return supply + height * reward
+        return supply + height * (reward >>> halvings)
       }
     }
   }
 </script>
-
-<style lang="less" src="@/styles/card.less"></style>
