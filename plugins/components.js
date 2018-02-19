@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import AttributeInjector from '@/components/attribute-injector'
 import Icon from '@/components/icon'
-import AddressLink from '@/components/links/address.vue'
-import TransactionLink from '@/components/links/transaction.vue'
+import AddressLink from '@/components/links/address'
+import TransactionLink from '@/components/links/transaction'
 import Pagination from '@/components/pagination.vue'
 import Transaction from '@/components/transaction.vue'
 
