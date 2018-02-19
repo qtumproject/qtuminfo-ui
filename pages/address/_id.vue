@@ -41,7 +41,9 @@
           <div class="column info-value">
             <div v-for="token in tokenBalances" class="monospace">
               {{ token.balance | qrc20(token.decimals) }}
-              <AddressLink :address="token.address">{{ token.symbol || 'Tokens' }}</AddressLink>
+              <AddressLink :address="token.address" :copyable="false">
+                {{ token.symbol || 'Tokens' }}
+              </AddressLink>
             </div>
           </div>
         </div>

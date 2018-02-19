@@ -99,7 +99,9 @@
               :highlight="from === highlightAddress"></AddressLink>
             <span class="pull-right amount">
               {{ amount | qrc20(token.decimals) }}
-              <AddressLink :address="token.address" :highlight="token.address === highlightAddress">
+              <AddressLink :address="token.address"
+                :highlight="token.address === highlightAddress"
+                :copyable="false">
                 {{ token.symbol || 'Tokens' }}
               </AddressLink>
             </span>
@@ -113,7 +115,9 @@
               :highlight="to === highlightAddress"></AddressLink>
             <span class="pull-right amount">
               {{ amount | qrc20(token.decimals) }}
-              <AddressLink :address="token.address" :highlight="token.address === highlightAddress">
+              <AddressLink :address="token.address"
+                :highlight="token.address === highlightAddress"
+                :copyable="false">
                 {{ token.symbol || 'Tokens' }}
               </AddressLink>
             </span>
