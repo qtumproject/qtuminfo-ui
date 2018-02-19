@@ -125,6 +125,3 @@
     }
   }
 </script>
-
-<style lang="less" src="@/styles/card.less"></style>
-<style lang="less" src="@/styles/info-table.less"></style>

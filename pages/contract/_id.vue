@@ -10,11 +10,11 @@
       <div class="card-body info-table">
         <div class="columns">
           <div class="column info-title">{{ $t('contract.address') }}</div>
-          <AddressLink :address="id" class="column info-value" copyable></AddressLink>
+          <AddressLink :address="id" class="column info-value"></AddressLink>
         </div>
-        <div class="columns">
+        <div class="columns" v-if="contract.owner">
           <div class="column info-title">{{ $t('contract.owner') }}</div>
-          <AddressLink :address="owner" class="column info-value" copyable></AddressLink>
+          <AddressLink :address="owner" class="column info-value"></AddressLink>
         </div>
         <div class="columns">
           <div class="column info-title">{{ $t('contract.create_transaction') }}</div>
@@ -177,8 +177,6 @@
   }
 </script>
 
-<style lang="less" src="@/styles/card.less"></style>
-<style lang="less" src="@/styles/info-table.less"></style>
 <style lang="less" scoped>
   .pagination {
     padding: 1em;
