@@ -28,7 +28,8 @@
           <div class="columns">
             <div class="column info-title">{{ $t('contract.token.total_supply') }}</div>
             <div class="column info-value monospace">
-              {{ qrc20.totalSupply | qrc20(qrc20.decimals, true) }} {{ qrc20.symbol || 'Tokens' }}
+              {{ qrc20.totalSupply | qrc20(qrc20.decimals, true) }}
+              {{ qrc20.symbol || $t('contract.token.tokens') }}
             </div>
           </div>
         </template>
@@ -50,7 +51,7 @@
             <div v-for="token in tokenBalances" class="monospace">
               {{ token.balance | qrc20(token.decimals) }}
               <AddressLink :address="token.address":copyable="false">
-                {{ token.symbol || 'Tokens' }}
+                {{ token.symbol || $t('contract.token.tokens') }}
               </AddressLink>
             </div>
           </div>

@@ -102,11 +102,11 @@
               <AddressLink :address="token.address"
                 :highlight="token.address === highlightAddress"
                 :copyable="false">
-                {{ token.symbol || 'Tokens' }}
+                {{ token.symbol || $t('contract.token.tokens') }}
               </AddressLink>
             </span>
           </div>
-          <template v-else>Mint Tokens</template>
+          <template v-else>{{ $t('contract.token.mint_tokens') }}</template>
         </div>
         <Icon icon="arrow-right" class="arrow"></Icon>
         <div class="is-half">
@@ -118,11 +118,11 @@
               <AddressLink :address="token.address"
                 :highlight="token.address === highlightAddress"
                 :copyable="false">
-                {{ token.symbol || 'Tokens' }}
+                {{ token.symbol || $t('contract.token.tokens') }}
               </AddressLink>
             </span>
           </div>
-          <template v-else>Burn Tokens</template>
+          <template v-else>{{ $t('contract.token.burn_tokens') }}</template>
         </div>
       </AttributeInjector>
     </template>

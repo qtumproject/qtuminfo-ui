@@ -42,7 +42,7 @@
             <div v-for="token in tokenBalances" class="monospace">
               {{ token.balance | qrc20(token.decimals) }}
               <AddressLink :address="token.address" :copyable="false">
-                {{ token.symbol || 'Tokens' }}
+                {{ token.symbol || $t('contract.token.tokens') }}
               </AddressLink>
             </div>
           </div>

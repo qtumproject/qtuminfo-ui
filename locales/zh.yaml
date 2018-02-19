@@ -65,6 +65,9 @@ contract:
   token:
     name: 代币名称
     total_supply: 发行总量
+    tokens: 代币
+    mint_tokens: 铸造代币
+    burn_tokens: 烧毁代币
   balance: 合约余额
   total_received: 转入总计
   total_sent: 转出总计

@@ -65,6 +65,9 @@ contract:
   token:
     name: Token Name
     total_supply: Total Supply
+    tokens: Tokens
+    mint_tokens: Mint Tokens
+    burn_tokens: Burn Tokens
   balance: Balance
   total_received: Total Received
   total_sent: Total Sent
