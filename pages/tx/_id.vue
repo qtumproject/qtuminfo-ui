@@ -50,6 +50,44 @@
           }"
           @transaction-change="refresh"
         ></Transaction>
+
+        <div class="columns">
+          <div class="column">
+            <div v-for="receipt in receipts" class="receipt-item">
+              <div class="columns">
+                <div class="column info-title">{{ $t('transaction.receipt.gas_used') }}</div>
+                <div class="column info-value monospace">{{ receipt.gasUsed.toLocaleString() }}</div>
+              </div>
+              <div class="columns">
+                <div class="column info-title">{{ $t('transaction.receipt.contract_address') }}</div>
+                <div class="column info-value">
+                  <AddressLink :address="receipt.contractAddress"></AddressLink>
+                </div>
+              </div>
+              <div class="columns" v-if="receipt.logs.length">
+                <div class="column info-title">{{ $t('transaction.receipt.event_logs') }}</div>
+                <div class="column info-value">
+                  <ul v-for="log in receipt.logs" class="event-log">
+                    <li>
+                      <span class="key">{{ $t('transaction.receipt.address') }}</span>
+                      <AddressLink :address="log.address"></AddressLink>
+                    </li>
+                    <li>
+                      <span class="key">{{ $t('transaction.receipt.topics') }}</span>
+                      <ul class="topic-list monospace">
+                        <li v-for="topic in log.topics">{{ topic }}</li>
+                      </ul>
+                    </li>
+                    <li>
+                      <span class="key">{{ $t('transaction.receipt.data') }}</span>
+                      <span class="monospace">{{ log.data }}</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -73,6 +111,7 @@
         fees: 0,
         vin: [],
         vout: [],
+        receipts: [],
         tokenTransfers: []
       }
     },
@@ -90,6 +129,7 @@
           fees: transaction.fees,
           vin: transaction.vin,
           vout: transaction.vout,
+          receipts: transaction.receipts,
           tokenTransfers: transaction.tokenTransfers,
           block
         }
@@ -120,8 +160,43 @@
       async refresh(transaction) {
         this.block = transaction.block
         this.timestamp = transaction.block.timestamp
+        this.receipts = transaction.receipts
         this.tokenTransfers = transaction.tokenTransfers
+      },
+      splitData(data) {
+        let chunks = data.length / 64
+        let list = []
+        for (let i = 0; i < chunks; ++i) {
+          list.push(data.slice(i * 64, (i + 1) * 64))
+        }
+        return list
       }
     }
   }
 </script>
+
+<style lang="less" scoped>
+  .receipt-item::before {
+    display: block;
+    height: 1px;
+    background-color: #ccc;
+    content: "";
+  }
+  .event-log {
+    display: inline-block;
+    &:not(:first-child) {
+      margin-top: 0.5em;
+    }
+    padding: 0.5em 1em;
+    border: 1px solid #ccc;
+    .key {
+      display: inline-block;
+      margin-right: 0.5em;
+      font-weight: bold;
+    }
+  }
+  .topic-list, .data-list {
+    list-style-type: disc;
+    list-style-position: inside;
+  }
+</style>

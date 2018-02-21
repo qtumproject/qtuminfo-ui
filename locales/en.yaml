@@ -46,6 +46,13 @@ transaction:
     script: Script
     contract_create: Contract Create
     contract_call: Contract Call
+  receipt:
+    gas_used: Gas Used
+    contract_address: Contract Address
+    event_logs: Event Logs
+    address: Address
+    topics: Topics
+    data: Data
 address:
   summary: Address
   address: Address

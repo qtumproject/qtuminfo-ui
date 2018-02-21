@@ -46,6 +46,13 @@ transaction:
     script: 脚本
     contract_create: 合约创建
     contract_call: 合约调用
+  receipt:
+    gas_used: 瓦斯使用量
+    contract_address: 合约地址
+    event_logs: 事件日志
+    address: 地址
+    topics: 主题
+    data: 数据
 address:
   summary: 账户信息
   address: 账户地址
