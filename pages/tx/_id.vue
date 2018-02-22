@@ -100,7 +100,7 @@
 
   export default {
     head() {
-      return {title: `Transaction ${this.id} -- qtum.info`}
+      return {title: `Transaction ${this.id} - qtum.info`}
     },
     data() {
       return {

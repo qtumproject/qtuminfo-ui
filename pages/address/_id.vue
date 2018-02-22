@@ -83,7 +83,7 @@
 
   export default {
     head() {
-      return {title: `Address ${this.id} -- qtum.info`}
+      return {title: `Address ${this.id} - qtum.info`}
     },
     data() {
       return {

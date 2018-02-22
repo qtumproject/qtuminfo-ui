@@ -83,7 +83,7 @@
 
   export default {
     head() {
-      return {title: `Block #${this.height} -- qtum.info`}
+      return {title: `Block #${this.height} - qtum.info`}
     },
     data() {
       return {

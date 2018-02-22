@@ -14,11 +14,10 @@ export default function({app, req}) {
 
   if (process.server) {
     let languageString = req.headers['accept-language'] || ''
-    let index = languageString.indexOf(';')
-    if (index >= 0) {
-      languageString = languageString.slice(0, index)
-    }
-    languages = languageString.split(',')
+    languages = languageString.split(',').map(string => {
+      let index = string.indexOf(';')
+      return (index >= 0 ? string.slice(0, index) : string).toLowerCase()
+    })
   } else if (process.client) {
     languages = navigator.languages
   }
@@ -27,8 +26,16 @@ export default function({app, req}) {
     if (!momentLocale && moment.locale(language) == language.toLowerCase()) {
       momentLocale = true
     }
-    if (!i18nLocale && locales.includes(language.toLowerCase())) {
+    if (!i18nLocale && locales.includes(language)) {
       i18nLocale = language
+    }
+  }
+
+  if (!i18nLocale) {
+    for (let language of languages) {
+      if (locales.includes(language.slice(0, 2))) {
+        i18nLocale = language.slice(0, 2)
+      }
     }
   }
 

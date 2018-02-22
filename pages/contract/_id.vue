@@ -92,7 +92,7 @@
 
   export default {
     head() {
-      return {title: `Contract ${this.id} -- qtum.info`}
+      return {title: `Contract ${this.id} - qtum.info`}
     },
     data() {
       return {

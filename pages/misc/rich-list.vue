@@ -31,7 +31,7 @@
 
   export default {
     head() {
-      return {title: `Rich List -- qtum.info`}
+      return {title: `Rich List - qtum.info`}
     },
     data() {
       return {
