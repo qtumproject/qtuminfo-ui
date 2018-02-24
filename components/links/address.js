@@ -22,7 +22,7 @@ export default {
           'nuxt-link',
           {
             class: ['break-word', 'monospace'],
-            attrs: {to: (props.address.length === 34 ? '/address/' : '/contract/') + props.address}
+            attrs: {to: (props.address.length === 40 ? '/contract/' : '/address/') + props.address}
           },
           slots().default || props.address
         ),
