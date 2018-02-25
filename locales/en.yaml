@@ -49,6 +49,7 @@ transaction:
   receipt:
     gas_used: Gas Used
     contract_address: Contract Address
+    excepted: Excepted
     event_logs: Event Logs
     address: Address
     topics: Topics

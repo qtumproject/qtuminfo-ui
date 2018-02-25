@@ -49,6 +49,7 @@ transaction:
   receipt:
     gas_used: 瓦斯使用量
     contract_address: 合约地址
+    excepted: 异常信息
     event_logs: 事件日志
     address: 地址
     topics: 主题

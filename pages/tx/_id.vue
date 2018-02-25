@@ -64,6 +64,10 @@
                   <AddressLink :address="receipt.contractAddress"></AddressLink>
                 </div>
               </div>
+              <div class="columns" v-if="receipt.excepted !== 'None'">
+                <div class="column info-title">{{ $t('transaction.receipt.excepted') }}</div>
+                <div class="column info-value">{{ receipt.excepted }}</div>
+              </div>
               <div class="columns" v-if="receipt.logs.length">
                 <div class="column info-title">{{ $t('transaction.receipt.event_logs') }}</div>
                 <div class="column info-value">
