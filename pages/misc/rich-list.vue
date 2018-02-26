@@ -82,7 +82,7 @@
         }
         let {totalCount, list} = await Misc.richList({from: page * 100, to: (page + 1) * 100})
         this.totalCount = totalCount
-        if (page >= this.pages && pages > 0) {
+        if (page >= this.pages && this.pages > 0) {
           return await this.query(this.pages - 1)
         }
         this.list = list
