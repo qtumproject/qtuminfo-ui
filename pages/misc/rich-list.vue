@@ -1,6 +1,6 @@
 <template>
   <section class="container" ref="section">
-    <Pagination :pages="100" :current-page="currentPage" @page="jumpToPage"></Pagination>
+    <Pagination :pages="pages" :current-page="currentPage" @page="jumpToPage"></Pagination>
     <table class="table is-fullwidth is-bordered is-striped">
       <thead>
         <tr>
@@ -21,7 +21,7 @@
         </tr>
       </tbody>
     </table>
-    <Pagination :pages="100" :current-page="currentPage" @page="jumpToPage"></Pagination>
+    <Pagination :pages="pages" :current-page="currentPage" @page="page => jumpToPage(page, true)"></Pagination>
   </section>
 </template>
 
@@ -35,14 +35,14 @@
     },
     data() {
       return {
+        totalCount: 0,
         list: [],
         currentPage: 0
       }
     },
     async asyncData({error}) {
       try {
-        let list = await Misc.richList({from: 0, to: 100})
-        return {list}
+        return await Misc.richList({from: 0, to: 100})
       } catch (err) {
         if (err instanceof RequestError) {
           error({statusCode: err.code, message: err.message})
@@ -70,11 +70,26 @@
           height -= interval
         }
         return supply + height * (reward >>> halvings)
+      },
+      pages() {
+        return Math.ceil(this.totalCount / 100)
       }
     },
     methods: {
+      async query(page) {
+        if (page < 0 || page >= this.pages) {
+          return
+        }
+        let {totalCount, list} = await Misc.richList({from: page * 100, to: (page + 1) * 100})
+        this.totalCount = totalCount
+        if (page >= this.pages && pages > 0) {
+          return await this.query(this.pages - 1)
+        }
+        this.list = list
+        this.currentPage = page
+      },
       async jumpToPage(page, scroll) {
-        this.list = await Misc.richList({from: page * 100, to: (page + 1) * 100})
+        await this.query(page)
         this.currentPage = page
         if (scroll) {
           this.$refs.section.scrollIntoView()
