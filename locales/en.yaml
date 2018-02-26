@@ -89,6 +89,8 @@ misc:
   percentage: Percentage
 nav:
   search: Search by Block / Transaction / Address / Contract / Token
+pagination:
+  go_to: Go to
 footer:
   contact_us: Contact Us
   facebook: Facebook

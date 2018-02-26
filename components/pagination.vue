@@ -1,5 +1,5 @@
 <template>
-  <nav class="pagination is-centered">
+  <nav class="pagination is-centered" :class="showFull ? '' : 'is-small'">
     <ul class="pagination-list">
       <template v-if="showFull">
         <li v-if="currentPage > 2">
@@ -66,6 +66,14 @@
           </a>
         </li>
       </template>
+      <li>
+        <form class="pagination-form" @submit.prevent="submit">
+          <label class="label">{{ $t('pagination.go_to') }}</label>
+          <div class="control">
+            <input type="text" class="input" :class="{'is-small': !showFull}" v-model="inputValue" ref="input">
+          </div>
+        </form>
+      </li>
     </ul>
   </nav>
 </template>
@@ -74,7 +82,8 @@
   export default {
     data() {
       return {
-        showFull: true
+        showFull: true,
+        inputValue: ''
       }
     },
     props: {
@@ -84,6 +93,21 @@
     methods: {
       resize() {
         this.showFull = document.documentElement.clientWidth > 768
+      },
+      submit() {
+        let input = this.inputValue.trim()
+        if (/^[1-9]\d*$/.test(input)) {
+          let page = Number.parseInt(input) - 1
+          if (page < this.pages && page !== this.currentPage) {
+            this.$emit('page', page)
+          }
+        }
+      }
+    },
+    watch: {
+      currentPage() {
+        this.inputValue = ''
+        this.$refs.input.blur()
       }
     },
     mounted() {
@@ -95,3 +119,22 @@
     }
   }
 </script>
+
+<style lang="less" scoped>
+  .pagination-form {
+    margin-left: 2em;
+    .label {
+      display: inline-block;
+      margin-bottom: 0;
+      margin-right: 0.5em;
+      @media (min-width: 769px) {
+        line-height: 2;
+      }
+    }
+    .control {
+      display: inline-block;
+      width: 3.5em;
+      vertical-align: middle;
+    }
+  }
+</style>

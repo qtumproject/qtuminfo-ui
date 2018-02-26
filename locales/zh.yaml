@@ -89,6 +89,8 @@ misc:
   percentage: 占比
 nav:
   search: 搜索 区块 / 交易 / 地址 / 合约 / 代币
+pagination:
+  go_to: 前往
 footer:
   contact_us: 联系我们
   facebook: 脸书
