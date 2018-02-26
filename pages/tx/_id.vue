@@ -58,7 +58,7 @@
                 <div class="column info-title">{{ $t('transaction.receipt.gas_used') }}</div>
                 <div class="column info-value monospace">{{ receipt.gasUsed.toLocaleString() }}</div>
               </div>
-              <div class="columns">
+              <div class="columns" v-if="receipt.contractAddress !== '0'.repeat(40)">
                 <div class="column info-title">{{ $t('transaction.receipt.contract_address') }}</div>
                 <div class="column info-value">
                   <AddressLink :address="receipt.contractAddress"></AddressLink>

@@ -160,7 +160,7 @@
         )
         this.totalCount = totalCount
         if (page >= this.pages && pages > 0) {
-          return this.query(this.pages - 1)
+          return await this.query(this.pages - 1)
         }
         this.transactions = await Promise.all(transactions.map(Transaction.get))
         this.currentPage = page
