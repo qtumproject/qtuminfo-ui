@@ -29,8 +29,9 @@
       breadcrumbs() {
         let path = []
         for (let route of this.$route.matched) {
-          if (route.name in this.$options.components) {
-            path.push({name: route.name})
+          let name = route.path.slice(1).replace('/', '-').replace(':', '').replace('?', '')
+          if (name in this.$options.components) {
+            path.push({name})
           }
         }
         return path
