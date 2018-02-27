@@ -23,14 +23,15 @@
   import ContractId from './contract-id'
   import TxId from './tx-id'
   import Misc from './misc'
-  import RichList from './misc/rich-list'
 
   export default {
     computed: {
       breadcrumbs() {
         let path = []
         for (let route of this.$route.matched) {
-          path.push({name: route.name})
+          if (route.name in this.$options.components) {
+            path.push({name: route.name})
+          }
         }
         return path
       }
@@ -40,8 +41,7 @@
       'block-id': BlockId,
       'contract-id': ContractId,
       'tx-id': TxId,
-      'misc': Misc,
-      'misc-rich-list': RichList
+      'misc': Misc
     }
   }
 </script>

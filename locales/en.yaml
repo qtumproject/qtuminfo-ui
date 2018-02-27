@@ -83,9 +83,11 @@ contract:
   transaction_list: Transaction List
 misc:
   rich_list_title: Rich List
+  biggest_miners_title: Biggest Miners
   rank: Rank
   address: Address
   balance: Balance
+  blocks_mined: Blocks Mined
   percentage: Percentage
 nav:
   search: Search by Block / Transaction / Address / Contract / Token

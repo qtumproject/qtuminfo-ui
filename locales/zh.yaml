@@ -83,9 +83,11 @@ contract:
   transaction_list: 交易列表
 misc:
   rich_list_title: 富豪榜
+  biggest_miners_title: 挖矿榜
   rank: 排名
   address: 地址
   balance: 余额
+  blocks_mined: 挖出块数
   percentage: 占比
 nav:
   search: 搜索 区块 / 交易 / 地址 / 合约 / 代币

@@ -70,7 +70,8 @@
         <form class="pagination-form" @submit.prevent="submit">
           <label class="label">{{ $t('pagination.go_to') }}</label>
           <div class="control">
-            <input type="text" class="input" :class="{'is-small': !showFull}" v-model="inputValue" ref="input">
+            <input type="text" class="input has-text-centered" :class="{'is-small': !showFull}"
+              v-model="inputValue" ref="input">
           </div>
         </form>
       </li>
