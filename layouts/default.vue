@@ -3,13 +3,11 @@
     <header class="container">
       <Navigator></Navigator>
     </header>
-    <div class="hero">
-      <div class="hero-body">
-        <div class="container">
-          <Breadcrumb v-if="$route.path !== '/'"></Breadcrumb>
-        </div>
-        <nuxt></nuxt>
+    <div class="background">
+      <div class="container">
+        <Breadcrumb v-if="$route.path !== '/'"></Breadcrumb>
       </div>
+      <nuxt></nuxt>
     </div>
     <Footer></Footer>
   </div>
@@ -26,10 +24,8 @@
 </script>
 
 <style scoped>
-  .hero {
+  .background {
     background-color: #f5f6f8;
-  }
-  .hero-body {
-    padding: 1rem 0;
+    padding: 0.5rem 0 1rem;
   }
 </style>
