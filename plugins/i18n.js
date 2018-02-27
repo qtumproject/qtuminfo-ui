@@ -7,40 +7,43 @@ Vue.use(VueI18N)
 
 export let i18n
 
-export default function({app, req}) {
-  let i18nLocale = null
-  let momentLocale = false
-  let languages = []
-
+export function getLanguages(req) {
   if (process.server) {
     let languageString = req.headers['accept-language'] || ''
-    languages = languageString.split(',').map(string => {
+    return languageString.split(',').map(string => {
       let index = string.indexOf(';')
       return (index >= 0 ? string.slice(0, index) : string).toLowerCase()
     })
   } else if (process.client) {
-    languages = navigator.languages
+    return navigator.languages
   }
+}
 
+export function getLocale(req) {
+  let languages = getLanguages(req)
   for (let language of languages) {
-    if (!momentLocale && moment.locale(language) == language.toLowerCase()) {
-      momentLocale = true
-    }
-    if (!i18nLocale && locales.includes(language)) {
-      i18nLocale = language
+    if (locales.includes(language)) {
+      return language
     }
   }
-
-  if (!i18nLocale) {
-    for (let language of languages) {
-      if (locales.includes(language.slice(0, 2))) {
-        i18nLocale = language.slice(0, 2)
-      }
+  for (let language of languages) {
+    if (locales.includes(language.slice(0, 2))) {
+      return language.slice(0, 2)
     }
   }
+  return 'en'
+}
 
+export default function({app, req}) {
+  let i18nLocale = getLocale(req)
+  let languages = getLanguages(req)
+  for (let language of languages) {
+    if (moment.locale(language) == language.toLowerCase()) {
+      break
+    }
+  }
   i18n = app.i18n = new VueI18N({
-    locale: i18nLocale || 'en',
+    locale: i18nLocale,
     fallbackLocale: 'en',
     messages
   })
