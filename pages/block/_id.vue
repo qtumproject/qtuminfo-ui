@@ -83,7 +83,9 @@
 
   export default {
     head() {
-      return {title: `Block #${this.height} - qtum.info`}
+      return {
+        title: this.$t('blockchain.block') + ' #' + this.height
+      }
     },
     data() {
       return {

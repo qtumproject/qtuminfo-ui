@@ -104,7 +104,9 @@
 
   export default {
     head() {
-      return {title: `Transaction ${this.id} - qtum.info`}
+      return {
+        title: this.$t('blockchain.transaction') + ' ' + this.id
+      }
     },
     data() {
       return {

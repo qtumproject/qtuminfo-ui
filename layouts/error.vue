@@ -18,6 +18,13 @@
 
   export default {
     props: ['error'],
+    head() {
+      return {
+        htmlAttrs: {
+          lang: this.$store.state.locale.language
+        }
+      }
+    },
     components: {Navigator}
   }
 </script>

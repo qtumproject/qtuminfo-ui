@@ -19,6 +19,13 @@
   import Footer from '@/components/footer.vue'
 
   export default {
+    head() {
+      return {
+        htmlAttrs: {
+          lang: this.$store.state.locale.language
+        }
+      }
+    },
     components: {Navigator, Breadcrumb, Footer}
   }
 </script>

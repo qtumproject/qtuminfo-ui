@@ -33,7 +33,7 @@
 
   export default {
     head() {
-      return {title: `Biggest Miners - qtum.info`}
+      title: this.$t('misc.biggest_miners')
     },
     data() {
       return {

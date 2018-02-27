@@ -31,7 +31,9 @@
 
   export default {
     head() {
-      return {title: `Rich List - qtum.info`}
+      return {
+        title: this.$t('misc.rich_list_title')
+      }
     },
     data() {
       return {

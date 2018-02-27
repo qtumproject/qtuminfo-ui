@@ -70,7 +70,10 @@
 
   export default {
     head() {
-      return {title: 'qtum.info'}
+      return {
+        title: 'qtum.info',
+        titleTemplate: null
+      }
     },
     data() {
       return {

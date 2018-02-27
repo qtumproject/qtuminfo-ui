@@ -83,7 +83,9 @@
 
   export default {
     head() {
-      return {title: `Address ${this.id} - qtum.info`}
+      return {
+        title: this.$t('blockchain.address') + ' ' + this.id
+      }
     },
     data() {
       return {
