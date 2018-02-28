@@ -3,6 +3,6 @@ export default {
     return createElement('div')
   },
   fetch({redirect}) {
-    redirect(302, '/misc/rich-list')
+    redirect('/misc/rich-list')
   }
 }

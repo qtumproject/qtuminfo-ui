@@ -38,13 +38,20 @@
     data() {
       return {
         totalCount: 0,
-        list: [],
-        currentPage: 0
+        list: []
       }
     },
-    async asyncData({error}) {
+    async asyncData({query, redirect, error}) {
       try {
-        return await Misc.richList({from: 0, to: 100})
+        if (query.page && !/^[1-9]\d*$/.test(query.page)) {
+          redirect('/misc/rich-list')
+        }
+        let page = query.page ? query.page - 1 : 0
+        let {totalCount, list} = await Misc.richList({from: page * 100, to: (page + 1) * 100})
+        if (totalCount < page * 100) {
+          redirect('/misc/rich-list', {page: Math.max(Math.ceil(totalCount / 100), 1)})
+        }
+        return {totalCount, list}
       } catch (err) {
         if (err instanceof RequestError) {
           error({statusCode: err.code, message: err.message})
@@ -54,6 +61,9 @@
       }
     },
     computed: {
+      currentPage() {
+        return this.$route.query.page ? this.$route.query.page - 1 : 0
+      },
       blockchain() {
         return this.$store.state.blockchain
       },
@@ -88,11 +98,10 @@
           return await this.query(this.pages - 1)
         }
         this.list = list
-        this.currentPage = page
+        this.$router.push({path: '/misc/rich-list', query: {page: page + 1}})
       },
       async jumpToPage(page, scroll) {
         await this.query(page)
-        this.currentPage = page
         if (scroll) {
           this.$refs.section.scrollIntoView()
         }
