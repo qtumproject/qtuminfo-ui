@@ -62,14 +62,12 @@
         <div class="card-header-title">{{ $t('address.transaction_list') }}</div>
       </div>
       <div class="card-body">
-        <Pagination v-if="pages > 1" :pages="pages" :current-page="currentPage"
-          @page="jumpToPage"></Pagination>
+        <Pagination v-if="pages > 1" :pages="pages" :current-page="currentPage" @page="jumpToPage"></Pagination>
         <Transaction v-for="transaction in transactions" :key="transaction.txid"
           :transaction="transaction" :highlight-address="id"
           @transaction-change="tx => transactionChange(transaction, tx)"
           ></Transaction>
-        <Pagination v-if="pages > 1" :pages="pages" :current-page="currentPage"
-          @page="page => jumpToPage(page, true)"></Pagination>
+        <Pagination v-if="pages > 1" :pages="pages" :current-page="currentPage" @page="jumpToPage"></Pagination>
       </div>
     </div>
   </section>
@@ -80,6 +78,7 @@
   import Address from '@/models/address'
   import Transaction from '@/models/transaction'
   import {RequestError} from '@/services/qtuminfo-api'
+  import {scrollIntoView} from '@/utils/dom'
 
   export default {
     head() {
@@ -154,11 +153,9 @@
         this.transactions = await Promise.all(transactions.map(Transaction.get))
         this.currentPage = page
       },
-      async jumpToPage(page, scroll) {
+      async jumpToPage(page) {
         await this.query(page)
-        if (scroll) {
-          this.$refs['transaction-list'].scrollIntoView()
-        }
+        scrollIntoView(this.$refs['transaction-list'])
       },
       transactionChange(oldTransaction, newTransaction) {
         Vue.set(oldTransaction, 'blockHeight', newTransaction.block.height)

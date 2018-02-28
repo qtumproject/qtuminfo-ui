@@ -23,17 +23,20 @@
         </tr>
       </tbody>
     </table>
-    <Pagination :pages="pages" :current-page="currentPage" @page="page => jumpToPage(page, true)"></Pagination>
+    <Pagination :pages="pages" :current-page="currentPage" @page="jumpToPage"></Pagination>
   </section>
 </template>
 
 <script>
   import Misc from '@/models/misc'
   import {RequestError} from '@/services/qtuminfo-api'
+  import {scrollIntoView} from '@/utils/dom'
 
   export default {
     head() {
-      title: this.$t('misc.biggest_miners')
+      return {
+        title: this.$t('misc.biggest_miners_title')
+      }
     },
     data() {
       return {
@@ -77,12 +80,9 @@
         this.list = list
         this.currentPage = page
       },
-      async jumpToPage(page, scroll) {
+      async jumpToPage(page) {
         await this.query(page)
-        this.currentPage = page
-        if (scroll) {
-          this.$refs.section.scrollIntoView()
-        }
+        scrollIntoView(this.$refs.section)
       }
     }
   }

@@ -1,6 +1,7 @@
 <template>
   <section class="container" ref="section">
-    <Pagination :pages="pages" :current-page="currentPage" @page="jumpToPage"></Pagination>
+    <RouterPagination v-if="pages > 1"
+      :pages="pages" :current-page="currentPage" :get-link="getLink"></RouterPagination>
     <table class="table is-fullwidth is-bordered is-striped">
       <thead>
         <tr>
