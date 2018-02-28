@@ -41,6 +41,8 @@ transaction:
   empty_output: Empty Output
   op_return_output: OP_RETURN Output
   unparsed_address: Unparsed Address
+  fee: Fee
+  reward: Reward
   utxo:
     type: Type
     script: Script

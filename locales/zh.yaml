@@ -41,6 +41,8 @@ transaction:
   empty_output: 空输出
   op_return_output: OP_RETURN 输出
   unparsed_address: 无法解析的地址
+  fee: 手续费
+  reward: 奖励
   utxo:
     type: 类型
     script: 脚本

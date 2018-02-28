@@ -129,10 +129,10 @@
     <code class="column is-full break-word" v-if="contractInfo && !collapsed">{{ contractInfo.code }}</code>
     <div class="column is-full has-text-right collapse-bottom" v-if="fees">
       <template v-if="fees > 0">
-        Fee <span class="amount fee">{{ fees | qtum }} QTUM</span>
+        {{ $t('transaction.fee') }} <span class="amount fee">{{ fees | qtum }} QTUM</span>
       </template>
       <template v-else>
-        Reward <span class="amount fee">{{ -fees | qtum }} QTUM</span>
+        {{ $t('transaction.reward') }} <span class="amount fee">{{ -fees | qtum }} QTUM</span>
       </template>
     </div>
   </div>
