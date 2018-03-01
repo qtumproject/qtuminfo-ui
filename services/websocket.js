@@ -73,6 +73,9 @@ class WS {
     if (!this._eventHandlers[event]) {
       return
     }
+    if (!callback) {
+      this._eventHandlers[event] = []
+    }
     let index = this._eventHandlers[event].indexOf(callback)
     if (index >= 0) {
       this._eventHandlers[event].splice(index, 1)
