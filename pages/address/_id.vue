@@ -10,7 +10,11 @@
       <div class="card-body info-table">
         <div class="columns">
           <div class="column info-title">{{ $t('address.address') }}</div>
-          <AddressLink :address="id" class="column info-value"></AddressLink>
+          <div class="column info-value">
+            <div v-for="address in id.split(',')">
+              <AddressLink :address="address"></AddressLink>
+            </div>
+          </div>
         </div>
         <div class="columns">
           <div class="column info-title">{{ $t('address.balance') }}</div>

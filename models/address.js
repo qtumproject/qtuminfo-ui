@@ -10,7 +10,7 @@ class Address {
   }
 
   static getTransactions(hash, {from, to}) {
-    return QtuminfoAPI.get(`/addresses/${hash}/txs`, {params: {from, to}})
+    return QtuminfoAPI.get(`/address/${hash}/txs`, {params: {from, to}})
   }
 }
 
