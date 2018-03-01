@@ -2,68 +2,64 @@
   <nav class="pagination is-centered" :class="showFull ? '' : 'is-small'">
     <ul class="pagination-list">
       <template v-if="showFull">
+        <li v-if="currentPage > 3">
+          <nuxt-link :to="getLink(1)" class="pagination-link">1</nuxt-link>
+        </li>
+        <li v-if="currentPage > 4">
+          <span class="pagination-ellipsis">&hellip;</span>
+        </li>
         <li v-if="currentPage > 2">
-          <a href="#" class="pagination-link" @click.prevent="$emit('page', 0)">
-            1
-          </a>
+          <nuxt-link :to="getLink(currentPage - 2)" class="pagination-link">
+            {{ currentPage - 2 }}
+          </nuxt-link>
+        </li>
+      </template>
+      <template v-else>
+        <li v-if="currentPage > 2">
+          <nuxt-link :to="getLink(1)" class="pagination-link">1</nuxt-link>
         </li>
         <li v-if="currentPage > 3">
           <span class="pagination-ellipsis">&hellip;</span>
         </li>
-        <li v-if="currentPage > 1">
-          <a href="#" class="pagination-link" @click.prevent="$emit('page', currentPage - 2)">
-            {{ currentPage - 1 }}
-          </a>
-        </li>
       </template>
-      <template v-else>
-        <li v-if="currentPage > 1">
-          <a href="#" class="pagination-link" @click.prevent="$emit('page', 0)">
-            1
-          </a>
-        </li>
-        <li v-if="currentPage > 2">
-          <span class="pagination-ellipsis">&hellip;</span>
-        </li>
-      </template>
-      <li v-if="currentPage > 0">
-        <a href="#" class="pagination-link" @click.prevent="$emit('page', currentPage - 1)">
-          {{ currentPage }}
-        </a>
+      <li v-if="currentPage > 1">
+        <nuxt-link :to="getLink(currentPage - 1)" class="pagination-link">
+          {{ currentPage - 1 }}
+        </nuxt-link>
       </li>
       <li>
         <a href="#" class="pagination-link is-current" @click.prevent>
-          {{ currentPage + 1 }}
+          {{ currentPage }}
         </a>
       </li>
-      <li v-if="currentPage < pages - 1">
-        <a href="#" class="pagination-link" @click.prevent="$emit('page', currentPage + 1)">
-          {{ currentPage + 2 }}
-        </a>
+      <li v-if="currentPage < pages">
+        <nuxt-link :to="getLink(currentPage + 1)" class="pagination-link">
+          {{ currentPage + 1 }}
+        </nuxt-link>
       </li>
       <template v-if="showFull">
-        <li v-if="currentPage < pages - 2">
-          <a href="#" class="pagination-link" @click.prevent="$emit('page', currentPage + 2)">
-            {{ currentPage + 3 }}
-          </a>
-        </li>
-        <li v-if="currentPage < pages - 4">
-          <span class="pagination-ellipsis">&hellip;</span>
+        <li v-if="currentPage < pages - 1">
+          <nuxt-link :to="getLink(currentPage + 2)" class="pagination-link">
+            {{ currentPage + 2 }}
+          </nuxt-link>
         </li>
         <li v-if="currentPage < pages - 3">
-          <a href="#" class="pagination-link" @click.prevent="$emit('page', pages - 1)">
+          <span class="pagination-ellipsis">&hellip;</span>
+        </li>
+        <li v-if="currentPage < pages - 2">
+          <nuxt-link :to="getLink(pages)" class="pagination-link">
             {{ pages }}
-          </a>
+          </nuxt-link>
         </li>
       </template>
       <template v-else>
-        <li v-if="currentPage < pages - 3">
+        <li v-if="currentPage < pages - 2">
           <span class="pagination-ellipsis">&hellip;</span>
         </li>
-        <li v-if="currentPage < pages - 2">
-          <a href="#" class="pagination-link" @click.prevent="$emit('page', pages - 1)">
+        <li v-if="currentPage < pages - 1">
+          <nuxt-link :to="getLink(pages)" class="pagination-link">
             {{ pages }}
-          </a>
+          </nuxt-link>
         </li>
       </template>
       <li>
@@ -90,6 +86,7 @@
     props: {
       pages: {type: Number, required: true},
       currentPage: {type: Number, required: true},
+      getLink: {type: Function, required: true}
     },
     methods: {
       resize() {
@@ -98,9 +95,9 @@
       submit() {
         let input = this.inputValue.trim()
         if (/^[1-9]\d*$/.test(input)) {
-          let page = Number.parseInt(input) - 1
-          if (page < this.pages && page !== this.currentPage) {
-            this.$emit('page', page)
+          let page = Number.parseInt(input)
+          if (page <= this.pages && page !== this.currentPage) {
+            this.$router.push(this.getLink(page))
           }
         }
       }
@@ -136,6 +133,9 @@
       display: inline-block;
       width: 3.5em;
       vertical-align: middle;
+      @media (max-width: 768px) {
+        width: 3em;
+      }
     }
   }
 </style>

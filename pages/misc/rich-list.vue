@@ -1,7 +1,6 @@
 <template>
   <section class="container" ref="section">
-    <RouterPagination v-if="pages > 1"
-      :pages="pages" :current-page="currentPage" :get-link="getLink"></RouterPagination>
+    <Pagination v-if="pages > 1" :pages="pages" :current-page="currentPage" :get-link="getLink"></Pagination>
     <table class="table is-fullwidth is-bordered is-striped">
       <thead>
         <tr>
@@ -13,7 +12,7 @@
       </thead>
       <tbody>
         <tr v-for="({address, balance}, index) of list">
-          <td>{{ 100 * currentPage + index + 1 }}</td>
+          <td>{{ 100 * (currentPage - 1) + index + 1 }}</td>
           <td>
             <AddressLink :address="address"></AddressLink>
           </td>
@@ -22,13 +21,14 @@
         </tr>
       </tbody>
     </table>
-    <Pagination :pages="pages" :current-page="currentPage" @page="page => jumpToPage(page, true)"></Pagination>
+    <Pagination v-if="pages > 1" :pages="pages" :current-page="currentPage" :get-link="getLink"></Pagination>
   </section>
 </template>
 
 <script>
   import Misc from '@/models/misc'
   import {RequestError} from '@/services/qtuminfo-api'
+  import {scrollIntoView} from '@/utils/dom'
 
   export default {
     head() {
@@ -39,7 +39,8 @@
     data() {
       return {
         totalCount: 0,
-        list: []
+        list: [],
+        currentPage: Number(this.$route.query.page || 1)
       }
     },
     async asyncData({query, redirect, error}) {
@@ -47,10 +48,10 @@
         if (query.page && !/^[1-9]\d*$/.test(query.page)) {
           redirect('/misc/rich-list')
         }
-        let page = query.page ? query.page - 1 : 0
-        let {totalCount, list} = await Misc.richList({from: page * 100, to: (page + 1) * 100})
-        if (totalCount < page * 100) {
-          redirect('/misc/rich-list', {page: Math.max(Math.ceil(totalCount / 100), 1)})
+        let page = Number(query.page || 1)
+        let {totalCount, list} = await Misc.richList({from: (page - 1) * 100, to: page * 100})
+        if (page > 1 && totalCount <= (page - 1) * 100) {
+          redirect('/misc/rich-list', {page: Math.ceil(totalCount / 100)})
         }
         return {totalCount, list}
       } catch (err) {
@@ -62,9 +63,6 @@
       }
     },
     computed: {
-      currentPage() {
-        return this.$route.query.page ? this.$route.query.page - 1 : 0
-      },
       blockchain() {
         return this.$store.state.blockchain
       },
@@ -89,24 +87,22 @@
       }
     },
     methods: {
-      async query(page) {
-        if (page < 0 || page >= this.pages) {
-          return
-        }
-        let {totalCount, list} = await Misc.richList({from: page * 100, to: (page + 1) * 100})
-        this.totalCount = totalCount
-        if (page >= this.pages && this.pages > 0) {
-          return await this.query(this.pages - 1)
-        }
-        this.list = list
-        this.$router.push({path: '/misc/rich-list', query: {page: page + 1}})
-      },
-      async jumpToPage(page, scroll) {
-        await this.query(page)
-        if (scroll) {
-          this.$refs.section.scrollIntoView()
-        }
+      getLink(page) {
+        return {name: 'misc-rich-list', query: {page}}
       }
+    },
+    async beforeRouteUpdate(to, from, next) {
+      let page = Number(to.query.page || 1)
+      let {totalCount, list} = await Misc.richList({from: (page - 1) * 100, to: page * 100})
+      this.totalCount = totalCount
+      if (page > this.pages && this.pages > 1) {
+        this.$router.push({name: 'misc-rich-list', query: {page: Math.ceil(totalCount / 100)}})
+        return
+      }
+      this.list = list
+      this.currentPage = page
+      next()
+      scrollIntoView(this.$refs.section)
     }
   }
 </script>

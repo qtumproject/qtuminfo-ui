@@ -62,12 +62,12 @@
         <div class="card-header-title">{{ $t('address.transaction_list') }}</div>
       </div>
       <div class="card-body">
-        <Pagination v-if="pages > 1" :pages="pages" :current-page="currentPage" @page="jumpToPage"></Pagination>
+        <Pagination v-if="pages > 1" :pages="pages" :current-page="currentPage" :get-link="getLink"></Pagination>
         <Transaction v-for="transaction in transactions" :key="transaction.txid"
           :transaction="transaction" :highlight-address="id"
           @transaction-change="tx => transactionChange(transaction, tx)"
           ></Transaction>
-        <Pagination v-if="pages > 1" :pages="pages" :current-page="currentPage" @page="jumpToPage"></Pagination>
+        <Pagination v-if="pages > 1" :pages="pages" :current-page="currentPage" :get-link="getLink"></Pagination>
       </div>
     </div>
   </section>
@@ -96,16 +96,23 @@
         tokenBalances: [],
         totalCount: 0,
         transactions: [],
-        currentPage: 0
+        currentPage: Number(this.$route.query.page || 1)
       }
     },
-    async asyncData({params, error}) {
+    async asyncData({params, query, redirect, error}) {
       try {
         let address = await Address.get(params.id)
+        if (query.page && !/^[1-9]\d*$/.test(query.page)) {
+          redirect(`/address/${params.id}`)
+        }
+        let page = Number(query.page || 1)
         let {totalCount, transactions} = await Address.getTransactions(
           params.id,
-          {from: 0, to: 20}
+          {from: (page - 1) * 20, to: page * 20}
         )
+        if (page > 1 && totalCount <= (page - 1) * 20) {
+          redirect(`/address/${params.id}`, {page: Math.ceil(totalCount / 20)})
+        }
         transactions = await Promise.all(transactions.map(Transaction.get))
         return {
           balance: address.balance,
@@ -138,30 +145,34 @@
       }
     },
     methods: {
-      async query(page) {
-        if (page < 0 || page >= this.pages) {
-          return
-        }
-        let {totalCount, transactions} = await Address.getTransactions(
-          this.id,
-          {from: page * 20, to: (page + 1) * 20}
-        )
-        this.totalCount = totalCount
-        if (page >= this.pages && this.pages > 0) {
-          return await this.query(this.pages - 1)
-        }
-        this.transactions = await Promise.all(transactions.map(Transaction.get))
-        this.currentPage = page
-      },
-      async jumpToPage(page) {
-        await this.query(page)
-        scrollIntoView(this.$refs['transaction-list'])
+      getLink(page) {
+        return {name: 'address-id', params: {id: this.id}, query: {page}}
       },
       transactionChange(oldTransaction, newTransaction) {
         Vue.set(oldTransaction, 'blockHeight', newTransaction.block.height)
         Vue.set(oldTransaction, 'blockHash', newTransaction.block.hash)
         oldTransaction.tokenTransfers = newTransaction.tokenTransfers
       }
+    },
+    async beforeRouteUpdate(to, from, next) {
+      let page = Number(to.query.page || 1)
+      let {totalCount, transactions} = await Address.getTransactions(
+        this.id,
+        {from: (page - 1) * 20, to: page * 20}
+      )
+      this.totalCount = totalCount
+      if (page > this.pages && this.pages > 1) {
+        this.$router.push({
+          name: 'address-id',
+          params: {id: this.id},
+          query: {page: Math.ceil(totalCount / 20)}
+        })
+        return
+      }
+      this.transactions = await Promise.all(transactions.map(Transaction.get))
+      this.currentPage = page
+      next()
+      scrollIntoView(this.$refs['transaction-list'])
     }
   }
 </script>

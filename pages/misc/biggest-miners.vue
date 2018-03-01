@@ -1,6 +1,6 @@
 <template>
   <section class="container" ref="section">
-    <Pagination :pages="pages" :current-page="currentPage" @page="jumpToPage"></Pagination>
+    <Pagination v-if="pages > 1" :pages="pages" :current-page="currentPage" :get-link="getLink"></Pagination>
     <table class="table is-fullwidth is-bordered is-striped">
       <thead>
         <tr>
@@ -13,7 +13,7 @@
       </thead>
       <tbody>
         <tr v-for="({address, blocks, balance}, index) of list">
-          <td>{{ 100 * currentPage + index + 1 }}</td>
+          <td>{{ 100 * (currentPage - 1) + index + 1 }}</td>
           <td>
             <AddressLink :address="address"></AddressLink>
           </td>
@@ -23,7 +23,7 @@
         </tr>
       </tbody>
     </table>
-    <Pagination :pages="pages" :current-page="currentPage" @page="jumpToPage"></Pagination>
+    <Pagination v-if="pages > 1" :pages="pages" :current-page="currentPage" :get-link="getLink"></Pagination>
   </section>
 </template>
 
@@ -42,12 +42,20 @@
       return {
         totalCount: 0,
         list: [],
-        currentPage: 0
+        currentPage: Number(this.$route.query.page || 1)
       }
     },
-    async asyncData({error}) {
+    async asyncData({query, redirect, error}) {
       try {
-        return await Misc.biggestMiners({from: 0, to: 100})
+        if (query.page && !/^[1-9]\d*$/.test(query.page)) {
+          redirect('/misc/biggest-miners')
+        }
+        let page = Number(query.page || 1)
+        let {totalCount, list} = await Misc.biggestMiners({from: (page - 1) * 100, to: page * 100})
+        if (page > 1 && totalCount <= (page - 1) * 100) {
+          redirect('/misc/biggest-miners', {page: Math.ceil(totalCount / 100)})
+        }
+        return {totalCount, list}
       } catch (err) {
         if (err instanceof RequestError) {
           error({statusCode: err.code, message: err.message})
@@ -68,22 +76,22 @@
       }
     },
     methods: {
-      async query(page) {
-        if (page < 0 || page >= this.pages) {
-          return
-        }
-        let {totalCount, list} = await Misc.biggestMiners({from: page * 100, to: (page + 1) * 100})
-        this.totalCount = totalCount
-        if (page >= this.pages && this.pages > 0) {
-          return await this.query(this.pages - 1)
-        }
-        this.list = list
-        this.currentPage = page
-      },
-      async jumpToPage(page) {
-        await this.query(page)
-        scrollIntoView(this.$refs.section)
+      getLink(page) {
+        return {name: 'misc-biggest-miners', query: {page}}
       }
+    },
+    async beforeRouteUpdate(to, from, next) {
+      let page = Number(to.query.page || 1)
+      let {totalCount, list} = await Misc.biggestMiners({from: (page - 1) * 100, to: page * 100})
+      this.totalCount = totalCount
+      if (page > this.pages && this.pages > 1) {
+        this.$router.push({name: 'misc-biggest-miners', query: {page: Math.ceil(totalCount / 100)}})
+        return
+      }
+      this.list = list
+      this.currentPage = page
+      next()
+      scrollIntoView(this.$refs.section)
     }
   }
 </script>
