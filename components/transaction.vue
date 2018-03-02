@@ -156,7 +156,7 @@
         return this.$store.state.blockchain
       },
       id() {
-        return this.transaction.txid
+        return this.transaction.id
       },
       inputs() {
         return this.transaction.vin

@@ -45,7 +45,7 @@
 
         <Transaction
           :transaction="{
-            txid: id, blockHeight: block && block.height, timestamp: block && block.timestamp,
+            id, blockHeight: block && block.height, timestamp: block && block.timestamp,
             vin, vout, fees, tokenTransfers
           }"
           @transaction-change="refresh"
@@ -111,6 +111,7 @@
     data() {
       return {
         block: null,
+        id: '',
         hash: '',
         size: 0,
         isCoinbase: false,
@@ -129,6 +130,7 @@
           block = await Block.get(transaction.blockHash)
         }
         return {
+          id: transaction.id,
           hash: transaction.hash,
           size: transaction.size,
           isCoinbase: transaction.isCoinbase,
@@ -152,9 +154,6 @@
       }
     },
     computed: {
-      id() {
-        return this.$route.params.id
-      },
       blockchain() {
         return this.$store.state.blockchain
       },

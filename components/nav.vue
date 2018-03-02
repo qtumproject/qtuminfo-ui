@@ -54,8 +54,7 @@
             this.searchString = ''
             this.$router.push(`/address/${searchString}`)
             break
-          case 'block-height':
-          case 'block-hash':
+          case 'block':
             this.searchString = ''
             this.$router.push(`/block/${searchString}`)
             break
