@@ -104,15 +104,15 @@
     },
     async asyncData({params, error}) {
       let id = params.id
-      let hash = id
-      if (/^(0|[1-9]\d{0,9})$/.test(id)) {
-        try {
-          hash = await Block.getHash(id)
-        } catch (err) {
-        }
-      }
+      // let hash = id
+      // if (/^(0|[1-9]\d{0,9})$/.test(id)) {
+      //   try {
+      //     hash = await Block.getHash(id)
+      //   } catch (err) {
+      //   }
+      // }
       try {
-        let block = await Block.get(hash)
+        let block = await Block.get(id)
         let transactions = block.height == 0 ? [] : await Promise.all(block.tx.map(Transaction.get))
         return {
           height: block.height,

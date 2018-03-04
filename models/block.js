@@ -8,26 +8,18 @@ function formatTimestamp(date) {
 }
 
 class Block {
-  static get(hash) {
-    return QtuminfoAPI.get(`/block/${hash}`)
+  static get(id) {
+    return QtuminfoAPI.get(`/block/${id}`)
   }
 
-  static async getHash(height) {
-    let {blockHash} = await QtuminfoAPI.get(`/block-index/${height}`)
-    return blockHash
+  static getRecentBlocks(size = 10) {
+    return QtuminfoAPI.get('/recent-blocks')
   }
 
-  static async getRecentBlocks(size = 10) {
-    let {blocks, currentTs} = await QtuminfoAPI.get('/blocks', {params: {limit: size}})
-    if (blocks.length < size) {
-      let {block: additionalBlocks} = await QtuminfoAPI.get('/blocks', {
-        params: {
-          limit: size - blocks.length,
-          blockDate: formatTimestamp(new Date(currentTs * 1000))
-        }
-      })
-      blocks.push(...additionalBlocks)
-    }
+  static async getBlocksByDate(date = new Date()) {
+    let {blocks} = await QtuminfoAPI.get('/blocks', {
+      params: {blockDate: formatTimestamp(date)}
+    })
     return blocks
   }
 }
