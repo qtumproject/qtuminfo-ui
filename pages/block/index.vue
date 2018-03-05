@@ -1,20 +1,20 @@
 <template>
   <section class="container">
-    <form action="/block" @submit.prevent="submit">
+    <form action="/block" method="GET" @submit.prevent="submit">
       <div class="control">
         <input type="date" class="input" name="date" v-model="date">
-        <button type="submit" class="button is-qtum">Go</button>
+        <button type="submit" class="button is-qtum">{{ $t('block.list.go') }}</button>
       </div>
     </form>
     <table class="table is-fullwidth is-bordered is-striped">
       <thead>
         <tr>
-          <th>Height</th>
-          <th>Block Time</th>
-          <th class="is-hidden-touch">Reward</th>
-          <th class="is-hidden-touch">Miner</th>
-          <th class="is-hidden-touch">Size</th>
-          <th>TXs</th>
+          <th>{{ $t('block.list.height') }}</th>
+          <th>{{ $t('block.list.time') }}</th>
+          <th class="is-hidden-touch">{{ $t('block.list.reward') }}</th>
+          <th class="is-hidden-touch">{{ $t('block.list.mined_by') }}</th>
+          <th class="is-hidden-touch">{{ $t('block.list.size') }}</th>
+          <th>{{ $t('block.list.transactions') }}</th>
         </tr>
       </thead>
       <tbody>
@@ -23,7 +23,7 @@
             <nuxt-link :to="'/block/' + height">{{ height }}</nuxt-link>
           </td>
           <td>{{ timestamp | timestamp() }}</td>
-          <td class="is-hidden-touch monospace">{{ reward | qtum(8) }}</td>
+          <td class="is-hidden-touch monospace">{{ reward | qtum(8) }} QTUM</td>
           <td class="is-hidden-touch">
             <AddressLink :address="minedBy"></AddressLink>
           </td>
@@ -32,6 +32,12 @@
         </tr>
       </tbody>
     </table>
+    <form action="/block" method="GET" @submit.prevent="submit">
+      <div class="control">
+        <input type="date" class="input" name="date" v-model="date">
+        <button type="submit" class="button is-qtum">{{ $t('block.list.go') }}</button>
+      </div>
+    </form>
   </section>
 </template>
 
@@ -57,7 +63,7 @@
   export default {
     head() {
       return {
-        title: 'Blocks'
+        title: this.$t('block.list.block_list')
       }
     },
     data() {
@@ -138,7 +144,7 @@
     display: flex;
     margin-left: auto;
     margin-right: auto;
-    width: 14em;
+    width: 14.5em;
     > button {
       margin-left: 0.5em;
     }

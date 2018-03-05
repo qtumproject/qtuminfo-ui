@@ -11,6 +11,15 @@ block:
     address: 由 {0} 挖出
     transaction: '用时 {1} 秒，包含 {0} 条交易'
     reward: 区块奖励 {0} QTUM
+  list:
+    block_list: 区块列表
+    height: 区块高度
+    time: 挖出时间
+    reward: 区块奖励
+    mined_by: 挖矿地址
+    size: 区块大小
+    transactions: 交易数
+    go: 前往
   summary: 区块信息
   block_height: 区块高度
   block_hash: 区块哈希值

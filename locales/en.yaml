@@ -11,6 +11,15 @@ block:
     address: Mined by {0}
     transaction: '{0} transactions in {1} secs'
     reward: Block Reward {0} QTUM
+  list:
+    block_list: Blocks
+    height: Block Height
+    time: Block Time
+    reward: Reward
+    mined_by: Mined By
+    size: Block Size
+    transactions: Txs
+    go: Go
   summary: Block Summary
   block_height: Block Height
   block_hash: Block Hash

@@ -4,7 +4,6 @@
       <li>
         <nuxt-link to="/">
           <span class="fa fa-home"></span>
-          qtum.info
         </nuxt-link>
       </li>
       <li v-for="({name}, index) in breadcrumbs">
@@ -19,6 +18,7 @@
 <script>
   import {i18n} from '@/plugins/i18n'
   import AddressId from './address-id'
+  import Block from './block'
   import BlockId from './block-id'
   import ContractId from './contract-id'
   import TxId from './tx-id'
@@ -39,6 +39,7 @@
     },
     components: {
       'address-id': AddressId,
+      block: Block,
       'block-id': BlockId,
       'contract-id': ContractId,
       'tx-id': TxId,
@@ -51,7 +52,7 @@
   .breadcrumb {
     margin-left: 1em;
   }
-  span.fa {
+  span.fa:not(:only-child) {
     margin-right: 0.3em;
   }
 </style>
