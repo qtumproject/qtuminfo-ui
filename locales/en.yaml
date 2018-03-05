@@ -19,7 +19,6 @@ block:
     mined_by: Mined By
     size: Block Size
     transactions: Txs
-    go: Go
   summary: Block Summary
   block_height: Block Height
   block_hash: Block Hash
@@ -111,3 +110,5 @@ footer:
   forum: Forum
 action:
   copy: Copy
+  view_all: View All
+  go: Go

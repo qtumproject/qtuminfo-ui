@@ -19,7 +19,6 @@ block:
     mined_by: 挖矿地址
     size: 区块大小
     transactions: 交易数
-    go: 前往
   summary: 区块信息
   block_height: 区块高度
   block_hash: 区块哈希值
@@ -111,3 +110,5 @@ footer:
   forum: 论坛
 action:
   copy: 复制
+  view_all: 查看全部
+  go: 前往

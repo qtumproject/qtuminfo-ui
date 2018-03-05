@@ -3,7 +3,7 @@
     <form action="/block" method="GET" @submit.prevent="submit">
       <div class="control">
         <input type="date" class="input" name="date" v-model="date">
-        <button type="submit" class="button is-qtum">{{ $t('block.list.go') }}</button>
+        <button type="submit" class="button is-qtum">{{ $t('action.go') }}</button>
       </div>
     </form>
     <table class="table is-fullwidth is-bordered is-striped">
@@ -97,7 +97,7 @@
         let date = new Date(this.date)
         if (date.toString() === 'Invalid Date') {
           return
-        } else if (date.getTime() < Date.parse('2017/09/06')) {
+        } else if (date.getTime() < Date.parse('2017-09-06')) {
           return
         } else if (date.getTime() >= Date.now() + 1000 * 60 * 60 * 24) {
           return
@@ -122,7 +122,7 @@
       let date = to.query.date && new Date(to.query.date)
       if (date && (
         date.toString() === 'Invalid Date'
-        || date.getTime() < Date.parse('2017/09/06')
+        || date.getTime() < Date.parse('2017-09-06')
         || date.getTime() >= Date.now() + 1000 * 60 * 60 * 24
       )) {
         this.$router.push({name: 'block'})
@@ -140,13 +140,18 @@
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
   }
-  form .control {
+  form {
     display: flex;
-    margin-left: auto;
-    margin-right: auto;
-    width: 14.5em;
-    > button {
-      margin-left: 0.5em;
+    .control {
+      display: flex;
+      margin-left: auto;
+      margin-right: auto;
+      > button {
+        margin-left: 0.5em;
+      }
+      > input {
+        width: 11em;
+      }
     }
   }
 </style>

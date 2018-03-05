@@ -11,7 +11,7 @@
               {{ $tc('blockchain.block', 2) }}
             </h3>
             <nuxt-link to="/block" class="card-header-button button is-qtum is-outlined">
-              View all
+              {{ $t('action.view_all') }}
             </nuxt-link>
           </div>
           <div class="card-body">
