@@ -1,5 +1,5 @@
 <template>
-  <section class="container">
+  <section class="container" ref="list">
     <form action="/block" method="GET" @submit.prevent="submit">
       <div class="control">
         <input type="date" class="input" name="date" v-model="date">
@@ -35,7 +35,7 @@
     <form action="/block" method="GET" @submit.prevent="submit">
       <div class="control">
         <input type="date" class="input" name="date" v-model="date">
-        <button type="submit" class="button is-qtum">{{ $t('block.list.go') }}</button>
+        <button type="submit" class="button is-qtum">{{ $t('action.go') }}</button>
       </div>
     </form>
   </section>
@@ -131,6 +131,7 @@
       this.list = await Block.getBlocksByDate(date)
       this.date = formatTimestamp(date)
       next()
+      scrollIntoView(this.$refs.list)
     }
   }
 </script>

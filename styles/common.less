@@ -9,19 +9,62 @@
 }
 
 .is-qtum {
-  &.button {
-    border-color: transparent;
-    background-color: @qtum;
-    color: #fff;
-    &.is-outlined {
+  border-color: transparent;
+  background-color: @qtum;
+  color: white;
+
+  &:hover, .is-hovered {
+    background-color: darken(@qtum, 3%);
+    color: white;
+  }
+
+  &:focus, .is-focused {
+    outline: none;
+    color: white;
+    &:not(:active) {
+      box-shadow: 0 0 0 0.125rem fade(@qtum, 25%);
+    }
+  }
+
+  &:active, .is-actived {
+    outline: none;
+    background-color: darken(@qtum, 5%);
+    color: white;
+  }
+
+  &.is-outlined {
+    border-color: @qtum;
+    background-color: transparent;
+    color: @qtum;
+    &:hover, .is-hovered {
       border-color: @qtum;
-      background-color: transparent;
+      background-color: @qtum;
+      color: white;
+    }
+  }
+
+  &.is-inverted {
+    background-color: white;
+    color: @qtum;
+    &:hover, .is-hovered {
+      background-color: #f2f2f2;
+      color: white;
+    }
+  }
+
+  &.is-outlined.is-inverted {
+    border-color: white;
+    background-color: transparent;
+    color: white;
+    &:hover {
+      background-color: white;
       color: @qtum;
     }
-    &[disabled] {
-      border-color: transparent;
-      background-color: @qtum;
-      box-shadow: none;
-    }
+  }
+
+  &[disabled] {
+    border-color: transparent;
+    background-color: @qtum;
+    box-shadow: none;
   }
 }
