@@ -31,7 +31,11 @@ Vue.filter('qrc20', (amount, decimals = 0, showDecimals = false) => {
   }
 })
 
-Vue.filter('timestamp', time => moment(time * 1000).format('YYYY-MM-DD HH:mm:ss'))
+Vue.filter('timestamp', (time, type = 'datetime') => moment(time * 1000).format({
+  datetime: 'YYYY-MM-DD HH:mm:ss',
+  date: 'YYYY-MM-DD',
+  time: 'HH:mm:ss'
+}[type]))
 
 Vue.component('FromNow', {
   name: 'from-now',

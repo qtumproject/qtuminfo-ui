@@ -1,0 +1,27 @@
+@import 'variables.less';
+
+.break-word {
+  word-break: break-all;
+}
+
+.monospace {
+  font-family: monospace;
+}
+
+.is-qtum {
+  &.button {
+    border-color: transparent;
+    background-color: @qtum;
+    color: #fff;
+    &.is-outlined {
+      border-color: @qtum;
+      background-color: transparent;
+      color: @qtum;
+    }
+    &[disabled] {
+      border-color: transparent;
+      background-color: @qtum;
+      box-shadow: none;
+    }
+  }
+}

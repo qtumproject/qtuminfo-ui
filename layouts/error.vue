@@ -7,7 +7,7 @@
       <div class="has-text-centered">
         <p class="is-size-3">{{ error.message }}</p>
         <br>
-        <nuxt-link to="/" class="button is-primary is-size-5">Back to Home Page</nuxt-link>
+        <nuxt-link to="/" class="button is-qtum is-size-5">Back to Home Page</nuxt-link>
       </div>
     </div>
   </div>

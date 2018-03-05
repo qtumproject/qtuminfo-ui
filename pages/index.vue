@@ -10,6 +10,9 @@
             <h3 class="card-header-title">
               {{ $tc('blockchain.block', 2) }}
             </h3>
+            <nuxt-link to="/block" class="card-header-button button is-qtum is-outlined">
+              View all
+            </nuxt-link>
           </div>
           <div class="card-body">
             <div v-for="block in recentBlocks" class="qtum-block is-size-7" :key="block.hash">
@@ -108,6 +111,8 @@
 </script>
 
 <style lang="less" scoped>
+  @import '../styles/variables.less';
+
   .columns.is-desktop {
     margin: 0;
   }
@@ -127,7 +132,7 @@
     background-color: #eee;
     color: inherit;
     &:hover {
-      outline: 1px solid #3273dc;
+      outline: 1px solid @qtum;
     }
   }
 

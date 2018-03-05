@@ -11,7 +11,7 @@ module.exports = {
   css: [
     'bulma/css/bulma.css',
     'font-awesome/css/font-awesome.css',
-    '@/styles/common.css',
+    '@/styles/common.less',
     '@/styles/card.less',
     '@/styles/info-table.less',
     '@/icons/style.css'
