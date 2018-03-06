@@ -39,7 +39,7 @@
     },
     components: {
       'address-id': AddressId,
-      block: Block,
+      'block-': Block,
       'block-id': BlockId,
       'contract-id': ContractId,
       'tx-id': TxId,

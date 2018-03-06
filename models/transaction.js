@@ -1,8 +1,12 @@
 import * as QtuminfoAPI from '@/services/qtuminfo-api'
 
 class Transaction {
-  static get(hash) {
-    return QtuminfoAPI.get(`/tx/${hash}`)
+  static get(id) {
+    if (Array.isArray(id)) {
+      return QtuminfoAPI.get('/txs/' + id.join(','))
+    } else {
+      return QtuminfoAPI.get(`/tx/${id}`)
+    }
   }
 }
 

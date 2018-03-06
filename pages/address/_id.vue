@@ -117,7 +117,7 @@
         if (page > 1 && totalCount <= (page - 1) * 20) {
           redirect(`/address/${params.id}`, {page: Math.ceil(totalCount / 20)})
         }
-        transactions = await Promise.all(transactions.map(Transaction.get))
+        transactions = await Transaction.get(transactions)
         return {
           balance: address.balance,
           totalReceived: address.totalReceived,
@@ -173,7 +173,7 @@
         })
         return
       }
-      this.transactions = await Promise.all(transactions.map(Transaction.get))
+      this.transactions = await Transaction.get(transactions)
       this.currentPage = page
       next()
       scrollIntoView(this.$refs['transaction-list'])
