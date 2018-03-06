@@ -1,3 +1,4 @@
+import {toHexAddress} from '@/utils/address'
 import {Base58Check} from '@/utils/base58'
 import network from '@/utils/network'
 import mergeProps from '@/utils/merge-props'
@@ -9,24 +10,27 @@ export default {
   functional: true,
   props: {
     address: {required: true},
-    highlight: Boolean,
+    highlight: String,
     copyable: {type: Boolean, default: true}
   },
   render(createElement, {data, props, slots}) {
     let addressString
+    let hexAddress
     if (typeof props.address === 'string') {
       addressString = props.address
+      hexAddress = toHexAddress(props.address)
     } else if (props.address.type === 'contract') {
-      addressString = props.address.hex
+      addressString = hexAddress = props.address.hex
     } else {
       let type = props.address.type.includes('scripthash') ? 'scripthash' : 'pubkeyhash'
       addressString = Base58Check.encode(Buffer.concat([
         Buffer.from([network[type]]),
         Buffer.from(props.address.hex, 'hex')
       ]))
+      hexAddress = props.address.hex
     }
     let children = [
-      props.highlight
+      props.highlight === hexAddress
         ? createElement(
           'span',
           {class: ['break-word', 'monospace']},
@@ -39,7 +43,7 @@ export default {
             attrs: {to: (addressString.length === 40 ? '/contract/' : '/address/') + addressString}
           },
           slots().default || addressString
-        ),
+        )
     ]
     if (props.copyable) {
       children.push(' ', createElement(Clipboard, {attrs: {string: addressString}}))

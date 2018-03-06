@@ -68,7 +68,7 @@
       <div class="card-body">
         <Pagination v-if="pages > 1" :pages="pages" :current-page="currentPage" :get-link="getLink"></Pagination>
         <Transaction v-for="transaction in transactions" :key="transaction.txid"
-          :transaction="transaction" :highlight-address="id"
+          :transaction="transaction" :highlight-address="hexAddress"
           @transaction-change="tx => transactionChange(transaction, tx)"
           ></Transaction>
         <Pagination v-if="pages > 1" :pages="pages" :current-page="currentPage" :get-link="getLink"></Pagination>
@@ -82,6 +82,7 @@
   import Address from '@/models/address'
   import Transaction from '@/models/transaction'
   import {RequestError} from '@/services/qtuminfo-api'
+  import {toHexAddress} from '@/utils/address'
   import {scrollIntoView} from '@/utils/dom'
 
   export default {
@@ -143,6 +144,9 @@
     computed: {
       id() {
         return this.$route.params.id
+      },
+      hexAddress() {
+        return toHexAddress(this.id)
       },
       pages() {
         return Math.ceil(this.totalCount / 20)

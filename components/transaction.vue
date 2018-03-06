@@ -25,7 +25,7 @@
       <template v-else>
         <div v-for="input in inputs" class="is-clearfix">
           <AddressLink v-if="input.address" :address="input.address" class="pull-left"
-            :highlight="input.address === highlightAddress"></AddressLink>
+            :highlight="highlightAddress"></AddressLink>
           <span v-else class="pull-left">{{ $t('transaction.unparsed_address' )}}</span>
           <span class="pull-right amount">
             {{ input.value | qtum(8) }} QTUM
@@ -38,7 +38,7 @@
       <template v-if="collapsed">
         <div v-for="output in outputs" class="is-clearfix">
           <AddressLink v-if="output.address" :address="output.address" class="pull-left"
-            :highlight="output.address === highlightAddress"></AddressLink>
+            :highlight="highlightAddress"></AddressLink>
           <span v-else-if="output.scriptPubKey.type === 'nonstandard'">
             {{ $t('transaction.empty_output') }}
           </span>
@@ -57,7 +57,7 @@
       <template v-else>
         <div v-for="output in outputs" class="is-clearfix">
           <AddressLink v-if="output.address" :address="output.address" class="pull-left"
-            :highlight="output.address === highlightAddress"></AddressLink>
+            :highlight="highlightAddress"></AddressLink>
           <span v-else-if="output.scriptPubKey.type === 'nonstandard'">
             {{ $t('transaction.empty_output') }}
           </span>
@@ -95,13 +95,10 @@
         }">
         <div class="is-clearfix">
           <div v-if="from" class="is-clearfix">
-            <AddressLink :address="from" class="pull-left"
-              :highlight="from === highlightAddress"></AddressLink>
+            <AddressLink :address="from" class="pull-left" :highlight="highlightAddress"></AddressLink>
             <span class="pull-right amount">
               {{ amount | qrc20(token.decimals) }}
-              <AddressLink :address="token.address"
-                :highlight="token.address === highlightAddress"
-                :copyable="false">
+              <AddressLink :address="token.address" :highlight="highlightAddress" :copyable="false">
                 {{ token.symbol || $t('contract.token.tokens') }}
               </AddressLink>
             </span>
@@ -111,13 +108,10 @@
         <Icon icon="arrow-right" class="arrow"></Icon>
         <div class="is-half">
           <div v-if="to" class="is-clearfix">
-            <AddressLink :address="to" class="pull-left"
-              :highlight="to === highlightAddress"></AddressLink>
+            <AddressLink :address="to" class="pull-left" :highlight="highlightAddress"></AddressLink>
             <span class="pull-right amount">
               {{ amount | qrc20(token.decimals) }}
-              <AddressLink :address="token.address"
-                :highlight="token.address === highlightAddress"
-                :copyable="false">
+              <AddressLink :address="token.address" :highlight="highlightAddress" :copyable="false">
                 {{ token.symbol || $t('contract.token.tokens') }}
               </AddressLink>
             </span>
