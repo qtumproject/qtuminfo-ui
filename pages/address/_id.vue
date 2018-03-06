@@ -58,7 +58,7 @@
       </div>
     </div>
 
-    <div class="card section-card transaction-list" v-if="transactions.length" ref="transaction-list">
+    <div class="card section-card transaction-list" ref="transaction-list">
       <div class="card-header">
         <div class="card-header-icon">
           <Icon icon="list-alt" fixed-width></Icon>

@@ -61,7 +61,7 @@
       </div>
     </div>
 
-    <div class="card section-card transaction-list" v-if="transactions.length">
+    <div class="card section-card transaction-list" ref="transaction-list">
       <div class="card-header">
         <div class="card-header-icon">
           <Icon icon="list-alt" fixed-width></Icon>
@@ -69,8 +69,10 @@
         <div class="card-header-title">{{ $tc('blockchain.transaction', 2) }}</div>
       </div>
       <div class="card-body">
+        <Pagination v-if="pages > 1" :pages="pages" :current-page="currentPage" :get-link="getLink"></Pagination>
         <Transaction v-for="transaction in transactions" :key="transaction.txid"
           :transaction="transaction"></Transaction>
+        <Pagination v-if="pages > 1" :pages="pages" :current-page="currentPage" :get-link="getLink"></Pagination>
       </div>
     </div>
   </section>
@@ -80,6 +82,7 @@
   import Block from '@/models/block'
   import Transaction from '@/models/transaction'
   import RequestError from '@/services/qtuminfo-api'
+  import {scrollIntoView} from '@/utils/dom'
 
   export default {
     head() {
@@ -99,14 +102,24 @@
         minedBy: null,
         previousBlockHash: null,
         nextBlockHash: null,
-        transactions: []
+        tx: [],
+        totalCount: 0,
+        transactions: [],
+        currentPage: Number(this.$route.query.page || 1)
       }
     },
-    async asyncData({params, error}) {
+    async asyncData({params, query, redirect, error}) {
       let id = params.id
       try {
+        if (query.page && !/^[1-9]\d*$/.test(query.page)) {
+          redirect(`/block/${params.id}`)
+        }
         let block = await Block.get(id)
-        let transactions = await Transaction.get(block.tx)
+        let page = Number(query.page || 1)
+        if (page > 1 && block.tx.length <= (page - 1) * 20) {
+          redirect(`/block/${params.id}`, {page: Math.ceil(block.tx.length / 20)})
+        }
+        let transactions = await Transaction.get(block.tx.slice((page - 1) * 20, page * 20))
         return {
           height: block.height,
           hash: block.hash,
@@ -119,6 +132,7 @@
           minedBy: block.minedBy || null,
           previousBlockHash: block.previousBlockHash || null,
           nextBlockHash: block.nextBlockHash || null,
+          tx: block.tx,
           transactions
         }
       } catch (err) {
@@ -132,6 +146,37 @@
           throw err
         }
       }
+    },
+    computed: {
+      pages() {
+        return Math.ceil(this.tx.length / 20)
+      }
+    },
+    methods: {
+      getLink(page) {
+        return {name: 'block-id', params: {id: this.height}, query: {page}}
+      }
+    },
+    async beforeRouteUpdate(to, from, next) {
+      let page = Number(to.query.page || 1)
+      if (page > this.pages && this.pages > 1) {
+        this.$router.push({
+          name: 'block-id',
+          params: {id: this.height},
+          query: {page: Math.ceil(this.tx.length / 20)}
+        })
+        return
+      }
+      this.transactions = await Transaction.get(this.tx.slice((page - 1) * 20, page * 20))
+      this.currentPage = page
+      next()
+      scrollIntoView(this.$refs['transaction-list'])
     }
   }
 </script>
+
+<style lang="less" scoped>
+  .pagination {
+    padding: 1em;
+  }
+</style>
