@@ -6,9 +6,9 @@
           <span class="fa fa-home"></span>
         </nuxt-link>
       </li>
-      <li v-for="({name}, index) in breadcrumbs">
+      <li v-for="({name, component}, index) in breadcrumbs">
         <nuxt-link :to="{name, params: $route.params}">
-          <component :is='name' v-bind="$route.params"></component>
+          <component :is='component' v-bind="$route.params"></component>
         </nuxt-link>
       </li>
     </ul>
@@ -31,7 +31,7 @@
         for (let route of this.$route.matched) {
           let name = route.path.slice(1).replace('/', '-').replace(':', '').replace('?', '')
           if (name in this.$options.components) {
-            path.push({name})
+            path.push({name: route.name, component: name})
           }
         }
         return path
