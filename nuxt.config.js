@@ -33,7 +33,8 @@ module.exports = {
           || 'http://localhost:3001/qtuminfo-api/'),
         'process.env.qtuminfoWSBase': JSON.stringify(process.env.QTUMINFO_WS_BASE
           || process.env.QTUMINFO_API_BASE_WS
-          || '//localhost:3002/qtuminfo-ws/')
+          || '//localhost:3002/qtuminfo-ws/'),
+        'process.env.network': JSON.stringify(process.env.QTUM_NETWORK || 'mainnet')
       }))
     },
     extractCSS: true,
