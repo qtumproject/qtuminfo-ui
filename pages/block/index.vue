@@ -20,7 +20,7 @@
       <tbody>
         <tr v-for="{height, timestamp, size, reward, minedBy, txLength} of list">
           <td>
-            <nuxt-link :to="'/block/' + height">{{ height }}</nuxt-link>
+            <BlockLink :block="height" :clipboard="false"></BlockLink>
           </td>
           <td>{{ timestamp | timestamp() }}</td>
           <td class="is-hidden-touch monospace">{{ reward | qtum(8) }} QTUM</td>

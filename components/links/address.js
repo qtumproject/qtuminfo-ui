@@ -2,7 +2,7 @@ import {fromHexAddress, toHexAddress} from '@/utils/address'
 import {Base58Check} from '@/utils/base58'
 import network from '@/utils/network'
 import mergeProps from '@/utils/merge-props'
-import Clipboard from './clipboard.vue'
+import Clipboard from '../clipboard.vue'
 import './style.less'
 
 export default {
@@ -10,8 +10,9 @@ export default {
   functional: true,
   props: {
     address: {required: true},
-    highlight: String,
-    copyable: {type: Boolean, default: true}
+    plain: {type: Boolean, default: false},
+    highlight: {type: [String, Boolean], default: false},
+    clipboard: {type: Boolean, default: true}
   },
   render(createElement, {data, props, slots}) {
     let addressString
@@ -24,7 +25,7 @@ export default {
       hexAddress = toHexAddress(addressString)
     }
     let children = [
-      props.highlight === hexAddress
+      props.plain || [true, hexAddress].includes(props.highlight)
         ? createElement(
           'span',
           {class: ['break-word', 'monospace']},
@@ -34,13 +35,18 @@ export default {
           'nuxt-link',
           {
             class: ['break-word', 'monospace'],
-            attrs: {to: (addressString.length === 40 ? '/contract/' : '/address/') + addressString}
+            attrs: {
+              to: {
+                name: addressString.length === 40 ? 'contract-id' : 'address-id',
+                params: {id: addressString}
+              }
+            }
           },
           slots().default || addressString
         )
     ]
-    if (props.copyable) {
-      children.push(' ', createElement(Clipboard, {attrs: {string: addressString}}))
+    if (props.clipboard) {
+      children.push(createElement(Clipboard, {attrs: {string: addressString}}))
     }
     return createElement(
       'span',

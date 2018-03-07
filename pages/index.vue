@@ -18,7 +18,8 @@
             <div v-for="block in recentBlocks" class="qtum-block is-size-7" :key="block.hash">
               <div class="level">
                 <div class="level-left">
-                  <nuxt-link :to="'/block/' + block.height" class="level-item qtum-block-box has-text-centered">
+                  <nuxt-link :to="{name: 'block-id', params: {id: block.height}}"
+                    class="level-item qtum-block-box has-text-centered">
                     {{ $tc('blockchain.block', 1) }} #{{ block.height }}
                     <FromNow :timestamp="block.timestamp"></FromNow>
                   </nuxt-link>
@@ -55,9 +56,7 @@
           <div class="card-body">
             <div v-for="transaction in recentTransactions" :key="transaction.id" class="is-size-7 transaction">
               <div class="level">
-                <nuxt-link :to="'/tx/' + transaction.id" class="level-left">
-                  {{ transaction.id }}
-                </nuxt-link>
+                <TransactionLink :transaction="transaction.id" class="level-left"></TransactionLink>
                 <span class="level-right">{{ transaction.valueOut | qtum }} QTUM</span>
               </div>
             </div>

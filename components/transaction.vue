@@ -10,10 +10,10 @@
         <TransactionLink :transaction="id"></TransactionLink>
       </div>
       <div class="pull-right">
-        <span v-if="confirmations"
+        <nuxt-link v-if="confirmations" :to="{name: 'block-id', params: {id: transaction.blockHeight}}"
           class="tag" :class="confirmations >= 10 ? 'is-success' : 'confirmation-' + confirmations">
           {{ confirmations }} {{ $tc('transaction.confirmations', confirmations) }}
-        </span>
+        </nuxt-link>
         <span v-else class="tag is-danger">{{ $t('transaction.unconfirmed') }}</span>
         <span v-if="transaction.timestamp" class="timestamp">
           {{ transaction.timestamp | timestamp }}
@@ -98,7 +98,7 @@
             <AddressLink :address="from" class="pull-left" :highlight="highlightAddress"></AddressLink>
             <span class="pull-right amount">
               {{ amount | qrc20(token.decimals) }}
-              <AddressLink :address="token.address" :highlight="highlightAddress" :copyable="false">
+              <AddressLink :address="token.address" :highlight="highlightAddress">
                 {{ token.symbol || $t('contract.token.tokens') }}
               </AddressLink>
             </span>
@@ -111,7 +111,7 @@
             <AddressLink :address="to" class="pull-left" :highlight="highlightAddress"></AddressLink>
             <span class="pull-right amount">
               {{ amount | qrc20(token.decimals) }}
-              <AddressLink :address="token.address" :highlight="highlightAddress" :copyable="false">
+              <AddressLink :address="token.address" :highlight="highlightAddress">
                 {{ token.symbol || $t('contract.token.tokens') }}
               </AddressLink>
             </span>
@@ -259,6 +259,10 @@
     &:hover {
       transform: scale(1.2);
     }
+  }
+
+  .tag:link {
+    text-decoration: none;
   }
 
   .tag, .timestamp {

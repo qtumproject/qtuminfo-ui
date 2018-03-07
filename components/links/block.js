@@ -3,12 +3,12 @@ import Clipboard from '../clipboard.vue'
 import './style.less'
 
 export default {
-  name: 'transaction-link',
+  name: 'block-link',
   functional: true,
   props: {
-    transaction: {type: [Number, String], required: true},
+    block: {type: [Number, String], required: true},
     plain: {type: Boolean, default: false},
-    clipboard: {type: [String, Boolean], default: true}
+    clipboard: {type: [Number, String, Boolean], default: true}
   },
   render(createElement, {data, props, slots}) {
     let children = [
@@ -16,25 +16,25 @@ export default {
         ? createElement(
           'span',
           {class: ['break-word', 'monospace']},
-          slots().default || props.transaction.toString()
+          slots().default || props.block.toString()
         )
         : createElement(
           'nuxt-link',
           {
             class: ['break-word', 'monospace'],
-            attrs: {to: {name: 'tx-id', params: {id: props.transaction}}}
+            attrs: {to: {name: 'block-id', params: {id: props.block}}}
           },
-          slots().default || props.transaction.toString()
+          slots().default || props.block.toString()
         )
     ]
     if (props.clipboard) {
       children.push(createElement(Clipboard, {attrs: {
-        string: (props.clipboard === true ? props.transaction : props.clipboard).toString()
+        string: (props.clipboard === true ? props.block : props.clipboard).toString()
       }}))
     }
     return createElement(
       'span',
-      mergeProps(data, {class: 'transaction-link'}),
+      mergeProps(data, {class: 'block-link'}),
       children
     )
   }

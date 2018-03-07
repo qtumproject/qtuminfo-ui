@@ -10,18 +10,22 @@
       <div class="card-body info-table">
         <div class="columns">
           <div class="column info-title">{{ $t('transaction.transaction_id') }}</div>
-          <div class="column info-value monospace">{{ id }}</div>
+          <div class="column info-value monospace">
+            <TransactionLink :transaction="id" plain></TransactionLink>
+          </div>
         </div>
         <div class="columns" v-if="id !== hash">
           <div class="column info-title">{{ $t('transaction.transaction_hash') }}</div>
-          <div class="column info-value monospace">{{ hash }}</div>
+          <div class="column info-value monospace">
+            <TransactionLink :transaction="id" plain :clipboard="hash">{{ hash }}</TransactionLink>
+          </div>
         </div>
         <div class="columns" v-if="block">
           <div class="column info-title">{{ $t('transaction.included_in_block') }}</div>
           <div class="column info-value">
-            <nuxt-link :to="'/block/' + block.height">
+            <BlockLink :block="block.height" :clipboard="block.hash">
               {{ block.height }} ({{ block.hash }})
-            </nuxt-link>
+            </BlockLink>
           </div>
         </div>
         <div class="columns">

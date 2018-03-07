@@ -11,19 +11,19 @@
         <div class="columns">
           <div class="column info-title">{{ $t('contract.address') }}</div>
           <div class="column info-value">
-            <AddressLink :address="id"></AddressLink>
+            <AddressLink :address="id" plain></AddressLink>
           </div>
         </div>
         <div class="columns" v-if="owner">
           <div class="column info-title">{{ $t('contract.owner') }}</div>
           <div class="column info-value">
-            <AddressLink :address="owner" class="column info-value"></AddressLink>
+            <AddressLink :address="owner"></AddressLink>
           </div>
         </div>
         <div class="columns">
           <div class="column info-title">{{ $t('contract.create_transaction') }}</div>
           <div class="column info-value">
-            <TransactionLink :transaction="txid" class="column info-value"></TransactionLink>
+            <TransactionLink :transaction="txid"></TransactionLink>
           </div>
         </div>
         <template v-if="qrc20">
@@ -56,7 +56,7 @@
           <div class="column info-value">
             <div v-for="token in tokenBalances" class="monospace">
               {{ token.balance | qrc20(token.decimals) }}
-              <AddressLink :address="token.address":copyable="false">
+              <AddressLink :address="token.address">
                 {{ token.symbol || $t('contract.token.tokens') }}
               </AddressLink>
             </div>

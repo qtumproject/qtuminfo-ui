@@ -12,7 +12,7 @@
           <div class="column info-title">{{ $t('address.address') }}</div>
           <div class="column info-value">
             <div v-for="address in id.split(',')">
-              <AddressLink :address="address"></AddressLink>
+              <AddressLink :address="address" plain></AddressLink>
             </div>
           </div>
         </div>
@@ -45,7 +45,7 @@
           <div class="column info-value">
             <div v-for="token in tokenBalances" class="monospace">
               {{ token.balance | qrc20(token.decimals) }}
-              <AddressLink :address="token.address" :copyable="false">
+              <AddressLink :address="token.address">
                 {{ token.symbol || $t('contract.token.tokens') }}
               </AddressLink>
             </div>

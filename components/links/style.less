@@ -1,10 +1,15 @@
-.address-link, .transaction-link {
+.address-link, .block-link, .transaction-link {
   position: relative;
   > .clipboard {
     position: absolute;
-    top: 0;
-    left: e('calc(100% + 1px)');
+    top: 50%;
+    left: 100%;
+    padding-left: 0.2em;
+    transform: translateY(-50%);
     line-height: inherit;
+    &:hover {
+      transform: translateY(-50%) scale(1.2) !important;
+    }
   }
   &:not(:hover) > .clipboard {
     display: none;
