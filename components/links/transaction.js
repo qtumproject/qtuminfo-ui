@@ -11,7 +11,7 @@ export default {
   render(createElement, {data, props}) {
     return createElement(
       'span',
-      mergeProps(data, {class: 'address-link'}),
+      mergeProps(data, {class: 'transaction-link'}),
       [
         createElement(
           'nuxt-link',

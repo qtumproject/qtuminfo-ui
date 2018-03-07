@@ -44,7 +44,9 @@
         </div>
         <div class="columns" v-if="minedBy">
           <div class="column info-title">{{ $t('block.mined_by') }}</div>
-          <AddressLink :address="minedBy" class="column info-value"></AddressLink>
+          <div class="column info-value">
+            <AddressLink :address="minedBy"></AddressLink>
+          </div>
         </div>
         <div class="columns">
           <div class="column info-title">{{ $t('block.transactions') }}</div>

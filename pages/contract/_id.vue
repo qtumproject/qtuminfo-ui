@@ -10,15 +10,21 @@
       <div class="card-body info-table">
         <div class="columns">
           <div class="column info-title">{{ $t('contract.address') }}</div>
-          <AddressLink :address="id" class="column info-value"></AddressLink>
+          <div class="column info-value">
+            <AddressLink :address="id"></AddressLink>
+          </div>
         </div>
         <div class="columns" v-if="owner">
           <div class="column info-title">{{ $t('contract.owner') }}</div>
-          <AddressLink :address="owner" class="column info-value"></AddressLink>
+          <div class="column info-value">
+            <AddressLink :address="owner" class="column info-value"></AddressLink>
+          </div>
         </div>
         <div class="columns">
           <div class="column info-title">{{ $t('contract.create_transaction') }}</div>
-          <TransactionLink :transaction="txid" class="column info-value"></TransactionLink>
+          <div class="column info-value">
+            <TransactionLink :transaction="txid" class="column info-value"></TransactionLink>
+          </div>
         </div>
         <template v-if="qrc20">
           <div class="columns" v-if="qrc20.name">
