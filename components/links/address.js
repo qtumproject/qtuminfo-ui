@@ -1,4 +1,4 @@
-import {toHexAddress} from '@/utils/address'
+import {fromHexAddress, toHexAddress} from '@/utils/address'
 import {Base58Check} from '@/utils/base58'
 import network from '@/utils/network'
 import mergeProps from '@/utils/merge-props'
@@ -19,15 +19,9 @@ export default {
     if (typeof props.address === 'string') {
       addressString = props.address
       hexAddress = toHexAddress(props.address)
-    } else if (props.address.type === 'contract') {
-      addressString = hexAddress = props.address.hex
     } else {
-      let type = props.address.type.includes('scripthash') ? 'scripthash' : 'pubkeyhash'
-      addressString = Base58Check.encode(Buffer.concat([
-        Buffer.from([network[type]]),
-        Buffer.from(props.address.hex, 'hex')
-      ]))
-      hexAddress = props.address.hex
+      addressString = fromHexAddress(props.address)
+      hexAddress = toHexAddress(addressString)
     }
     let children = [
       props.highlight === hexAddress
