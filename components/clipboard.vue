@@ -1,5 +1,5 @@
 <template>
-  <Icon icon="clipboard" tag="a" class="clipboard" @click="copy" :title="$t('action.copy')"></Icon>
+  <Icon icon="clipboard" tag="a" class="clipboard" @click="copy" :title="$t('action.copy')" />
 </template>
 
 <script>

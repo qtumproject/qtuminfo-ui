@@ -3,11 +3,10 @@
     <div class="column is-full is-clearfix">
       <div class="pull-left collapse-bottom">
         <Icon
-          :icon="collapsed ? 'chevron-right' : 'chevron-down'" fixed-width
+          :icon="collapsed ? 'chevron-right' : 'chevron-down'" fixedWidth
           class="toggle-collapse"
-          @click="collapsed = !collapsed"
-        ></Icon>
-        <TransactionLink :transaction="id"></TransactionLink>
+          @click="collapsed = !collapsed" />
+        <TransactionLink :transaction="id" />
       </div>
       <div class="pull-right">
         <nuxt-link v-if="confirmations" :to="{name: 'block-id', params: {id: transaction.blockHeight}}"
@@ -25,7 +24,7 @@
       <template v-else>
         <div v-for="input in inputs" class="is-clearfix">
           <AddressLink v-if="input.address" :address="input.address" class="pull-left"
-            :highlight="highlightAddress"></AddressLink>
+            :highlight="highlightAddress" />
           <span v-else class="pull-left">{{ $t('transaction.unparsed_address' )}}</span>
           <span class="pull-right amount">
             {{ input.value | qtum(8) }} QTUM
@@ -38,7 +37,7 @@
       <template v-if="collapsed">
         <div v-for="output in outputs" class="is-clearfix">
           <AddressLink v-if="output.address" :address="output.address" class="pull-left"
-            :highlight="highlightAddress"></AddressLink>
+            :highlight="highlightAddress" />
           <span v-else-if="output.scriptPubKey.type === 'nonstandard'">
             {{ $t('transaction.empty_output') }}
           </span>
@@ -57,7 +56,7 @@
       <template v-else>
         <div v-for="output in outputs" class="is-clearfix">
           <AddressLink v-if="output.address" :address="output.address" class="pull-left"
-            :highlight="highlightAddress"></AddressLink>
+            :highlight="highlightAddress" />
           <span v-else-if="output.scriptPubKey.type === 'nonstandard'">
             {{ $t('transaction.empty_output') }}
           </span>
@@ -95,7 +94,7 @@
         }">
         <div class="is-clearfix">
           <div v-if="from" class="is-clearfix">
-            <AddressLink :address="from" class="pull-left" :highlight="highlightAddress"></AddressLink>
+            <AddressLink :address="from" class="pull-left" :highlight="highlightAddress" />
             <span class="pull-right amount">
               {{ amount | qrc20(token.decimals) }}
               <AddressLink :address="token.address" :highlight="highlightAddress">
@@ -108,7 +107,7 @@
         <Icon icon="arrow-right" class="arrow"></Icon>
         <div class="is-half">
           <div v-if="to" class="is-clearfix">
-            <AddressLink :address="to" class="pull-left" :highlight="highlightAddress"></AddressLink>
+            <AddressLink :address="to" class="pull-left" :highlight="highlightAddress" />
             <span class="pull-right amount">
               {{ amount | qrc20(token.decimals) }}
               <AddressLink :address="token.address" :highlight="highlightAddress">

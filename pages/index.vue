@@ -5,7 +5,7 @@
         <div class="card">
           <div class="card-header">
             <div class="card-header-icon">
-              <Icon icon="cubes" fixed-width></Icon>
+              <Icon icon="cubes" fixedWidth />
             </div>
             <h3 class="card-header-title">
               {{ $tc('blockchain.block', 2) }}
@@ -21,12 +21,12 @@
                   <nuxt-link :to="{name: 'block-id', params: {id: block.height}}"
                     class="level-item qtum-block-box has-text-centered">
                     {{ $tc('blockchain.block', 1) }} #{{ block.height }}
-                    <FromNow :timestamp="block.timestamp"></FromNow>
+                    <FromNow :timestamp="block.timestamp" />
                   </nuxt-link>
                   <div class="level-item">
                     <div>
                       <i18n path="block.brief.address">
-                        <AddressLink :address="block.minedBy"></AddressLink>
+                        <AddressLink :address="block.minedBy" />
                       </i18n>
                       <br>
                       {{ $t('block.brief.transaction', [block.txLength, block.duration]) }}
@@ -47,7 +47,7 @@
         <div class="card">
           <div class="card-header">
             <div class="card-header-icon">
-              <Icon icon="list-alt" fixed-width></Icon>
+              <Icon icon="list-alt" fixedWidth />
             </div>
             <h3 class="card-header-title">
               {{ $tc('blockchain.transaction', 2) }}
@@ -56,7 +56,7 @@
           <div class="card-body">
             <div v-for="transaction in recentTransactions" :key="transaction.id" class="is-size-7 transaction">
               <div class="level">
-                <TransactionLink :transaction="transaction.id" class="level-left"></TransactionLink>
+                <TransactionLink :transaction="transaction.id" class="level-left" />
                 <span class="level-right">{{ transaction.valueOut | qtum }} QTUM</span>
               </div>
             </div>

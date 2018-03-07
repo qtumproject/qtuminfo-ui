@@ -3,7 +3,7 @@
     <div class="card section-card">
       <div class="card-header">
         <div class="card-header-icon">
-          <Icon icon="code" fixed-width></Icon>
+          <Icon icon="code" fixedWidth />
         </div>
         <h3 class="card-header-title">{{ $t('contract.summary') }}</h3>
       </div>
@@ -11,19 +11,19 @@
         <div class="columns">
           <div class="column info-title">{{ $t('contract.address') }}</div>
           <div class="column info-value">
-            <AddressLink :address="id" plain></AddressLink>
+            <AddressLink :address="id" plain />
           </div>
         </div>
         <div class="columns" v-if="owner">
           <div class="column info-title">{{ $t('contract.owner') }}</div>
           <div class="column info-value">
-            <AddressLink :address="owner"></AddressLink>
+            <AddressLink :address="owner" />
           </div>
         </div>
         <div class="columns">
           <div class="column info-title">{{ $t('contract.create_transaction') }}</div>
           <div class="column info-value">
-            <TransactionLink :transaction="txid"></TransactionLink>
+            <TransactionLink :transaction="txid" />
           </div>
         </div>
         <template v-if="qrc20">
@@ -77,12 +77,11 @@
         <div class="card-header-title">{{ $t('contract.transaction_list') }}</div>
       </div>
       <div class="card-body">
-        <Pagination v-if="pages > 1" :pages="pages" :current-page="currentPage" :get-link="getLink"></Pagination>
+        <Pagination v-if="pages > 1" :pages="pages" :currentPage="currentPage" :getLink="getLink" />
         <Transaction v-for="transaction in transactions" :key="transaction.txid"
-          :transaction="transaction" :highlight-address="id"
-          @transaction-change="tx => transactionChange(transaction, tx)"
-          ></Transaction>
-        <Pagination v-if="pages > 1" :pages="pages" :current-page="currentPage" :get-link="getLink"></Pagination>
+          :transaction="transaction" :highlightAddress="id"
+          @transaction-change="tx => transactionChange(transaction, tx)" />
+        <Pagination v-if="pages > 1" :pages="pages" :currentPage="currentPage" :getLink="getLink" />
       </div>
     </div>
   </section>

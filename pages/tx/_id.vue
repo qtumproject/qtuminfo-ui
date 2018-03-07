@@ -3,7 +3,7 @@
     <div class="card section-card">
       <div class="card-header">
         <div class="card-header-icon">
-          <Icon icon="list-alt" fixed-width></Icon>
+          <Icon icon="list-alt" fixedWidth />
         </div>
         <h3 class="card-header-title">{{ $t('transaction.summary') }}</h3>
       </div>
@@ -11,7 +11,7 @@
         <div class="columns">
           <div class="column info-title">{{ $t('transaction.transaction_id') }}</div>
           <div class="column info-value monospace">
-            <TransactionLink :transaction="id" plain></TransactionLink>
+            <TransactionLink :transaction="id" plain />
           </div>
         </div>
         <div class="columns" v-if="id !== hash">
@@ -35,7 +35,7 @@
         <div class="columns" v-if="block">
           <div class="column info-title">{{ $t('transaction.timestamp') }}</div>
           <div class="column info-value">
-            <FromNow :timestamp="block.timestamp"></FromNow> ({{ block.timestamp | timestamp }})
+            <FromNow :timestamp="block.timestamp" /> ({{ block.timestamp | timestamp }})
           </div>
         </div>
         <div class="columns">
@@ -52,8 +52,7 @@
             id, blockHeight: block && block.height, timestamp: block && block.timestamp,
             vin, vout, fees, tokenTransfers
           }"
-          @transaction-change="refresh"
-        ></Transaction>
+          @transaction-change="refresh" />
 
         <div class="columns">
           <div class="column">
@@ -65,7 +64,7 @@
               <div class="columns" v-if="receipt.contractAddress !== '0'.repeat(40)">
                 <div class="column info-title">{{ $t('transaction.receipt.contract_address') }}</div>
                 <div class="column info-value">
-                  <AddressLink :address="receipt.contractAddress"></AddressLink>
+                  <AddressLink :address="receipt.contractAddress" />
                 </div>
               </div>
               <div class="columns" v-if="receipt.excepted !== 'None'">
@@ -78,7 +77,7 @@
                   <ul v-for="log in receipt.logs" class="event-log">
                     <li>
                       <span class="key">{{ $t('transaction.receipt.address') }}</span>
-                      <AddressLink :address="log.address"></AddressLink>
+                      <AddressLink :address="log.address" />
                     </li>
                     <li>
                       <span class="key">{{ $t('transaction.receipt.topics') }}</span>

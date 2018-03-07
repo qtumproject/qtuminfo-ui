@@ -1,6 +1,6 @@
 <template>
   <section class="container" ref="section">
-    <Pagination v-if="pages > 1" :pages="pages" :current-page="currentPage" :get-link="getLink"></Pagination>
+    <Pagination v-if="pages > 1" :pages="pages" :currentPage="currentPage" :getLink="getLink" />
     <table class="table is-fullwidth is-bordered is-striped">
       <thead>
         <tr>
@@ -15,7 +15,7 @@
         <tr v-for="({address, blocks, balance}, index) of list">
           <td>{{ 100 * (currentPage - 1) + index + 1 }}</td>
           <td>
-            <AddressLink :address="address"></AddressLink>
+            <AddressLink :address="address" />
           </td>
           <td>{{ blocks }}</td>
           <td class="monospace">{{ (blocks / posBlocks * 100).toFixed(4) + '%' }}</td>
@@ -23,7 +23,7 @@
         </tr>
       </tbody>
     </table>
-    <Pagination v-if="pages > 1" :pages="pages" :current-page="currentPage" :get-link="getLink"></Pagination>
+    <Pagination v-if="pages > 1" :pages="pages" :currentPage="currentPage" :getLink="getLink" />
   </section>
 </template>
 

@@ -3,7 +3,7 @@
     <div class="card section-card">
       <div class="card-header">
         <div class="card-header-icon">
-          <Icon icon="cubes" fixed-width></Icon>
+          <Icon icon="cubes" fixedWidth />
         </div>
         <h3 class="card-header-title">{{ $t('block.summary') }}</h3>
       </div>
@@ -15,7 +15,7 @@
         <div class="columns">
           <div class="column info-title">{{ $t('block.block_hash') }}</div>
           <div class="column info-value">
-            <BlockLink :block="hash" plain></BlockLink>
+            <BlockLink :block="hash" plain />
           </div>
         </div>
         <div class="columns">
@@ -29,7 +29,7 @@
         <div class="columns">
           <div class="column info-title">{{ $t('block.timestamp') }}</div>
           <div class="column info-value">
-            <FromNow :timestamp="timestamp"></FromNow> ({{ timestamp | timestamp }})
+            <FromNow :timestamp="timestamp" /> ({{ timestamp | timestamp }})
           </div>
         </div>
         <div class="columns">
@@ -47,7 +47,7 @@
         <div class="columns" v-if="minedBy">
           <div class="column info-title">{{ $t('block.mined_by') }}</div>
           <div class="column info-value">
-            <AddressLink :address="minedBy"></AddressLink>
+            <AddressLink :address="minedBy" />
           </div>
         </div>
         <div class="columns">
@@ -76,15 +76,14 @@
     <div class="card section-card transaction-list" ref="transaction-list">
       <div class="card-header">
         <div class="card-header-icon">
-          <Icon icon="list-alt" fixed-width></Icon>
+          <Icon icon="list-alt" fixedWidth />
         </div>
         <div class="card-header-title">{{ $tc('blockchain.transaction', 2) }}</div>
       </div>
       <div class="card-body">
-        <Pagination v-if="pages > 1" :pages="pages" :current-page="currentPage" :get-link="getLink"></Pagination>
-        <Transaction v-for="transaction in transactions" :key="transaction.txid"
-          :transaction="transaction"></Transaction>
-        <Pagination v-if="pages > 1" :pages="pages" :current-page="currentPage" :get-link="getLink"></Pagination>
+        <Pagination v-if="pages > 1" :pages="pages" :currentPage="currentPage" :getLink="getLink" />
+        <Transaction v-for="transaction in transactions" :key="transaction.txid" :transaction="transaction" />
+        <Pagination v-if="pages > 1" :pages="pages" :currentPage="currentPage" :getLink="getLink" />
       </div>
     </div>
   </section>

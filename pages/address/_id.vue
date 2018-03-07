@@ -3,7 +3,7 @@
     <div class="card section-card">
       <div class="card-header">
         <div class="card-header-icon">
-          <Icon icon="address-card-o" fixed-width></Icon>
+          <Icon icon="address-card-o" fixedWidth />
         </div>
         <h3 class="card-header-title">{{ $t('address.summary') }}</h3>
       </div>
@@ -12,7 +12,7 @@
           <div class="column info-title">{{ $t('address.address') }}</div>
           <div class="column info-value">
             <div v-for="address in id.split(',')">
-              <AddressLink :address="address" plain></AddressLink>
+              <AddressLink :address="address" plain />
             </div>
           </div>
         </div>
@@ -61,17 +61,16 @@
     <div class="card section-card transaction-list" ref="transaction-list">
       <div class="card-header">
         <div class="card-header-icon">
-          <Icon icon="list-alt" fixed-width></Icon>
+          <Icon icon="list-alt" fixedWidth />
         </div>
         <div class="card-header-title">{{ $t('address.transaction_list') }}</div>
       </div>
       <div class="card-body">
-        <Pagination v-if="pages > 1" :pages="pages" :current-page="currentPage" :get-link="getLink"></Pagination>
+        <Pagination v-if="pages > 1" :pages="pages" :currentPage="currentPage" :getLink="getLink" />
         <Transaction v-for="transaction in transactions" :key="transaction.txid"
-          :transaction="transaction" :highlight-address="hexAddress"
-          @transaction-change="tx => transactionChange(transaction, tx)"
-          ></Transaction>
-        <Pagination v-if="pages > 1" :pages="pages" :current-page="currentPage" :get-link="getLink"></Pagination>
+          :transaction="transaction" :highlightAddress="hexAddress"
+          @transaction-change="tx => transactionChange(transaction, tx)" />
+        <Pagination v-if="pages > 1" :pages="pages" :currentPage="currentPage" :getLink="getLink" />
       </div>
     </div>
   </section>

@@ -1,15 +1,15 @@
 <template>
   <div id="app">
     <header class="container">
-      <Navigator></Navigator>
+      <Navigator />
     </header>
     <div class="background">
       <div class="container">
-        <Breadcrumb v-if="$route.path !== '/'"></Breadcrumb>
+        <Breadcrumb v-if="$route.path !== '/'" />
       </div>
-      <nuxt></nuxt>
+      <nuxt />
     </div>
-    <Footer></Footer>
+    <Footer />
   </div>
 </template>
 

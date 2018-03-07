@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <header class="container">
-      <Navigator></Navigator>
+      <Navigator />
     </header>
     <div class="error-container">
       <div class="has-text-centered">

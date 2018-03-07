@@ -20,12 +20,12 @@
       <tbody>
         <tr v-for="{height, timestamp, size, reward, minedBy, txLength} of list">
           <td>
-            <BlockLink :block="height" :clipboard="false"></BlockLink>
+            <BlockLink :block="height" :clipboard="false" />
           </td>
           <td>{{ timestamp | timestamp() }}</td>
           <td class="is-hidden-touch monospace">{{ reward | qtum(8) }} QTUM</td>
           <td class="is-hidden-touch">
-            <AddressLink :address="minedBy"></AddressLink>
+            <AddressLink :address="minedBy" />
           </td>
           <td class="is-hidden-touch monospace">{{ size.toLocaleString() }}</td>
           <td>{{ txLength }}</td>

@@ -2,7 +2,7 @@
   <nav class="navbar">
     <div class="navbar-brand is-size-4">
       <nuxt-link to="/" class="navbar-item navbar-logo">
-        <span class="qtum-icon qtum-icon--qtum"></span> qtum.info
+        <span class="qtum-icon qtum-icon--qtum" /> qtum.info
       </nuxt-link>
       <button type="button" class="button navbar-burger" @click="showMenu = !showMenu">
         <span></span><span></span><span></span>
@@ -20,7 +20,7 @@
         <div class="navbar-item input-item">
           <input type="text" class="input" v-model="searchString" :placeholder="$t('nav.search')">
           <button type="submit" class="button is-qtum" :class="{'is-loading': searching}">
-            <Icon icon="search"></Icon>
+            <Icon icon="search" />
           </button>
         </div>
       </form>
