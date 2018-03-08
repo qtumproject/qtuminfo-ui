@@ -69,7 +69,7 @@
       </div>
     </div>
 
-    <div class="card section-card transaction-list" v-if="transactions.length">
+    <div class="card section-card transaction-list" ref="transaction-list">
       <div class="card-header">
         <div class="card-header-icon">
           <Icon icon="list-alt" fixed-width></Icon>
@@ -187,7 +187,7 @@
         })
         return
       }
-      this.transactions = await Transactions.get(transactions)
+      this.transactions = await Transaction.get(transactions)
       this.currentPage = page
       next()
       scrollIntoView(this.$refs['transaction-list'])
