@@ -145,7 +145,7 @@
         return this.$route.params.id
       },
       hexAddress() {
-        return toHexAddress(this.id)
+        return this.id.split(',').map(toHexAddress)
       },
       pages() {
         return Math.ceil(this.totalCount / 20)

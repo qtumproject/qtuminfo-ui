@@ -142,7 +142,7 @@
     },
     props: {
       transaction: {type: Object, required: true},
-      highlightAddress: String
+      highlightAddress: {type: [String, Array], default: () => []}
     },
     computed: {
       blockchain() {

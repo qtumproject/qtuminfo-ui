@@ -11,10 +11,11 @@ export default {
   props: {
     address: {required: true},
     plain: {type: Boolean, default: false},
-    highlight: {type: [String, Boolean], default: false},
+    highlight: {type: [String, Array], default: () => []},
     clipboard: {type: Boolean, default: true}
   },
   render(createElement, {data, props, slots}) {
+    let highlight = Array.isArray(props.highlight) ? props.highlight : [props.highlight]
     let addressString
     let hexAddress
     if (typeof props.address === 'string') {
@@ -25,7 +26,7 @@ export default {
       hexAddress = toHexAddress(addressString)
     }
     let children = [
-      props.plain || [true, hexAddress].includes(props.highlight)
+      props.plain || props.highlight.includes(hexAddress)
         ? createElement(
           'span',
           {class: ['break-word', 'monospace']},
