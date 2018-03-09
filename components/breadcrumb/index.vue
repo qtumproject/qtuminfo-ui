@@ -6,7 +6,7 @@
           <span class="fa fa-home"></span>
         </nuxt-link>
       </li>
-      <li v-for="({name, component}, index) in breadcrumbs">
+      <li v-for="{name, component} in breadcrumbs">
         <nuxt-link :to="{name, params: $route.params}">
           <component :is='component' v-bind="$route.params"></component>
         </nuxt-link>

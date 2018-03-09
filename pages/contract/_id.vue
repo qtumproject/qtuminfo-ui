@@ -14,18 +14,20 @@
             <AddressLink :address="id" plain />
           </div>
         </div>
-        <div class="columns" v-if="owner">
-          <div class="column info-title">{{ $t('contract.owner') }}</div>
-          <div class="column info-value">
-            <AddressLink :address="owner" />
+        <template v-if="owner">
+          <div class="columns">
+            <div class="column info-title">{{ $t('contract.owner') }}</div>
+            <div class="column info-value">
+              <AddressLink :address="owner" />
+            </div>
           </div>
-        </div>
-        <div class="columns">
-          <div class="column info-title">{{ $t('contract.create_transaction') }}</div>
-          <div class="column info-value">
-            <TransactionLink :transaction="txid" />
+          <div class="columns">
+            <div class="column info-title">{{ $t('contract.create_transaction') }}</div>
+            <div class="column info-value">
+              <TransactionLink :transaction="txid" />
+            </div>
           </div>
-        </div>
+        </template>
         <template v-if="qrc20">
           <div class="columns" v-if="qrc20.name">
             <div class="column info-title">{{ $t('contract.token.name') }}</div>
@@ -78,7 +80,7 @@
       </div>
       <div class="card-body">
         <Pagination v-if="pages > 1" :pages="pages" :currentPage="currentPage" :getLink="getLink" />
-        <Transaction v-for="transaction in transactions" :key="transaction.txid"
+        <Transaction v-for="transaction in transactions" :key="transaction.id"
           :transaction="transaction" :highlightAddress="id"
           @transaction-change="tx => transactionChange(transaction, tx)" />
         <Pagination v-if="pages > 1" :pages="pages" :currentPage="currentPage" :getLink="getLink" />

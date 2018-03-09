@@ -82,7 +82,7 @@
       </div>
       <div class="card-body">
         <Pagination v-if="pages > 1" :pages="pages" :currentPage="currentPage" :getLink="getLink" />
-        <Transaction v-for="transaction in transactions" :key="transaction.txid" :transaction="transaction" />
+        <Transaction v-for="transaction in transactions" :key="transaction.id" :transaction="transaction" />
         <Pagination v-if="pages > 1" :pages="pages" :currentPage="currentPage" :getLink="getLink" />
       </div>
     </div>
