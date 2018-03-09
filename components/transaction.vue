@@ -108,7 +108,7 @@
         <div class="is-half">
           <div v-if="to" class="is-clearfix">
             <AddressLink :address="to" class="pull-left" :highlight="highlightAddress" />
-            <span class="pull-right amount">
+            <span class="pull-right amount break-word">
               {{ amount | qrc20(token.decimals) }}
               <AddressLink :address="token.address" :highlight="highlightAddress">
                 {{ token.symbol || $t('contract.token.tokens') }}
