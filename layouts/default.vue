@@ -31,8 +31,14 @@
 </script>
 
 <style scoped>
+  #app {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
   .background {
-    background-color: #f5f6f8;
+    flex: 1;
     padding: 0.5rem 0 1rem;
+    background-color: #f5f6f8;
   }
 </style>
