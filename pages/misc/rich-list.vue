@@ -4,7 +4,7 @@
     <table class="table is-fullwidth is-bordered is-striped">
       <thead>
         <tr>
-          <th>{{ $t('misc.rank') }}</th>
+          <th>{{ $t('misc.ranking') }}</th>
           <th>{{ $t('misc.address') }}</th>
           <th>{{ $t('misc.balance') }}</th>
           <th>{{ $t('misc.percentage') }}</th>

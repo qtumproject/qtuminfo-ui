@@ -12,6 +12,10 @@ class Contract {
   static getTransactions(hash, {from, to}) {
     return QtuminfoAPI.get(`/contract/${hash}/txs`, {params: {from, to}})
   }
+
+  static listTokens({from, to}) {
+    return QtuminfoAPI.get(`/contract/tokens`, {params: {from, to}})
+  }
 }
 
 export default Contract

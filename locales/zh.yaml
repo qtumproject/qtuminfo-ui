@@ -86,6 +86,7 @@ contract:
     tokens: 代币
     mint_tokens: 铸造代币
     burn_tokens: 烧毁代币
+    token_holders: 持币人数
   balance: 合约余额
   total_received: 转入总计
   total_sent: 转出总计
@@ -94,7 +95,7 @@ contract:
 misc:
   rich_list_title: 富豪榜
   biggest_miners_title: 挖矿榜
-  rank: 排名
+  ranking: 排名
   address: 地址
   balance: 余额
   blocks_mined: 挖出块数

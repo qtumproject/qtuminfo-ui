@@ -12,7 +12,7 @@
       <div class="navbar-start is-uppercase">
         <AttributeInjector class="navbar-item" @click.native="showMenu = !showMenu">
           <nuxt-link to="/block">{{ $t('blockchain.blockchain') }}</nuxt-link>
-          <nuxt-link to="/">{{ $tc('blockchain.token') }}</nuxt-link>
+          <nuxt-link to="/contract/tokens">{{ $tc('blockchain.token') }}</nuxt-link>
           <nuxt-link to="/misc/rich-list">{{ $t('misc.rich_list_title') }}</nuxt-link>
         </AttributeInjector>
       </div>

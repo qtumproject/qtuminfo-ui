@@ -5,21 +5,22 @@
       <thead>
         <tr>
           <th>{{ $t('misc.ranking') }}</th>
-          <th>{{ $t('misc.address') }}</th>
-          <th>{{ $t('misc.blocks_mined') }}</th>
-          <th>{{ $t('misc.percentage') }}</th>
-          <th>{{ $t('misc.balance') }}</th>
+          <th>{{ $t('contract.token.name') }}</th>
+          <th>{{ $t('contract.token.total_supply') }}</th>
+          <th>{{ $t('contract.token.token_holders') }}</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="({address, blocks, balance}, index) of list">
-          <td>{{ 100 * (currentPage - 1) + index + 1 }}</td>
+        <tr v-for="({address, qrc20, holders}, index) of tokens">
+          <td>{{ 20 * (currentPage - 1) + index + 1 }}</td>
           <td>
-            <AddressLink :address="address" />
+            <AddressLink :address="address">{{ qrc20.name }}</AddressLink>
           </td>
-          <td>{{ blocks }}</td>
-          <td class="monospace">{{ (blocks / posBlocks * 100).toFixed(4) + '%' }}</td>
-          <td class="monospace">{{ balance | qtum(8) }}</td>
+          <td class="monospace break-word">
+            {{ qrc20.totalSupply | qrc20(qrc20.decimals, true) }}
+            {{ qrc20.symbol || $t('contract.token.tokens') }}
+          </td>
+          <td>{{ holders }}</td>
         </tr>
       </tbody>
     </table>
@@ -28,34 +29,34 @@
 </template>
 
 <script>
-  import Misc from '@/models/misc'
+  import Contract from '@/models/contract'
   import {RequestError} from '@/services/qtuminfo-api'
   import {scrollIntoView} from '@/utils/dom'
 
   export default {
     head() {
       return {
-        title: this.$t('misc.biggest_miners_title')
+        title: this.$t('contract.token.tokens')
       }
     },
     data() {
       return {
         totalCount: 0,
-        list: [],
+        tokens: [],
         currentPage: Number(this.$route.query.page || 1)
       }
     },
     async asyncData({query, redirect, error}) {
       try {
         if (query.page && !/^[1-9]\d*$/.test(query.page)) {
-          redirect('/misc/biggest-miners')
+          redirect('/contract/tokens')
         }
         let page = Number(query.page || 1)
-        let {totalCount, list} = await Misc.biggestMiners({from: (page - 1) * 100, to: page * 100})
-        if (page > 1 && totalCount <= (page - 1) * 100) {
-          redirect('/misc/biggest-miners', {page: Math.ceil(totalCount / 100)})
+        let {totalCount, tokens} = await Contract.listTokens({from: (page - 1) * 20, to: page * 20})
+        if (page > 1 && totalCount <= (page - 1) * 20) {
+          redirect('/contract/tokens', {page: Math.ceil(totalCount / 20)})
         }
-        return {totalCount, list}
+        return {totalCount, tokens}
       } catch (err) {
         if (err instanceof RequestError) {
           error({statusCode: err.code, message: err.message})
@@ -65,30 +66,24 @@
       }
     },
     computed: {
-      blockchain() {
-        return this.$store.state.blockchain
-      },
-      posBlocks() {
-        return this.blockchain.height - 5000
-      },
       pages() {
-        return Math.ceil(this.totalCount / 100)
+        return Math.ceil(this.totalCount / 20)
       }
     },
     methods: {
       getLink(page) {
-        return {name: 'misc-biggest-miners', query: {page}}
+        return {name: 'contract-tokens', query: {page}}
       }
     },
     async beforeRouteUpdate(to, from, next) {
       let page = Number(to.query.page || 1)
-      let {totalCount, list} = await Misc.biggestMiners({from: (page - 1) * 100, to: page * 100})
+      let {totalCount, tokens} = await Contract.listTokens({from: (page - 1) * 20, to: page * 20})
       this.totalCount = totalCount
       if (page > this.pages && this.pages > 1) {
-        this.$router.push({name: 'misc-biggest-miners', query: {page: Math.ceil(totalCount / 100)}})
+        this.$router.push({name: 'contract-tokens', query: {page: Math.ceil(totalCount / 20)}})
         return
       }
-      this.list = list
+      this.tokens = tokens
       this.currentPage = page
       next()
       scrollIntoView(this.$refs.section)

@@ -86,6 +86,7 @@ contract:
     tokens: Tokens
     mint_tokens: Mint Tokens
     burn_tokens: Burn Tokens
+    token_holders: Token Holders
   balance: Balance
   total_received: Total Received
   total_sent: Total Sent
@@ -94,7 +95,7 @@ contract:
 misc:
   rich_list_title: Rich List
   biggest_miners_title: Biggest Miners
-  rank: Rank
+  ranking: Ranking
   address: Address
   balance: Balance
   blocks_mined: Blocks Mined

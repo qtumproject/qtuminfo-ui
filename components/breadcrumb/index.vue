@@ -21,6 +21,7 @@
   import Block from './block'
   import BlockId from './block-id'
   import ContractId from './contract-id'
+  import ContractTokens from './contract-tokens'
   import TxId from './tx-id'
   import Misc from './misc'
 
@@ -42,6 +43,7 @@
       'block-': Block,
       'block-id': BlockId,
       'contract-id': ContractId,
+      'contract-tokens': ContractTokens,
       'tx-id': TxId,
       'misc': Misc
     }
