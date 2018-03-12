@@ -1,25 +1,25 @@
 blockchain:
   blockchain: Blockchain
-  address: Address | Addresses
-  block: Block | Blocks
-  transaction: Transaction | Transactions
-  contract: Contract | Contracts
+  address: Endereço | Endereços
+  block: Bloco | Bloco
+  transaction: Transação | Transações
+  contract: Contrato | Contratos
   token: Token | Tokens
-  misc: Misc
+  misc: Diversos
 block:
   brief:
-    address: Mined by {0}
+    address: Minerado por {0}
     transaction: '{0} transactions in {1} secs'
-    reward: Block Reward {0} QTUM
+    reward: Recompensa Bloco {0} QTUM
   list:
-    block_list: Blocks
-    height: Block Height
-    time: Block Time
-    reward: Reward
-    mined_by: Mined By
-    size: Block Size
+    block_list: Bloco
+    height: Altura do Bloco
+    time: Tempo do Bloco
+    reward: Recompensa
+    mined_by: Minerado por
+    size: Tamanho do Blocp
     transactions: Txs
-  summary: Block Summary
+  summary: Sumário do Bloco
   block_height: Block Height
   block_hash: Block Hash
   block_size: Block Size
@@ -30,9 +30,9 @@ block:
   difficulty: Difficulty
   merkle_root: Merkle Root
   mined_by: Mined By
-  transactions: Transactions
+  transactions: Transações
   previous_block: Previous Block
-  next_block: Next Block
+  next_block: Próximo Bloco
 transaction:
   summary: Transaction Summary
   confirmations: confirmation | confirmations
