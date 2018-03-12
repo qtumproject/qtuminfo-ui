@@ -45,7 +45,7 @@
             {{ $t('transaction.op_return_output') }}
           </span>
           <span v-else class="pull-left">{{ $t('transaction.unparsed_address' )}}</span>
-          <span class="pull-right amount" v-if="output.value">
+          <span class="pull-right amount" v-if="output.value !== '0'">
             {{ output.value | qtum(8) }} QTUM
           </span>
           <span class="pull-right" v-else-if="contractInfo">
@@ -64,7 +64,7 @@
             {{ $t('transaction.op_return_output') }}
           </span>
           <span v-else class="pull-left">{{ $t('transaction.unparsed_address' )}}</span>
-          <span class="pull-right amount" v-if="output.value">
+          <span class="pull-right amount" v-if="output.value !== '0'">
             {{ output.value | qtum(8) }} QTUM
           </span>
           <span class="pull-right" v-else-if="contractInfo">
@@ -93,15 +93,7 @@
           'last-item': index === tokenTransfers.length - 1
         }">
         <div class="is-clearfix">
-          <div v-if="from" class="is-clearfix">
-            <AddressLink :address="from" class="pull-left" :highlight="highlightAddress" />
-            <span class="pull-right amount">
-              {{ amount | qrc20(token.decimals) }}
-              <AddressLink :address="token.address" :highlight="highlightAddress">
-                {{ token.symbol || $t('contract.token.tokens') }}
-              </AddressLink>
-            </span>
-          </div>
+          <AddressLink v-if="from" :address="from" class="pull-left" :highlight="highlightAddress" />
           <template v-else>{{ $t('contract.token.mint_tokens') }}</template>
         </div>
         <Icon icon="arrow-right" class="arrow"></Icon>
