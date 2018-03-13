@@ -1,8 +1,10 @@
 <template>
   <div id="app">
-    <header class="container">
-      <Navigator />
-    </header>
+    <div>
+      <header class="container">
+        <Navigator />
+      </header>
+    </div>
     <div class="background">
       <div class="container">
         <Breadcrumb v-if="$route.path !== '/'" />
