@@ -17,47 +17,47 @@ block:
     time: Tempo do Bloco
     reward: Recompensa
     mined_by: Minerado por
-    size: Tamanho do Blocp
+    size: Tamanho do Bloco
     transactions: Txs
   summary: Sumário do Bloco
-  block_height: Block Height
-  block_hash: Block Hash
-  block_size: Block Size
-  block_weight: Block Weight
+  block_height: Altura do bloco
+  block_hash: Hash do Bloco
+  block_size: Tamanho do bloco
+  block_weight: Peso do bloco
   bytes: bytes
   timestamp: Timestamp
-  block_reward: Block Reward
-  difficulty: Difficulty
-  merkle_root: Merkle Root
-  mined_by: Mined By
+  block_reward: Recompensa do Bloco
+  difficulty: Dificuldade.
+  merkle_root: Raiz Merkle
+  mined_by: Minerado por
   transactions: Transações
-  previous_block: Previous Block
+  previous_block: Bloco anterior
   next_block: Próximo Bloco
 transaction:
-  summary: Transaction Summary
-  confirmations: confirmation | confirmations
-  unconfirmed: unconfirmed
-  transaction_id: Transaction ID
-  transaction_hash: Transaction Hash
-  included_in_block: Included In Block
-  transaction_size: Transaction Size
+  summary: Resumo transação
+  confirmations: confirmação | confirmações
+  unconfirmed: não confirmado
+  transaction_id: ID da Transação
+  transaction_hash: Hash da Transação
+  included_in_block: Incluído no bloco
+  transaction_size: Tamanho da transação
   bytes: bytes
   timestamp: Timestamp
-  confirmation: Confirmations
-  transaction_fee: Transaction Fee
-  coinbase_input: Coinbase Input
-  empty_output: Empty Output
-  op_return_output: OP_RETURN Output
-  unparsed_address: Unparsed Address
-  fee: Fee
-  reward: Reward
+  confirmation: Confirmações
+  transaction_fee: Taxa de transação
+  coinbase_input: Entrada Coinbase
+  empty_output: Saída vazia
+  op_return_output: OP_RETURN saída
+  unparsed_address: Endereço sem interrupções
+  fee: taxa
+  reward: Recompensa
   utxo:
     type: Type
     script: Script
-    contract_create: Contract Create
-    contract_call: Contract Call
+    contract_create: Criar Contrato 
+    contract_call: Chamada de contrato
   receipt:
-    gas_used: Gas Used
+    gas_used: Gás Usado
     contract_address: Contract Address
     excepted: Excepted
     event_logs: Event Logs
