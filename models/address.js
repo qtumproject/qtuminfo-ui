@@ -1,16 +1,24 @@
 import * as QtuminfoAPI from '@/services/qtuminfo-api'
 
 class Address {
-  static get(hash) {
-    return QtuminfoAPI.get(`/address/${hash}`)
+  static get(id) {
+    return QtuminfoAPI.get(`/address/${id}`)
   }
 
-  static getUtxo(hash) {
-    return QtuminfoAPI.get(`/address/${hash}/utxo`)
+  static getUtxo(id) {
+    return QtuminfoAPI.get(`/address/${id}/utxo`)
   }
 
-  static getTransactions(hash, {from, to}) {
-    return QtuminfoAPI.get(`/address/${hash}/txs`, {params: {from, to}})
+  static getTransactions(id, {from, to}) {
+    return QtuminfoAPI.get(`/address/${id}/full-txs`, {params: {from, to}})
+  }
+
+  static getBalanceTransactions(id, {from, to}) {
+    return QtuminfoAPI.get(`/address/${id}/txs`, {params: {from, to}})
+  }
+
+  static getTokenBalanceTransactions(id, {tokens, from, to}) {
+    return QtuminfoAPI.get(`/address/${id}/token-txs`, {params: {tokens, from, to}})
   }
 }
 

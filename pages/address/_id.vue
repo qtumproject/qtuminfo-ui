@@ -58,21 +58,26 @@
       </div>
     </div>
 
-    <div class="card section-card transaction-list" ref="transaction-list" v-if="transactions.length">
-      <div class="card-header">
-        <div class="card-header-icon">
-          <Icon icon="list-alt" fixedWidth />
-        </div>
-        <div class="card-header-title">{{ $t('address.transaction_list') }}</div>
-      </div>
-      <div class="card-body">
-        <Pagination v-if="pages > 1" :pages="pages" :currentPage="currentPage" :getLink="getLink" />
-        <Transaction v-for="transaction in transactions" :key="transaction.id"
-          :transaction="transaction" :highlightAddress="hexAddress"
-          @transaction-change="tx => transactionChange(transaction, tx)" />
-        <Pagination v-if="pages > 1" :pages="pages" :currentPage="currentPage" :getLink="getLink" />
-      </div>
+    <div class="tabs is-centered">
+      <ul>
+        <li :class="{'is-active': $route.matched.some(route => route.name === 'address-id')}">
+          <nuxt-link :to="{name: 'address-id', params: {id}}">
+            {{ $t('address.transaction_list') }}
+          </nuxt-link>
+        </li>
+        <li :class="{'is-active': $route.matched.some(route => route.name === 'address-id-balance')}">
+          <nuxt-link :to="{name: 'address-id-balance', params: {id}}">
+            {{ $t('address.balance_changes') }}
+          </nuxt-link>
+        </li>
+        <li :class="{'is-active': $route.matched.some(route => route.name === 'address-id-token-balance')}">
+          <nuxt-link :to="{name: 'address-id-token-balance', params: {id}}">
+            {{ $t('address.token_balance_changes') }}
+          </nuxt-link>
+        </li>
+      </ul>
     </div>
+    <nuxt-child :id="id" />
   </section>
 </template>
 
@@ -98,26 +103,12 @@
         unconfirmedBalance: '0',
         stakingBalance: '0',
         tokenBalances: [],
-        totalCount: 0,
-        transactions: [],
-        currentPage: Number(this.$route.query.page || 1)
+        totalCount: 0
       }
     },
     async asyncData({params, query, redirect, error}) {
       try {
         let address = await Address.get(params.id)
-        if (query.page && !/^[1-9]\d*$/.test(query.page)) {
-          redirect(`/address/${params.id}`)
-        }
-        let page = Number(query.page || 1)
-        let {totalCount, transactions} = await Address.getTransactions(
-          params.id,
-          {from: (page - 1) * 20, to: page * 20}
-        )
-        if (page > 1 && totalCount <= (page - 1) * 20) {
-          redirect(`/address/${params.id}`, {page: Math.ceil(totalCount / 20)})
-        }
-        transactions = await Transaction.get(transactions)
         return {
           balance: address.balance,
           totalReceived: address.totalReceived,
@@ -125,8 +116,7 @@
           unconfirmedBalance: address.unconfirmedBalance,
           stakingBalance: address.stakingBalance,
           tokenBalances: address.tokenBalances,
-          totalCount,
-          transactions
+          totalCount: address.totalCount
         }
       } catch (err) {
         if (err instanceof RequestError) {
@@ -143,49 +133,7 @@
     computed: {
       id() {
         return this.$route.params.id
-      },
-      hexAddress() {
-        return this.id.split(',').map(toHexAddress)
-      },
-      pages() {
-        return Math.ceil(this.totalCount / 20)
       }
-    },
-    methods: {
-      getLink(page) {
-        return {name: 'address-id', params: {id: this.id}, query: {page}}
-      },
-      transactionChange(oldTransaction, newTransaction) {
-        Vue.set(oldTransaction, 'blockHeight', newTransaction.block.height)
-        Vue.set(oldTransaction, 'blockHash', newTransaction.block.hash)
-        oldTransaction.tokenTransfers = newTransaction.tokenTransfers
-      }
-    },
-    async beforeRouteUpdate(to, from, next) {
-      let page = Number(to.query.page || 1)
-      let {totalCount, transactions} = await Address.getTransactions(
-        this.id,
-        {from: (page - 1) * 20, to: page * 20}
-      )
-      this.totalCount = totalCount
-      if (page > this.pages && this.pages > 1) {
-        this.$router.push({
-          name: 'address-id',
-          params: {id: this.id},
-          query: {page: Math.ceil(totalCount / 20)}
-        })
-        return
-      }
-      this.transactions = await Transaction.get(transactions)
-      this.currentPage = page
-      next()
-      scrollIntoView(this.$refs['transaction-list'])
     }
   }
 </script>
-
-<style lang="less" scoped>
-  .pagination {
-    padding: 1em;
-  }
-</style>

@@ -75,6 +75,11 @@ address:
   token_balances: Token Balances
   transaction_count: Transaction Count
   transaction_list: Transaction List
+  balance_changes: Balance Changes
+  token_balance_changes: Token Balance Changes
+  timestamp: Timestamp
+  transaction_id: Transaction ID
+  changes: Changes
 contract:
   summary: Contract
   address: Address Hash

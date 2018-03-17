@@ -75,6 +75,11 @@ address:
   token_balances: 代币余额
   transaction_count: 交易数
   transaction_list: 交易列表
+  balance_changes: 余额变动
+  token_balance_changes: 代币余额变动
+  timestamp: 时间戳
+  transaction_id: 交易 ID
+  changes: 变动
 contract:
   summary: 合约信息
   address: 合约地址

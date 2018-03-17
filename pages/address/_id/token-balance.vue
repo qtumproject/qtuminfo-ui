@@ -1,0 +1,118 @@
+<template>
+  <div ref="list">
+    <Pagination v-if="pages > 1" :pages="pages" :currentPage="currentPage" :getLink="getLink" />
+    <table class="table is-fullwidth is-bordered is-striped">
+      <thead>
+        <tr>
+          <th>{{ $t('address.timestamp') }}</th>
+          <th>{{ $t('address.transaction_id') }}</th>
+          <th>{{ $t('address.changes') }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="{id, block, data} in transactions">
+          <td>{{ block.timestamp | timestamp }}</td>
+          <td>
+            <TransactionLink :transaction="id" />
+          </td>
+          <td class="monospace">
+            <div v-for="{token, amount} in data">
+              <span v-if="amount > 0">+</span>
+              <span v-else-if="amount < 0">-</span>
+              <span v-else>&nbsp;</span>
+              {{ amount.replace('-', '') | qrc20(token.decimals) }}
+              <AddressLink :address="token.address">
+                {{ token.symbol || $t('contract.token.tokens') }}
+              </AddressLink>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <Pagination v-if="pages > 1" :pages="pages" :currentPage="currentPage" :getLink="getLink" />
+  </div>
+</template>
+
+<script>
+  import Vue from 'vue'
+  import Address from '@/models/address'
+  import Transaction from '@/models/transaction'
+  import {RequestError} from '@/services/qtuminfo-api'
+  import {toHexAddress} from '@/utils/address'
+  import {scrollIntoView} from '@/utils/dom'
+
+  export default {
+    data() {
+      return {
+        totalCount: 0,
+        transactions: [],
+        currentPage: Number(this.$route.query.page || 1)
+      }
+    },
+    async asyncData({params, query, redirect, error}) {
+      try {
+        if (query.page && !/^[1-9]\d*$/.test(query.page)) {
+          redirect(`/address/${params.id}/token-balance`)
+        }
+        let page = Number(query.page || 1)
+        let {totalCount, transactions} = await Address.getTokenBalanceTransactions(
+          params.id,
+          {from: (page - 1) * 20, to: page * 20}
+        )
+        if (page > 1 && totalCount <= (page - 1) * 20) {
+          redirect(`/address/${params.id}/token-balance`, {page: Math.ceil(totalCount / 20)})
+        }
+        return {totalCount, transactions}
+      } catch (err) {
+        if (err instanceof RequestError) {
+          if (err.code === 404) {
+            error({statusCode: 404, message: `Address ${param.id} not found`})
+          } else {
+            error({statusCode: err.code, message: err.message})
+          }
+        } else {
+          throw err
+        }
+      }
+    },
+    computed: {
+      id() {
+        return this.$route.params.id
+      },
+      pages() {
+        return Math.ceil(this.totalCount / 20)
+      }
+    },
+    methods: {
+      getLink(page) {
+        return {name: 'address-id-token-balance', params: {id: this.id}, query: {page}}
+      }
+    },
+    async beforeRouteUpdate(to, from, next) {
+      let page = Number(to.query.page || 1)
+      let {totalCount, transactions} = await Address.getTokenBalanceTransactions(
+        this.id,
+        {from: (page - 1) * 20, to: page * 20}
+      )
+      this.totalCount = totalCount
+      if (page > this.pages && this.pages > 1) {
+        this.$router.push({
+          name: 'address-id-token-balance',
+          params: {id: this.id},
+          query: {page: Math.ceil(totalCount / 20)}
+        })
+        return
+      }
+      this.transactions = transactions
+      this.currentPage = page
+      next()
+      scrollIntoView(this.$refs.list)
+    }
+  }
+</script>
+
+<style lang="less" scoped>
+  .pagination {
+    padding: 1em;
+  }
+</style>
