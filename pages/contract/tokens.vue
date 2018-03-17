@@ -11,14 +11,14 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="({address, qrc20, holders}, index) of tokens">
+        <tr v-for="({address, name, symbol, decimals, totalSupply, holders}, index) of tokens">
           <td>{{ 20 * (currentPage - 1) + index + 1 }}</td>
           <td>
-            <AddressLink :address="address">{{ qrc20.name }}</AddressLink>
+            <AddressLink :address="address">{{ name }}</AddressLink>
           </td>
           <td class="monospace break-word">
-            {{ qrc20.totalSupply | qrc20(qrc20.decimals, true) }}
-            {{ qrc20.symbol || $t('contract.token.tokens') }}
+            {{ totalSupply | qrc20(decimals, true) }}
+            {{ symbol || $t('contract.token.tokens') }}
           </td>
           <td>{{ holders }}</td>
         </tr>
