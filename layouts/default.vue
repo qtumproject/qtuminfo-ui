@@ -39,6 +39,7 @@
     min-height: 100vh;
   }
   .background {
+    position: relative;
     flex: 1;
     padding: 0.5rem 0 1rem;
     background-color: #f5f6f8;

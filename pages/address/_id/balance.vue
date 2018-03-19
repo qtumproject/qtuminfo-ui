@@ -33,7 +33,6 @@
   import Address from '@/models/address'
   import Transaction from '@/models/transaction'
   import {RequestError} from '@/services/qtuminfo-api'
-  import {toHexAddress} from '@/utils/address'
   import {scrollIntoView} from '@/utils/dom'
 
   export default {
@@ -60,13 +59,9 @@
         return {totalCount, transactions}
       } catch (err) {
         if (err instanceof RequestError) {
-          if (err.code === 404) {
-            error({statusCode: 404, message: `Address ${param.id} not found`})
-          } else {
-            error({statusCode: err.code, message: err.message})
-          }
+          error({statusCode: err.code, message: err.message})
         } else {
-          throw err
+          error({statusCode: 500, message: err.message})
         }
       }
     },
@@ -102,7 +97,8 @@
       this.currentPage = page
       next()
       scrollIntoView(this.$refs.list)
-    }
+    },
+    scrollToTop: true
   }
 </script>
 

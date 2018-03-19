@@ -54,6 +54,24 @@ class SegwitAddress {
   }
 }
 
+export function checkAddress(address) {
+  try {
+    if (address.length === 34) {
+      let hexAddress = Base58Check.decode(address)
+      return [network.pubkeyhash, network.scripthash].includes(hexAddress[0])
+    } else if (/^[0-9a-f]{40}$/.test(address)) {
+      return true
+    } else if (address.length === 42) {
+      return Boolean(SegwitAddress.decode(network.witness_v0_keyhash, address))
+    } else if (address.length === 62) {
+      return Boolean(SegwitAddress.decode(network.witness_v0_scripthash, address))
+    }
+    return false
+  } catch (err) {
+    return false
+  }
+}
+
 export function toHexAddress(address) {
   if (address.length === 34) {
     let hexAddress = Base58Check.decode(address)
@@ -85,5 +103,37 @@ export function fromHexAddress({type, hex}) {
     ]))
   } else if (['witness_v0_keyhash', 'witness_v0_scripthash'].includes(type)) {
     return SegwitAddress.encode(network[type], 0, Buffer.from(hex, 'hex'))
+  }
+}
+
+export function extendAddress(address) {
+  if (address.length === 34) {
+    let hexAddress = Base58Check.decode(address)
+    if (hexAddress[0] === network.pubkeyhash) {
+      return [
+        address,
+        Base58Check.encode(Buffer.concat([Buffer.from([network.scripthash]), hexAddress.slice(1)])),
+        SegwitAddress.encode(network.witness_v0_keyhash, 0, hexAddress.slice(1))
+      ]
+    } else if (hexAddress[0] === network.scripthash) {
+      return [address]
+    }
+  } else if (address.length === 40) {
+    return [address]
+  } else if (address.length === 42) {
+    let result = SegwitAddress.decode(network.witness_v0_keyhash, address)
+    if (result) {
+      let hexAddress = Buffer.from(result.program)
+      return [
+        Base58Check.encode(Buffer.concat(Buffer.from([network.pubkeyhash]), hexAddress)),
+        Base58Check.encode(Buffer.concat(Buffer.from([network.scripthash]), hexAddress)),
+        address
+      ]
+    }
+  } else if (address.length === 62) {
+    let result = SegwitAddress.decode(network.witness_v0_scripthash, address)
+    if (result) {
+      return [address]
+    }
   }
 }

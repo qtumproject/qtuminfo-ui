@@ -11,8 +11,8 @@
         <div class="columns">
           <div class="column info-title">{{ $t('address.address') }}</div>
           <div class="column info-value">
-            <div v-for="address in id.split(',')">
-              <AddressLink :address="address" plain />
+            <div v-for="address in addresses">
+              <AddressLink :address="address" :key="address" plain />
             </div>
           </div>
         </div>
@@ -86,7 +86,7 @@
   import Address from '@/models/address'
   import Transaction from '@/models/transaction'
   import {RequestError} from '@/services/qtuminfo-api'
-  import {toHexAddress} from '@/utils/address'
+  import {extendAddress} from '@/utils/address'
   import {scrollIntoView} from '@/utils/dom'
 
   export default {
@@ -95,6 +95,7 @@
         title: this.$t('blockchain.address') + ' ' + this.id
       }
     },
+    middleware: 'check-address',
     data() {
       return {
         balance: '0',
@@ -120,19 +121,25 @@
         }
       } catch (err) {
         if (err instanceof RequestError) {
-          if (err.code === 404) {
-            error({statusCode: 404, message: `Address ${param.id} not found`})
-          } else {
-            error({statusCode: err.code, message: err.message})
-          }
+          error({statusCode: err.code, message: err.message})
         } else {
-          throw err
+          error({statusCode: 500, message: err.message})
         }
       }
     },
     computed: {
       id() {
         return this.$route.params.id
+      },
+      addresses() {
+        let list = [].concat(...this.id.split(',').map(extendAddress))
+        let result = []
+        for (let address of list) {
+          if (!result.includes(address)) {
+            result.push(address)
+          }
+        }
+        return result
       }
     }
   }

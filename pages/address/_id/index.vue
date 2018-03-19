@@ -49,13 +49,9 @@
         return {totalCount, transactions}
       } catch (err) {
         if (err instanceof RequestError) {
-          if (err.code === 404) {
-            error({statusCode: 404, message: `Address ${param.id} not found`})
-          } else {
-            error({statusCode: err.code, message: err.message})
-          }
+          error({statusCode: err.code, message: err.message})
         } else {
-          throw err
+          error({statusCode: 500, message: err.message})
         }
       }
     },
@@ -99,7 +95,8 @@
       this.currentPage = page
       next()
       scrollIntoView(this.$refs['transaction-list'])
-    }
+    },
+    scrollToTop: true
   }
 </script>
 

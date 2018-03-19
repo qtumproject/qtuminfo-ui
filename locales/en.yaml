@@ -65,6 +65,7 @@ transaction:
     topics: Topics
     data: Data
 address:
+  invalid_address: Invalid Address
   summary: Address
   address: Address
   balance: Balance

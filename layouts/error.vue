@@ -1,15 +1,8 @@
 <template>
-  <div id="app">
-    <header class="container">
-      <Navigator />
-    </header>
-    <div class="error-container">
-      <div class="has-text-centered">
-        <p class="is-size-3">{{ error.message }}</p>
-        <br>
-        <nuxt-link to="/" class="button is-qtum is-size-5">Back to Home Page</nuxt-link>
-      </div>
-    </div>
+  <div class="error-container">
+    <p class="is-size-3">{{ error.message }}</p>
+    <br>
+    <nuxt-link to="/" class="button is-qtum is-size-5">Back to Home Page</nuxt-link>
   </div>
 </template>
 
@@ -20,6 +13,7 @@
     props: ['error'],
     head() {
       return {
+        title: 'Error',
         htmlAttrs: {
           lang: this.$store.state.locale.language
         }
@@ -30,14 +24,14 @@
 </script>
 
 <style scoped>
-  #app {
+  .error-container {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
     display: flex;
     flex-direction: column;
-    height: 100vh;
-  }
-  .error-container {
-    flex: auto;
-    display: flex;
     justify-content: center;
     align-items: center;
   }

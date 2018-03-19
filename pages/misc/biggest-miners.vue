@@ -60,7 +60,7 @@
         if (err instanceof RequestError) {
           error({statusCode: err.code, message: err.message})
         } else {
-          throw err
+          error({statusCode: 500, message: err.message})
         }
       }
     },

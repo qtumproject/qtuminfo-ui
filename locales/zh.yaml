@@ -65,6 +65,7 @@ transaction:
     topics: 主题
     data: 数据
 address:
+  invalid_address: 无效的地址
   summary: 账户信息
   address: 账户地址
   balance: 账户余额
