@@ -21,7 +21,7 @@
   import Address from '@/models/address'
   import Transaction from '@/models/transaction'
   import {RequestError} from '@/services/qtuminfo-api'
-  import {toHexAddress, extendAddress} from '@/utils/address'
+  import {extendAddress} from '@/utils/address'
   import {scrollIntoView} from '@/utils/dom'
 
   export default {
@@ -68,9 +68,6 @@
           }
         }
         return result
-      },
-      hexAddress() {
-        return this.id.split(',').map(toHexAddress)
       },
       pages() {
         return Math.ceil(this.totalCount / 20)
