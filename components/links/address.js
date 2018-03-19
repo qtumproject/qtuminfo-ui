@@ -17,16 +17,13 @@ export default {
   render(createElement, {data, props, slots}) {
     let highlight = Array.isArray(props.highlight) ? props.highlight : [props.highlight]
     let addressString
-    let hexAddress
     if (typeof props.address === 'string') {
       addressString = props.address
-      hexAddress = toHexAddress(props.address)
     } else {
       addressString = fromHexAddress(props.address)
-      hexAddress = toHexAddress(addressString)
     }
     let children = [
-      props.plain || props.highlight.includes(hexAddress)
+      props.plain || props.highlight.includes(addressString)
         ? createElement(
           'span',
           {class: ['break-word', 'monospace']},
