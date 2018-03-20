@@ -51,6 +51,10 @@
             </div>
           </div>
         </div>
+        <div class="columns" v-if="balance !== '0'">
+          <div class="column info-title">{{ $t('misc.ranking') }}</div>
+          <div class="column info-value">{{ ranking }}</div>
+        </div>
         <div class="columns">
           <div class="column info-title">{{ $t('address.transaction_count') }}</div>
           <div class="column info-value">{{ totalCount }}</div>
@@ -104,6 +108,7 @@
         unconfirmedBalance: '0',
         stakingBalance: '0',
         tokenBalances: [],
+        ranking: 0,
         totalCount: 0
       }
     },
@@ -117,6 +122,7 @@
           unconfirmedBalance: address.unconfirmedBalance,
           stakingBalance: address.stakingBalance,
           tokenBalances: address.tokenBalances,
+          ranking: address.ranking,
           totalCount: address.totalCount
         }
       } catch (err) {
