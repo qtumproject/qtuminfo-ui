@@ -125,12 +125,12 @@
         tokenTransfers: []
       }
     },
-    async asyncData({params, error}) {
+    async asyncData({req, params, error}) {
       try {
-        let transaction = await Transaction.get(params.id)
+        let transaction = await Transaction.get(params.id, {ip: req && req.ip})
         let block = null
         if (transaction.blockHeight != null) {
-          block = await Block.get(transaction.blockHash)
+          block = await Block.get(transaction.blockHash, {ip: req && req.ip})
         }
         return {
           id: transaction.id,

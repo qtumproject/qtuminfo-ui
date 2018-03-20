@@ -43,13 +43,16 @@
         currentPage: Number(this.$route.query.page || 1)
       }
     },
-    async asyncData({query, redirect, error}) {
+    async asyncData({req, query, redirect, error}) {
       try {
         if (query.page && !/^[1-9]\d*$/.test(query.page)) {
           redirect('/misc/rich-list')
         }
         let page = Number(query.page || 1)
-        let {totalCount, list} = await Misc.richList({from: (page - 1) * 100, to: page * 100})
+        let {totalCount, list} = await Misc.richList(
+          {from: (page - 1) * 100, to: page * 100},
+          {ip: req && req.ip}
+        )
         if (page > 1 && totalCount <= (page - 1) * 100) {
           redirect('/misc/rich-list', {page: Math.ceil(totalCount / 100)})
         }

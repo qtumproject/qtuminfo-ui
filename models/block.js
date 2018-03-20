@@ -8,16 +8,16 @@ function formatTimestamp(date) {
 }
 
 class Block {
-  static get(id) {
-    return QtuminfoAPI.get(`/block/${id}`)
+  static get(id, options = {}) {
+    return QtuminfoAPI.get(`/block/${id}`, options)
   }
 
-  static getRecentBlocks(size = 10) {
-    return QtuminfoAPI.get('/recent-blocks')
+  static getRecentBlocks(options = {}) {
+    return QtuminfoAPI.get('/recent-blocks', options)
   }
 
-  static getBlocksByDate(date = new Date()) {
-    return QtuminfoAPI.get('/blocks', {params: {date: formatTimestamp(date)}})
+  static getBlocksByDate(date = new Date(), options = {}) {
+    return QtuminfoAPI.get('/blocks', {params: {date: formatTimestamp(date)}, ...options})
   }
 }
 

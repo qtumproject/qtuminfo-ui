@@ -83,8 +83,8 @@
         recentTransactions: []
       }
     },
-    async asyncData() {
-      let recentBlocks = await Block.getRecentBlocks()
+    async asyncData({req}) {
+      let recentBlocks = await Block.getRecentBlocks({ip: req && req.ip})
       return {recentBlocks}
     },
     mounted() {

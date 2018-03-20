@@ -119,18 +119,18 @@
         currentPage: Number(this.$route.query.page || 1)
       }
     },
-    async asyncData({params, query, redirect, error}) {
+    async asyncData({req, params, query, redirect, error}) {
       let id = params.id
       try {
         if (query.page && !/^[1-9]\d*$/.test(query.page)) {
           redirect(`/block/${params.id}`)
         }
-        let block = await Block.get(id)
+        let block = await Block.get(id, {ip: req && req.ip})
         let page = Number(query.page || 1)
         if (page > 1 && block.tx.length <= (page - 1) * 20) {
           redirect(`/block/${params.id}`, {page: Math.ceil(block.tx.length / 20)})
         }
-        let transactions = await Transaction.get(block.tx.slice((page - 1) * 20, page * 20))
+        let transactions = await Transaction.get(block.tx.slice((page - 1) * 20, page * 20), {ip: req && req.ip})
         return {
           height: block.height,
           hash: block.hash,

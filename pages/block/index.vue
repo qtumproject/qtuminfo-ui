@@ -72,7 +72,7 @@
         date: ''
       }
     },
-    async asyncData({query, redirect, error}) {
+    async asyncData({req, query, redirect, error}) {
       let date = query.date && new Date(query.date)
       if (date && (
         date.toString() === 'Invalid Date'
@@ -82,7 +82,7 @@
         redirect('/block')
       }
       try {
-        let list = await Block.getBlocksByDate(date)
+        let list = await Block.getBlocksByDate(date, {ip: req && req.ip})
         return {list, date: formatTimestamp(date ? new Date(date) : new Date())}
       } catch (err) {
         if (err instanceof RequestError) {

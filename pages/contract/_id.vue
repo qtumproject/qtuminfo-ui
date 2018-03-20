@@ -117,7 +117,7 @@
         currentPage: Number(this.$route.query.page || 1)
       }
     },
-    async asyncData({params, query, redirect, error}) {
+    async asyncData({req, params, query, redirect, error}) {
       try {
         let contract = await Contract.get(params.id)
         if (query.page && !/^[1-9]\d*$/.test(query.page)) {
@@ -126,12 +126,13 @@
         let page = Number(query.page || 1)
         let {totalCount, transactions} = await Contract.getTransactions(
           params.id,
-          {from: (page - 1) * 20, to: page * 20}
+          {from: (page - 1) * 20, to: page * 20},
+          {ip: req && req.ip}
         )
         if (page > 1 && totalCount <= (page - 1) * 20) {
           redirect(`/address/${params.id}`, {page: Math.ceil(totalCount / 20)})
         }
-        transactions = await Transaction.get(transactions)
+        transactions = await Transaction.get(transactions, {ip: req && req.ip})
         return {
           txid: contract.txid,
           owner: contract.owner,

@@ -112,9 +112,9 @@
         totalCount: 0
       }
     },
-    async asyncData({params, query, redirect, error}) {
+    async asyncData({req, params, query, redirect, error}) {
       try {
-        let address = await Address.get(params.id)
+        let address = await Address.get(params.id, {ip: req && req.ip})
         return {
           balance: address.balance,
           totalReceived: address.totalReceived,

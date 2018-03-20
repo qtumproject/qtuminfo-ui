@@ -46,13 +46,16 @@
         currentPage: Number(this.$route.query.page || 1)
       }
     },
-    async asyncData({query, redirect, error}) {
+    async asyncData({req, query, redirect, error}) {
       try {
         if (query.page && !/^[1-9]\d*$/.test(query.page)) {
           redirect('/contract/tokens')
         }
         let page = Number(query.page || 1)
-        let {totalCount, tokens} = await Contract.listTokens({from: (page - 1) * 20, to: page * 20})
+        let {totalCount, tokens} = await Contract.listTokens(
+          {from: (page - 1) * 20, to: page * 20},
+          {ip: req && req.ip}
+        )
         if (page > 1 && totalCount <= (page - 1) * 20) {
           redirect('/contract/tokens', {page: Math.ceil(totalCount / 20)})
         }

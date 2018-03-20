@@ -31,7 +31,6 @@
 <script>
   import Vue from 'vue'
   import Address from '@/models/address'
-  import Transaction from '@/models/transaction'
   import {RequestError} from '@/services/qtuminfo-api'
   import {scrollIntoView} from '@/utils/dom'
 
@@ -43,7 +42,7 @@
         currentPage: Number(this.$route.query.page || 1)
       }
     },
-    async asyncData({params, query, redirect, error}) {
+    async asyncData({req, params, query, redirect, error}) {
       try {
         if (query.page && !/^[1-9]\d*$/.test(query.page)) {
           redirect(`/address/${params.id}/balance`)
@@ -51,7 +50,8 @@
         let page = Number(query.page || 1)
         let {totalCount, transactions} = await Address.getBalanceTransactions(
           params.id,
-          {from: (page - 1) * 20, to: page * 20}
+          {from: (page - 1) * 20, to: page * 20},
+          {ip: req && req.ip}
         )
         if (page > 1 && totalCount <= (page - 1) * 20) {
           redirect(`/address/${params.id}/balance`, {page: Math.ceil(totalCount / 20)})

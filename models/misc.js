@@ -1,12 +1,12 @@
 import * as QtuminfoAPI from '@/services/qtuminfo-api'
 
 class Misc {
-  static richList({from, to}) {
-    return QtuminfoAPI.get(`/misc/rich-list`, {params: {from, to}})
+  static richList({from, to}, options = {}) {
+    return QtuminfoAPI.get(`/misc/rich-list`, {params: {from, to}, ...options})
   }
 
-  static biggestMiners({from, to}) {
-    return QtuminfoAPI.get(`/misc/biggest-miners`, {params: {from, to}})
+  static biggestMiners({from, to}, options = {}) {
+    return QtuminfoAPI.get(`/misc/biggest-miners`, {params: {from, to}, ...options})
   }
 }
 
