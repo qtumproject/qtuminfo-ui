@@ -132,9 +132,8 @@
         return this.$route.params.id
       },
       addresses() {
-        let list = [].concat(...this.id.split(',').map(extendAddress))
         let result = []
-        for (let address of list) {
+        for (let address of this.id.split(',')) {
           if (!result.includes(address)) {
             result.push(address)
           }

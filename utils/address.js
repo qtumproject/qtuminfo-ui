@@ -125,8 +125,8 @@ export function extendAddress(address) {
     if (result) {
       let hexAddress = Buffer.from(result.program)
       return [
-        Base58Check.encode(Buffer.concat(Buffer.from([network.pubkeyhash]), hexAddress)),
-        Base58Check.encode(Buffer.concat(Buffer.from([network.scripthash]), hexAddress)),
+        Base58Check.encode(Buffer.concat([Buffer.from([network.pubkeyhash]), hexAddress])),
+        Base58Check.encode(Buffer.concat([Buffer.from([network.scripthash]), hexAddress])),
         address
       ]
     }
