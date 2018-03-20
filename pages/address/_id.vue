@@ -20,15 +20,15 @@
           <div class="column info-title">{{ $t('address.balance') }}</div>
           <div class="column info-value monospace">
             {{ balance | qtum }} QTUM
-            <span v-if="unconfirmedBalance !== '0' && stakingBalance !== '0'">
-              ({{ unconfirmedBalance | qtum }} QTUM {{ $t('address.unconfirmed') }},
-              {{ stakingBalance | qtum }} QTUM {{ $t('address.staking') }})
+            <span v-if="unconfirmed !== '0' && staking !== '0'">
+              ({{ unconfirmed | qtum }} QTUM {{ $t('address.unconfirmed') }},
+              {{ staking | qtum }} QTUM {{ $t('address.staking') }})
             </span>
-            <span v-else-if="unconfirmedBalance !== '0'">
-              ({{ unconfirmedBalance | qtum }} QTUM {{ $t('address.unconfirmed') }})
+            <span v-else-if="unconfirmed !== '0'">
+              ({{ unconfirmed | qtum }} QTUM {{ $t('address.unconfirmed') }})
             </span>
-            <span v-else-if="stakingBalance !== '0'">
-              ({{ stakingBalance | qtum }} QTUM {{ $t('address.staking') }})
+            <span v-else-if="staking !== '0'">
+              ({{ staking | qtum }} QTUM {{ $t('address.staking') }})
             </span>
           </div>
         </div>
@@ -105,8 +105,8 @@
         balance: '0',
         totalReceived: '0',
         totalSent: '0',
-        unconfirmedBalance: '0',
-        stakingBalance: '0',
+        unconfirmed: '0',
+        staking: '0',
         tokenBalances: [],
         ranking: 0,
         totalCount: 0
@@ -119,8 +119,8 @@
           balance: address.balance,
           totalReceived: address.totalReceived,
           totalSent: address.totalSent,
-          unconfirmedBalance: address.unconfirmedBalance,
-          stakingBalance: address.stakingBalance,
+          unconfirmed: address.unconfirmed,
+          staking: address.staking,
           tokenBalances: address.tokenBalances,
           ranking: address.ranking,
           totalCount: address.totalCount
