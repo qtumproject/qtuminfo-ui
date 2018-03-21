@@ -46,13 +46,6 @@
   import {RequestError} from '@/services/qtuminfo-api'
   import {scrollIntoView} from '@/utils/dom'
 
-  function formatTimestamp(date) {
-    let yyyy = date.getFullYear().toString()
-    let mm = (date.getMonth() + 1).toString().padStart(2, '0')
-    let dd = date.getDate().toString().padStart(2, '0')
-    return yyyy + '-' + mm + '-' + dd
-  }
-
   function formatUTCTimestamp(date) {
     let yyyy = date.getUTCFullYear().toString()
     let mm = (date.getUTCMonth() + 1).toString().padStart(2, '0')
@@ -83,7 +76,7 @@
       }
       try {
         let list = await Block.getBlocksByDate(date, {ip: req && req.ip})
-        return {list, date: formatTimestamp(date ? new Date(date) : new Date())}
+        return {list, date: formatUTCTimestamp(date ? new Date(date) : new Date())}
       } catch (err) {
         if (err instanceof RequestError) {
           error({statusCode: err.code, message: err.message})
@@ -102,7 +95,7 @@
         } else if (date.getTime() >= Date.now() + 1000 * 60 * 60 * 24) {
           return
         }
-        this.$router.push({name: 'block', query: {date: formatTimestamp(date)}})
+        this.$router.push({name: 'block', query: {date: formatUTCTimestamp(date)}})
       }
     },
     mounted() {
@@ -129,7 +122,7 @@
         return
       }
       this.list = await Block.getBlocksByDate(date)
-      this.date = formatTimestamp(date)
+      this.date = formatUTCTimestamp(date)
       next()
       scrollIntoView(this.$refs.list)
     }
