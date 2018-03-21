@@ -53,11 +53,11 @@
         let page = Number(query.page || 1)
         let {totalCount, transactions} = await Address.getBalanceTransactions(
           params.id,
-          {from: (page - 1) * 20, to: page * 20},
+          {from: (page - 1) * 100, to: page * 100},
           {ip: req && req.ip}
         )
-        if (page > 1 && totalCount <= (page - 1) * 20) {
-          redirect(`/address/${params.id}/balance`, {page: Math.ceil(totalCount / 20)})
+        if (page > 1 && totalCount <= (page - 1) * 100) {
+          redirect(`/address/${params.id}/balance`, {page: Math.ceil(totalCount / 100)})
         }
         return {totalCount, transactions}
       } catch (err) {
@@ -73,7 +73,7 @@
         return this.$route.params.id
       },
       pages() {
-        return Math.ceil(this.totalCount / 20)
+        return Math.ceil(this.totalCount / 100)
       }
     },
     methods: {
@@ -85,14 +85,14 @@
       let page = Number(to.query.page || 1)
       let {totalCount, transactions} = await Address.getBalanceTransactions(
         this.id,
-        {from: (page - 1) * 20, to: page * 20}
+        {from: (page - 1) * 100, to: page * 100}
       )
       this.totalCount = totalCount
       if (page > this.pages && this.pages > 1) {
         this.$router.push({
           name: 'address-id-balance',
           params: {id: this.id},
-          query: {page: Math.ceil(totalCount / 20)}
+          query: {page: Math.ceil(totalCount / 100)}
         })
         return
       }

@@ -67,11 +67,11 @@
         let page = Number(query.page || 1)
         let {totalCount, transactions} = await Address.getTokenBalanceTransactions(
           params.id,
-          {from: (page - 1) * 20, to: page * 20, tokens: query.tokens},
+          {from: (page - 1) * 100, to: page * 100, tokens: query.tokens},
           {ip: req && req.ip}
         )
-        if (page > 1 && totalCount <= (page - 1) * 20) {
-          redirect(`/address/${params.id}/token-balance`, {page: Math.ceil(totalCount / 20)})
+        if (page > 1 && totalCount <= (page - 1) * 100) {
+          redirect(`/address/${params.id}/token-balance`, {page: Math.ceil(totalCount / 100)})
         }
         return {totalCount, transactions, ...(query.tokens ? {selectedTokens: query.tokens.split(',')} : {})}
       } catch (err) {
@@ -87,7 +87,7 @@
         return this.$route.params.id
       },
       pages() {
-        return Math.ceil(this.totalCount / 20)
+        return Math.ceil(this.totalCount / 100)
       }
     },
     methods: {
@@ -109,14 +109,14 @@
       let tokens = to.query.tokens
       let {totalCount, transactions} = await Address.getTokenBalanceTransactions(
         this.id,
-        {from: (page - 1) * 20, to: page * 20, tokens}
+        {from: (page - 1) * 100, to: page * 100, tokens}
       )
       this.totalCount = totalCount
       if (page > this.pages && this.pages > 1) {
         this.$router.push({
           name: 'address-id-token-balance',
           params: {id: this.id},
-          query: {page: Math.ceil(totalCount / 20), ...(tokens ? {tokens} : {})}
+          query: {page: Math.ceil(totalCount / 100), ...(tokens ? {tokens} : {})}
         })
         return
       }
