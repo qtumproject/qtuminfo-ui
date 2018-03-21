@@ -40,10 +40,10 @@
           <div class="column info-title">{{ $t('address.total_sent') }}</div>
           <div class="column info-value monospace">{{ totalSent | qtum }} QTUM</div>
         </div>
-        <div class="columns" v-if="tokenBalances.length">
+        <div class="columns" v-if="existingTokenBalances.length">
           <div class="column info-title">{{ $t('address.token_balances') }}</div>
           <div class="column info-value">
-            <div v-for="token in tokenBalances" class="monospace">
+            <div v-for="token in existingTokenBalances" class="monospace">
               {{ token.balance | qrc20(token.decimals) }}
               <AddressLink :address="token.address">
                 {{ token.symbol || $t('contract.token.tokens') }}
@@ -145,6 +145,9 @@
           }
         }
         return result
+      },
+      existingTokenBalances() {
+        return this.tokenBalances.filter(token => token.balance !== '0')
       }
     }
   }
