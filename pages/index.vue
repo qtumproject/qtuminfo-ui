@@ -32,7 +32,7 @@
                       {{ $t('block.brief.transaction', [block.txLength, block.duration]) }}
                       <br>
                       <span class="monospace">
-                        {{ $t('block.brief.reward', [$printAmount(block.reward)]) }}
+                        {{ $t('block.brief.reward') }} {{ block.reward | qtum }} QTUM
                       </span>
                     </div>
                   </div>

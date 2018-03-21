@@ -53,11 +53,3 @@ Vue.component('FromNow', {
     clearInterval(this.$interval)
   }
 })
-
-Vue.mixin({
-  methods: {
-    $printAmount(satoshis, precision = null) {
-      return Vue.filter('qtum')(satoshis, precision)
-    }
-  }
-})

@@ -10,7 +10,7 @@ block:
   brief:
     address: 由 {0} 挖出
     transaction: '用时 {1} 秒，包含 {0} 条交易'
-    reward: 区块奖励 {0} QTUM
+    reward: 区块奖励
   list:
     block_list: 区块列表
     height: 区块高度

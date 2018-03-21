@@ -10,7 +10,7 @@ block:
   brief:
     address: Mined by {0}
     transaction: '{0} transactions in {1} secs'
-    reward: Block Reward {0} QTUM
+    reward: Block Reward
   list:
     block_list: Blocks
     height: Block Height
