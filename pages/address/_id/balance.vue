@@ -42,6 +42,9 @@
         currentPage: Number(this.$route.query.page || 1)
       }
     },
+    props: {
+      tokens: {type: Array, required: true}
+    },
     async asyncData({req, params, query, redirect, error}) {
       try {
         if (query.page && !/^[1-9]\d*$/.test(query.page)) {

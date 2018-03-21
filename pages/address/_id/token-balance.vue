@@ -1,35 +1,43 @@
 <template>
-  <div ref="list">
-    <Pagination v-if="pages > 1" :pages="pages" :currentPage="currentPage" :getLink="getLink" />
-    <table class="table is-fullwidth is-bordered is-striped">
-      <thead>
-        <tr>
-          <th>{{ $t('address.timestamp') }}</th>
-          <th>{{ $t('address.transaction_id') }}</th>
-          <th>{{ $t('address.changes') }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="{id, block, data} in transactions">
-          <td>{{ block.timestamp | timestamp }}</td>
-          <td>
-            <TransactionLink :transaction="id" />
-          </td>
-          <td class="monospace">
-            <div v-for="{token, amount} in data">
-              <span v-if="amount > 0">+</span>
-              <span v-else-if="amount < 0">-</span>
-              <span v-else>&nbsp;</span>
-              {{ amount.replace('-', '') | qrc20(token.decimals) }}
-              <AddressLink :address="token.address">
-                {{ token.symbol || $t('contract.token.tokens') }}
-              </AddressLink>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <Pagination v-if="pages > 1" :pages="pages" :currentPage="currentPage" :getLink="getLink" />
+  <div>
+    <form class="select-tokens" @submit.prevent>
+      <label v-for="token in tokens" class="checkbox">
+        <input type="checkbox" :value="token.address" v-model="selectedTokens">
+        {{ token.name }} ({{ token.symbol }})
+      </label>
+    </form>
+    <div ref="list">
+      <Pagination v-if="pages > 1" :pages="pages" :currentPage="currentPage" :getLink="getLink" />
+      <table class="table is-fullwidth is-bordered is-striped">
+        <thead>
+          <tr>
+            <th>{{ $t('address.timestamp') }}</th>
+            <th>{{ $t('address.transaction_id') }}</th>
+            <th>{{ $t('address.changes') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="{id, block, data} in transactions">
+            <td>{{ block.timestamp | timestamp }}</td>
+            <td>
+              <TransactionLink :transaction="id" />
+            </td>
+            <td class="monospace">
+              <div v-for="{token, amount} in data">
+                <span v-if="amount > 0">+</span>
+                <span v-else-if="amount < 0">-</span>
+                <span v-else>&nbsp;</span>
+                {{ amount.replace('-', '') | qrc20(token.decimals) }}
+                <AddressLink :address="token.address">
+                  {{ token.symbol || $t('contract.token.tokens') }}
+                </AddressLink>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <Pagination v-if="pages > 1" :pages="pages" :currentPage="currentPage" :getLink="getLink" />
+    </div>
   </div>
 </template>
 
@@ -44,8 +52,12 @@
       return {
         totalCount: 0,
         transactions: [],
-        currentPage: Number(this.$route.query.page || 1)
+        currentPage: Number(this.$route.query.page || 1),
+        selectedTokens: this.tokens.map(token => token.address)
       }
+    },
+    props: {
+      tokens: {type: Array, required: true}
     },
     async asyncData({req, params, query, redirect, error}) {
       try {
@@ -55,13 +67,13 @@
         let page = Number(query.page || 1)
         let {totalCount, transactions} = await Address.getTokenBalanceTransactions(
           params.id,
-          {from: (page - 1) * 20, to: page * 20},
+          {from: (page - 1) * 20, to: page * 20, tokens: query.tokens},
           {ip: req && req.ip}
         )
         if (page > 1 && totalCount <= (page - 1) * 20) {
           redirect(`/address/${params.id}/token-balance`, {page: Math.ceil(totalCount / 20)})
         }
-        return {totalCount, transactions}
+        return {totalCount, transactions, ...(query.tokens ? {selectedTokens: query.tokens.split(',')} : {})}
       } catch (err) {
         if (err instanceof RequestError) {
           error({statusCode: err.code, message: err.message})
@@ -83,23 +95,36 @@
         return {name: 'address-id-token-balance', params: {id: this.id}, query: {page}}
       }
     },
+    watch: {
+      selectedTokens(value, oldValue) {
+        this.$router.push({
+          name: 'address-id-token-balance',
+          params: {id: this.id},
+          ...(this.selectedTokens.length ? {query: {tokens: this.selectedTokens.join(',')}} : {})
+        })
+      }
+    },
     async beforeRouteUpdate(to, from, next) {
       let page = Number(to.query.page || 1)
+      let tokens = to.query.tokens
       let {totalCount, transactions} = await Address.getTokenBalanceTransactions(
         this.id,
-        {from: (page - 1) * 20, to: page * 20}
+        {from: (page - 1) * 20, to: page * 20, tokens}
       )
       this.totalCount = totalCount
       if (page > this.pages && this.pages > 1) {
         this.$router.push({
           name: 'address-id-token-balance',
           params: {id: this.id},
-          query: {page: Math.ceil(totalCount / 20)}
+          query: {page: Math.ceil(totalCount / 20), ...(tokens ? {tokens} : {})}
         })
         return
       }
       this.transactions = transactions
       this.currentPage = page
+      if (!tokens) {
+        this.selectedTokens = this.tokens.map(token => token.address)
+      }
       next()
       scrollIntoView(this.$refs.list)
     },
@@ -108,6 +133,14 @@
 </script>
 
 <style lang="less" scoped>
+  .select-tokens {
+    display: flex;
+    flex-flow: wrap;
+    margin-bottom: 1em;
+    .checkbox {
+      margin-right: 1em;
+    }
+  }
   .pagination {
     padding: 1em;
   }

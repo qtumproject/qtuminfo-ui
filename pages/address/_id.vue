@@ -62,26 +62,28 @@
       </div>
     </div>
 
-    <div class="tabs is-centered">
+    <div v-if="totalCount" class="tabs is-centered">
       <ul>
         <li :class="{'is-active': $route.matched.some(route => route.name === 'address-id')}">
           <nuxt-link :to="{name: 'address-id', params: {id}}">
             {{ $t('address.transaction_list') }}
           </nuxt-link>
         </li>
-        <li :class="{'is-active': $route.matched.some(route => route.name === 'address-id-balance')}">
+        <li v-if="totalReceived !== '0'"
+          :class="{'is-active': $route.matched.some(route => route.name === 'address-id-balance')}">
           <nuxt-link :to="{name: 'address-id-balance', params: {id}}">
             {{ $t('address.balance_changes') }}
           </nuxt-link>
         </li>
-        <li :class="{'is-active': $route.matched.some(route => route.name === 'address-id-token-balance')}">
+        <li v-if="tokenBalances.length"
+          :class="{'is-active': $route.matched.some(route => route.name === 'address-id-token-balance')}">
           <nuxt-link :to="{name: 'address-id-token-balance', params: {id}}">
             {{ $t('address.token_balance_changes') }}
           </nuxt-link>
         </li>
       </ul>
     </div>
-    <nuxt-child :id="id" />
+    <nuxt-child :tokens="tokenBalances.map(({address, name, symbol}) => ({address, name, symbol}))" />
   </section>
 </template>
 
