@@ -1,18 +1,14 @@
 <template>
-  <div class="card section-card transaction-list" ref="transaction-list">
-    <div class="card-header">
-      <div class="card-header-icon">
-        <Icon icon="list-alt" fixed-width></Icon>
+  <div ref="transaction-list">
+    <Pagination v-if="pages > 1" :pages="pages" :currentPage="currentPage" :getLink="getLink" />
+    <div class="card section-card transaction-list">
+      <div class="card-body">
+        <Transaction v-for="transaction in transactions" :key="transaction.id"
+          :transaction="transaction" :highlightAddress="id"
+          @transaction-change="tx => transactionChange(transaction, tx)" />
       </div>
-      <div class="card-header-title">{{ $t('contract.transaction_list') }}</div>
     </div>
-    <div class="card-body">
-      <Pagination v-if="pages > 1" :pages="pages" :currentPage="currentPage" :getLink="getLink" />
-      <Transaction v-for="transaction in transactions" :key="transaction.id"
-        :transaction="transaction" :highlightAddress="id"
-        @transaction-change="tx => transactionChange(transaction, tx)" />
-      <Pagination v-if="pages > 1" :pages="pages" :currentPage="currentPage" :getLink="getLink" />
-    </div>
+    <Pagination v-if="pages > 1" :pages="pages" :currentPage="currentPage" :getLink="getLink" />
   </div>
 </template>
 
@@ -107,8 +103,4 @@
   }
 </script>
 
-<style lang="less" scoped>
-  .pagination {
-    padding: 1em;
-  }
 </style>

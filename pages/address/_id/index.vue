@@ -1,18 +1,14 @@
 <template>
-  <div class="card section-card transaction-list" ref="transaction-list" v-if="transactions.length">
-    <div class="card-header">
-      <div class="card-header-icon">
-        <Icon icon="list-alt" fixedWidth />
+  <div ref="transaction-list">
+    <Pagination v-if="pages > 1" :pages="pages" :currentPage="currentPage" :getLink="getLink" />
+    <div class="card section-card transaction-list" v-if="transactions.length">
+      <div class="card-body">
+        <Transaction v-for="transaction in transactions" :key="transaction.id"
+          :transaction="transaction" :highlightAddress="addresses"
+          @transaction-change="tx => transactionChange(transaction, tx)" />
       </div>
-      <div class="card-header-title">{{ $t('address.transaction_list') }}</div>
     </div>
-    <div class="card-body">
-      <Pagination v-if="pages > 1" :pages="pages" :currentPage="currentPage" :getLink="getLink" />
-      <Transaction v-for="transaction in transactions" :key="transaction.id"
-        :transaction="transaction" :highlightAddress="addresses"
-        @transaction-change="tx => transactionChange(transaction, tx)" />
-      <Pagination v-if="pages > 1" :pages="pages" :currentPage="currentPage" :getLink="getLink" />
-    </div>
+    <Pagination v-if="pages > 1" :pages="pages" :currentPage="currentPage" :getLink="getLink" />
   </div>
 </template>
 
@@ -109,9 +105,3 @@
     scrollToTop: true
   }
 </script>
-
-<style lang="less" scoped>
-  .pagination {
-    padding: 1em;
-  }
-</style>
