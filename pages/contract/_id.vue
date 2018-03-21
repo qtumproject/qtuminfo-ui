@@ -71,30 +71,27 @@
       </div>
     </div>
 
-    <div class="card section-card transaction-list" ref="transaction-list">
-      <div class="card-header">
-        <div class="card-header-icon">
-          <Icon icon="list-alt" fixed-width></Icon>
-        </div>
-        <div class="card-header-title">{{ $t('contract.transaction_list') }}</div>
-      </div>
-      <div class="card-body">
-        <Pagination v-if="pages > 1" :pages="pages" :currentPage="currentPage" :getLink="getLink" />
-        <Transaction v-for="transaction in transactions" :key="transaction.id"
-          :transaction="transaction" :highlightAddress="id"
-          @transaction-change="tx => transactionChange(transaction, tx)" />
-        <Pagination v-if="pages > 1" :pages="pages" :currentPage="currentPage" :getLink="getLink" />
-      </div>
+    <div v-if="totalCount" class="tabs is-centered">
+      <ul>
+        <li :class="{'is-active': $route.matched.some(route => route.name === 'contract-id')}">
+          <nuxt-link :to="{name: 'contract-id', params: {id}}">
+            {{ $t('contract.transaction_list') }}
+          </nuxt-link>
+        </li>
+        <li :class="{'is-active': $route.matched.some(route => route.name === 'contract-id-rich-list')}">
+          <nuxt-link :to="{name: 'contract-id-rich-list', params: {id}}">
+            {{ $t('misc.rich_list_title') }}
+          </nuxt-link>
+        </li>
+      </ul>
     </div>
+    <nuxt-child :qrc20="qrc20" />
   </section>
 </template>
 
 <script>
-  import Vue from 'vue'
   import Contract from '@/models/contract'
-  import Transaction from '@/models/transaction'
   import {RequestError} from '@/services/qtuminfo-api'
-  import {scrollIntoView} from '@/utils/dom'
 
   export default {
     head() {
@@ -112,27 +109,12 @@
         totalReceived: '0',
         totalSent: '0',
         tokenBalances: [],
-        totalCount: 0,
-        transactions: [],
-        currentPage: Number(this.$route.query.page || 1)
+        totalCount: 0
       }
     },
     async asyncData({req, params, query, redirect, error}) {
       try {
         let contract = await Contract.get(params.id)
-        if (query.page && !/^[1-9]\d*$/.test(query.page)) {
-          redirect(`/contract/${params.id}`)
-        }
-        let page = Number(query.page || 1)
-        let {totalCount, transactions} = await Contract.getTransactions(
-          params.id,
-          {from: (page - 1) * 20, to: page * 20},
-          {ip: req && req.ip}
-        )
-        if (page > 1 && totalCount <= (page - 1) * 20) {
-          redirect(`/address/${params.id}`, {page: Math.ceil(totalCount / 20)})
-        }
-        transactions = await Transaction.get(transactions, {ip: req && req.ip})
         return {
           txid: contract.txid,
           owner: contract.owner,
@@ -142,8 +124,7 @@
           totalReceived: contract.totalReceived,
           totalSent: contract.totalSent,
           tokenBalances: contract.tokenBalances,
-          totalCount,
-          transactions
+          totalCount: contract.totalCount
         }
       } catch (err) {
         if (err instanceof RequestError) {
@@ -167,42 +148,6 @@
       existingTokenBalances() {
         return this.tokenBalances.filter(token => token.balance !== '0')
       }
-    },
-    methods: {
-      getLink(page) {
-        return {name: 'contract-id', params: {id: this.id}, query: {page}}
-      },
-      transactionChange(oldTransaction, newTransaction) {
-        Vue.set(oldTransaction, 'blockHeight', newTransaction.block.height)
-        Vue.set(oldTransaction, 'blockHash', newTransaction.block.hash)
-        oldTransaction.tokenTransfers = newTransaction.tokenTransfers
-      }
-    },
-    async beforeRouteUpdate(to, from, next) {
-      let page = Number(to.query.page || 1)
-      let {totalCount, transactions} = await Contract.getTransactions(
-        this.id,
-        {from: (page - 1) * 20, to: page * 20}
-      )
-      this.totalCount = totalCount
-      if (page > this.pages && this.pages > 1) {
-        this.$router.push({
-          name: 'contract-id',
-          params: {id: this.id},
-          query: {page: Math.ceil(totalCount / 20)}
-        })
-        return
-      }
-      this.transactions = await Transaction.get(transactions)
-      this.currentPage = page
-      next()
-      scrollIntoView(this.$refs['transaction-list'])
     }
   }
 </script>
-
-<style lang="less" scoped>
-  .pagination {
-    padding: 1em;
-  }
-</style>
