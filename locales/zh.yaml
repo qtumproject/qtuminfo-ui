@@ -74,6 +74,7 @@ address:
   total_received: 收入总计
   total_sent: 支出总计
   token_balances: 代币余额
+  blocks_mined: 挖矿数量
   transaction_count: 交易数
   transaction_list: 交易列表
   balance_changes: 余额变动

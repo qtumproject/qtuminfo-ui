@@ -32,6 +32,10 @@
             </span>
           </div>
         </div>
+        <div class="columns" v-if="balance !== '0'">
+          <div class="column info-title">{{ $t('misc.ranking') }}</div>
+          <div class="column info-value">{{ ranking }}</div>
+        </div>
         <div class="columns">
           <div class="column info-title">{{ $t('address.total_received') }}</div>
           <div class="column info-value monospace">{{ totalReceived | qtum }} QTUM</div>
@@ -51,9 +55,9 @@
             </div>
           </div>
         </div>
-        <div class="columns" v-if="balance !== '0'">
-          <div class="column info-title">{{ $t('misc.ranking') }}</div>
-          <div class="column info-value">{{ ranking }}</div>
+        <div class="columns" v-if="blocksMined">
+          <div class="column info-title">{{ $t('address.blocks_mined') }}</div>
+          <div class="column info-value">{{ blocksMined }}</div>
         </div>
         <div class="columns">
           <div class="column info-title">{{ $t('address.transaction_count') }}</div>
@@ -111,22 +115,14 @@
         staking: '0',
         tokenBalances: [],
         ranking: 0,
+        blocksMined: 0,
         totalCount: 0
       }
     },
     async asyncData({req, params, query, redirect, error}) {
       try {
         let address = await Address.get(params.id, {ip: req && req.ip})
-        return {
-          balance: address.balance,
-          totalReceived: address.totalReceived,
-          totalSent: address.totalSent,
-          unconfirmed: address.unconfirmed,
-          staking: address.staking,
-          tokenBalances: address.tokenBalances,
-          ranking: address.ranking,
-          totalCount: address.totalCount
-        }
+        return address
       } catch (err) {
         if (err instanceof RequestError) {
           error({statusCode: err.code, message: err.message})

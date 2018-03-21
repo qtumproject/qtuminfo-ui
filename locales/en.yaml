@@ -74,6 +74,7 @@ address:
   total_received: Total Received
   total_sent: Total Sent
   token_balances: Token Balances
+  blocks_mined: Blocks Mined
   transaction_count: Transaction Count
   transaction_list: Transaction List
   balance_changes: Balance Changes
