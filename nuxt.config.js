@@ -55,4 +55,4 @@ module.exports = {
     '~/plugins/qtum-utils.js',
     {src: '~/plugins/websocket.js', ssr: false}
   ]
-};
+}
