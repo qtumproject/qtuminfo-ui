@@ -8,6 +8,9 @@
         <li :class="{'is-active': $route.matched.some(route => route.name === 'misc-biggest-miners')}">
           <nuxt-link to="/misc/biggest-miners">{{ $t('misc.biggest_miners_title') }}</nuxt-link>
         </li>
+        <li :class="{'is-active': $route.matched.some(route => route.name === 'misc-stake-calculator')}">
+          <nuxt-link to="/misc/stake-calculator">{{ $t('misc.stake_calculator.title') }}</nuxt-link>
+        </li>
       </ul>
     </div>
     <nuxt-child />

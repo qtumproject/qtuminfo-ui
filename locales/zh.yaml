@@ -107,6 +107,20 @@ misc:
   balance: 余额
   blocks_mined: 挖出块数
   percentage: 占比
+  stake_calculator:
+    title: 挖矿计算器
+    network_weight: 网络权重
+    enter_address: 输入你的地址（可选）
+    weight: 你的 QTUM 数量
+    expected_time: 期望用时
+    seconds: 秒
+    minutes: 分钟
+    hours: 小时
+    days: 天
+    months: 月
+    years: 年
+    average_blocks_per_day: 每日挖矿数量
+    average_blocks_per_year: 每年挖矿数量
 nav:
   search: 搜索 区块 / 交易 / 地址 / 合约 / 代币
 pagination:

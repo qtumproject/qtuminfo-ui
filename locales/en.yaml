@@ -107,6 +107,20 @@ misc:
   balance: Balance
   blocks_mined: Blocks Mined
   percentage: Percentage
+  stake_calculator:
+    title: Stake Calculator
+    network_weight: Network Weight
+    enter_address: Enter Your Address (optional)
+    weight: Your Weight (coins to stake)
+    expected_time: Expected Time
+    seconds: seconds
+    minutes: minutes
+    hours: hours
+    days: days
+    months: months
+    years: years
+    average_blocks_per_day: Average Blocks Per Day
+    average_blocks_per_year: Average Blocks Per Year
 nav:
   search: Search by Block / Transaction / Address / Contract / Token
 pagination:
