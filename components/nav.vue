@@ -13,7 +13,20 @@
         <AttributeInjector class="navbar-item" @click.native="showMenu = !showMenu">
           <nuxt-link to="/block">{{ $t('blockchain.blockchain') }}</nuxt-link>
           <nuxt-link to="/contract/tokens">{{ $tc('blockchain.token') }}</nuxt-link>
-          <nuxt-link to="/misc/rich-list">{{ $t('misc.rich_list_title') }}</nuxt-link>
+          <div class="has-dropdown is-hoverable">
+            <nuxt-link to="/misc/rich-list" class="navbar-link">{{ $t('misc.misc') }}</nuxt-link>
+            <div class="navbar-dropdown is-boxed">
+              <nuxt-link to="/misc/rich-list" class="navbar-item">
+                {{ $t('misc.rich_list_title') }}
+              </nuxt-link>
+              <nuxt-link to="/misc/biggest-miners" class="navbar-item">
+                {{ $t('misc.biggest_miners_title') }}
+              </nuxt-link>
+              <nuxt-link to="/misc/stake-calculator" class="navbar-item">
+                {{ $t('misc.stake_calculator.title') }}
+              </nuxt-link>
+            </div>
+          </div>
         </AttributeInjector>
       </div>
       <form class="navbar-end" @submit.prevent="search">

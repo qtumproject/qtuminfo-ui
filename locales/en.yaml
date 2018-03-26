@@ -100,6 +100,7 @@ contract:
   transaction_count: Transaction Count
   transaction_list: Transaction List
 misc:
+  misc: Misc
   rich_list_title: Rich List
   biggest_miners_title: Biggest Miners
   ranking: Ranking

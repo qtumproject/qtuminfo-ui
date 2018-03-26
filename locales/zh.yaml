@@ -100,6 +100,7 @@ contract:
   transaction_count: 交易数
   transaction_list: 交易列表
 misc:
+  misc: 其他
   rich_list_title: 富豪榜
   biggest_miners_title: 挖矿榜
   ranking: 排名
