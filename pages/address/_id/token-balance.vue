@@ -92,7 +92,14 @@
     },
     methods: {
       getLink(page) {
-        return {name: 'address-id-token-balance', params: {id: this.id}, query: {page}}
+        return {
+          name: 'address-id-token-balance',
+          params: {id: this.id},
+          query: {
+            page,
+            tokens: this.selectedTokens.join(',')
+          }
+        }
       }
     },
     watch: {
