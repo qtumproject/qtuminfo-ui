@@ -78,7 +78,9 @@
             {{ $t('contract.transaction_list') }}
           </nuxt-link>
         </li>
-        <li :class="{'is-active': $route.matched.some(route => route.name === 'contract-id-rich-list')}">
+        <li
+          v-if="type === 'qrc20'"
+          :class="{'is-active': $route.matched.some(route => route.name === 'contract-id-rich-list')}">
           <nuxt-link :to="{name: 'contract-id-rich-list', params: {id}}">
             {{ $t('misc.rich_list_title') }}
           </nuxt-link>
