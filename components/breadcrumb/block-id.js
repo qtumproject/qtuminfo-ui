@@ -3,7 +3,7 @@ import {i18n} from '@/plugins/i18n'
 export default {
   functional: true,
   props: {
-    id: {type: String, required: true}
+    id: {type: [Number, String], required: true}
   },
   render(createElement, {props}) {
     return [
