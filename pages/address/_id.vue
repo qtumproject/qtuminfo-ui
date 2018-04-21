@@ -5,14 +5,28 @@
         <div class="card-header-icon">
           <Icon icon="address-card-o" fixedWidth />
         </div>
-        <h3 class="card-header-title">{{ $t('address.summary') }}</h3>
+        <h3 v-if="addresses.length > 1" class="card-header-title">
+          {{ $t('address.summary') }}
+        </h3>
+        <h3 v-else class="card-header-title multiple-title">
+          <span class="title-left">{{ $t('address.summary') }}</span>
+          <span class="title-right">
+            <a href="#" v-if="myAddresses.includes(addresses[0])"
+              @click.prevent="removeMyAddress(addresses[0])">
+              <Icon icon="bookmark" fixedWidth :title="$t('my_addresses.unstar')" />
+            </a>
+            <a href="#" v-else @click="addMyAddress(addresses[0])">
+              <Icon icon="bookmark-o" fixedWidth :title="$t('my_addresses.star')" />
+            </a>
+          </span>
+        </h3>
       </div>
       <div class="card-body info-table">
         <div class="columns">
           <div class="column info-title">{{ $t('address.address') }}</div>
           <div class="column info-value">
             <div v-for="address in addresses">
-              <AddressLink :address="address" :key="address" plain />
+              <AddressLink :address="address" plain />
             </div>
           </div>
         </div>
@@ -146,7 +160,25 @@
       },
       existingTokenBalances() {
         return this.tokenBalances.filter(token => token.balance !== '0')
+      },
+      myAddresses() {
+        return this.$store.state.address.myAddresses
+      }
+    },
+    methods: {
+      addMyAddress(address) {
+        this.$store.commit('address/my-addresses/add', address)
+      },
+      removeMyAddress(address) {
+        this.$store.commit('address/my-addresses/remove', address)
       }
     }
   }
 </script>
+
+<style scoped>
+  .multiple-title {
+    display: flex;
+    justify-content: space-between;
+  }
+</style>

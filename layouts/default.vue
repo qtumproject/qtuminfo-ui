@@ -11,6 +11,7 @@
       </div>
       <nuxt />
     </div>
+    <MyAddresses class="my-addresses" />
     <Footer />
   </div>
 </template>
@@ -19,6 +20,7 @@
   import Navigator from '@/components/nav.vue'
   import Breadcrumb from '@/components/breadcrumb/index.vue'
   import Footer from '@/components/footer.vue'
+  import MyAddresses from '@/components/my-addresses.vue'
 
   export default {
     head() {
@@ -28,11 +30,11 @@
         }
       }
     },
-    components: {Navigator, Breadcrumb, Footer}
+    components: {Navigator, Breadcrumb, Footer, MyAddresses}
   }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
   #app {
     display: flex;
     flex-direction: column;
@@ -43,5 +45,17 @@
     flex: 1;
     padding: 0.5rem 0 1rem;
     background-color: #f5f6f8;
+  }
+  .my-addresses {
+    position: fixed;
+    z-index: 100;
+    @media (max-width: 768px) {
+      bottom: 1em;
+      right: 1em;
+    }
+    @media (min-width: 769px) {
+      bottom: 2em;
+      right: 2em;
+    }
   }
 </style>

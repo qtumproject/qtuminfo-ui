@@ -82,6 +82,10 @@ address:
   timestamp: 时间戳
   transaction_id: 交易 ID
   changes: 变动
+my_addresses:
+  star: 收藏
+  unstar: 取消收藏
+  summary: 总计
 contract:
   summary: 合约信息
   address: 合约地址

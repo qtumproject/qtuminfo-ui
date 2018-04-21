@@ -5,6 +5,10 @@ class Address {
     return QtuminfoAPI.get(`/address/${id}`, options)
   }
 
+  static getBalance(id, options = {}) {
+    return QtuminfoAPI.get(`/address/${id}/balance`, options)
+  }
+
   static getUtxo(id, options = {}) {
     return QtuminfoAPI.get(`/address/${id}/utxo`, options)
   }

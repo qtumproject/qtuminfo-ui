@@ -82,6 +82,10 @@ address:
   timestamp: Timestamp
   transaction_id: Transaction ID
   changes: Changes
+my_addresses:
+  star: Star
+  unstar: Unstar
+  summary: Summary
 contract:
   summary: Contract
   address: Address Hash
