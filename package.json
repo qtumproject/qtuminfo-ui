@@ -24,6 +24,7 @@
   "homepage": "https://github.com/qtumproject/qtuminfo-ui#readme",
   "dependencies": {
     "axios": "^0.17.1",
+    "bn.js": "^4.11.8",
     "bs58": "^4.0.1",
     "buffer": "^5.1.0",
     "crypto-browserify": "^3.12.0",

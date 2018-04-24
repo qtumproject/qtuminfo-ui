@@ -32,6 +32,7 @@
 </template>
 
 <script>
+  import BN from 'bn.js'
   import Address from '@/models/address'
 
   export default {
@@ -46,11 +47,11 @@
         return this.$store.state.address.myAddresses
       },
       totalBalance() {
-        let sum = 0
+        let sum = new BN()
         for (let {balance} of this.list) {
-          sum += balance
+          sum.iadd(new BN(balance))
         }
-        return sum
+        return sum.toString()
       }
     },
     methods: {
@@ -73,7 +74,7 @@
             item.balance = oldItem.balance
           } else {
             Address.getBalance(item.address).then(
-              balance => item.balance = balance,
+              ({balance}) => item.balance = balance,
               console.error.bind(console)
             )
           }

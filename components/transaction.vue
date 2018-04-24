@@ -116,7 +116,7 @@
       <template v-if="fees > 0">
         {{ $t('transaction.fee') }} <span class="amount fee">{{ fees | qtum }} QTUM</span>
       </template>
-      <template v-else>
+      <template v-else-if="fees < 0">
         {{ $t('transaction.reward') }} <span class="amount fee">{{ -fees | qtum }} QTUM</span>
       </template>
     </div>
