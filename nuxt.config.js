@@ -10,7 +10,7 @@ module.exports = {
   },
   css: [
     'bulma/css/bulma.css',
-    'font-awesome/css/font-awesome.css',
+    '@fortawesome/fontawesome-free/css/all.css',
     '@/styles/common.less',
     '@/styles/card.less',
     '@/styles/info-table.less',

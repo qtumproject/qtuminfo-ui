@@ -1,14 +1,14 @@
 <template>
   <div class="columns is-multiline transaction-item">
     <div class="column is-full is-clearfix">
-      <div class="pull-left collapse-bottom">
+      <div class="is-pulled-left collapse-bottom">
         <Icon
           :icon="collapsed ? 'chevron-right' : 'chevron-down'" fixedWidth
           class="toggle-collapse"
           @click="collapsed = !collapsed" />
         <TransactionLink :transaction="id" />
       </div>
-      <div class="pull-right">
+      <div class="is-pulled-right">
         <nuxt-link v-if="confirmations" :to="{name: 'block-id', params: {id: transaction.blockHeight}}"
           class="tag" :class="confirmations >= 10 ? 'is-success' : 'confirmation-' + confirmations">
           {{ confirmations }} {{ $tc('transaction.confirmations', confirmations) }}
@@ -23,10 +23,10 @@
       <template v-if="inputs[0].coinbase">{{ $t('transaction.coinbase_input') }}</template>
       <template v-else>
         <div v-for="input in inputs" class="is-clearfix">
-          <AddressLink v-if="input.address" :address="input.address" class="pull-left"
+          <AddressLink v-if="input.address" :address="input.address" class="is-pulled-left"
             :highlight="highlightAddress" />
-          <span v-else class="pull-left">{{ $t('transaction.unparsed_address' )}}</span>
-          <span class="pull-right amount">
+          <span v-else class="is-pulled-left">{{ $t('transaction.unparsed_address' )}}</span>
+          <span class="is-pulled-right amount">
             {{ input.value | qtum(8) }} QTUM
           </span>
         </div>
@@ -36,7 +36,7 @@
     <div class="column is-half collapse">
       <template v-if="collapsed">
         <div v-for="output in outputs" class="is-clearfix">
-          <AddressLink v-if="output.address" :address="output.address" class="pull-left"
+          <AddressLink v-if="output.address" :address="output.address" class="is-pulled-left"
             :highlight="highlightAddress" />
           <span v-else-if="output.scriptPubKey.type === 'nonstandard'">
             {{ $t('transaction.empty_output') }}
@@ -44,18 +44,18 @@
           <span v-else-if="output.scriptPubKey.type === 'nulldata'">
             {{ $t('transaction.op_return_output') }}
           </span>
-          <span v-else class="pull-left">{{ $t('transaction.unparsed_address' )}}</span>
-          <span class="pull-right amount" v-if="output.value !== '0'">
+          <span v-else class="is-pulled-left">{{ $t('transaction.unparsed_address' )}}</span>
+          <span class="is-pulled-right amount" v-if="output.value !== '0'">
             {{ output.value | qtum(8) }} QTUM
           </span>
-          <span class="pull-right" v-else-if="contractInfo">
+          <span class="is-pulled-right" v-else-if="contractInfo">
             {{ $t('transaction.utxo.contract_' + contractInfo.type) }}
           </span>
         </div>
       </template>
       <template v-else>
         <div v-for="output in outputs" class="is-clearfix">
-          <AddressLink v-if="output.address" :address="output.address" class="pull-left"
+          <AddressLink v-if="output.address" :address="output.address" class="is-pulled-left"
             :highlight="highlightAddress" />
           <span v-else-if="output.scriptPubKey.type === 'nonstandard'">
             {{ $t('transaction.empty_output') }}
@@ -63,11 +63,11 @@
           <span v-else-if="output.scriptPubKey.type === 'nulldata'">
             {{ $t('transaction.op_return_output') }}
           </span>
-          <span v-else class="pull-left">{{ $t('transaction.unparsed_address' )}}</span>
-          <span class="pull-right amount" v-if="output.value !== '0'">
+          <span v-else class="is-pulled-left">{{ $t('transaction.unparsed_address' )}}</span>
+          <span class="is-pulled-right amount" v-if="output.value !== '0'">
             {{ output.value | qtum(8) }} QTUM
           </span>
-          <span class="pull-right" v-else-if="contractInfo">
+          <span class="is-pulled-right" v-else-if="contractInfo">
             {{ $t('transaction.utxo.contract_' + contractInfo.type) }}
           </span>
           <div class="is-clearfix"></div>
@@ -93,14 +93,14 @@
           'last-item': index === tokenTransfers.length - 1
         }">
         <div class="is-clearfix">
-          <AddressLink v-if="from" :address="from" class="pull-left" :highlight="highlightAddress" />
+          <AddressLink v-if="from" :address="from" class="is-pulled-left" :highlight="highlightAddress" />
           <template v-else>{{ $t('contract.token.mint_tokens') }}</template>
         </div>
         <Icon icon="arrow-right" class="arrow"></Icon>
         <div class="is-half">
           <div v-if="to" class="is-clearfix">
-            <AddressLink :address="to" class="pull-left" :highlight="highlightAddress" />
-            <span class="pull-right amount break-word">
+            <AddressLink :address="to" class="is-pulled-left" :highlight="highlightAddress" />
+            <span class="is-pulled-right amount break-word">
               {{ amount | qrc20(token.decimals) }}
               <AddressLink :address="token.address" :highlight="highlightAddress">
                 {{ token.symbol || $t('contract.token.tokens') }}

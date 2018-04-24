@@ -3,7 +3,7 @@
     <div class="card section-card">
       <div class="card-header">
         <div class="card-header-icon">
-          <Icon icon="address-card-o" fixedWidth />
+          <Icon icon="address-card" regular fixedWidth />
         </div>
         <h3 v-if="addresses.length > 1" class="card-header-title">
           {{ $t('address.summary') }}
@@ -13,10 +13,10 @@
           <span class="title-right">
             <a href="#" v-if="myAddresses.includes(addresses[0])"
               @click.prevent="removeMyAddress(addresses[0])">
-              <Icon icon="bookmark" fixedWidth :title="$t('my_addresses.unstar')" />
+              <Icon icon="heart" solid fixedWidth :title="$t('my_addresses.unstar')" />
             </a>
             <a href="#" v-else @click="addMyAddress(addresses[0])">
-              <Icon icon="bookmark-o" fixedWidth :title="$t('my_addresses.star')" />
+              <Icon icon="heart" regular fixedWidth :title="$t('my_addresses.star')" />
             </a>
           </span>
         </h3>

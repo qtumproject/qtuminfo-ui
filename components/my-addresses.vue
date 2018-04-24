@@ -1,7 +1,7 @@
 <template>
   <div v-show="addresses.length">
     <button class="button is-qtum" @click="show = !show">
-      <Icon icon="address-card-o" />
+      <Icon icon="address-book" regular />
     </button>
     <table v-show="show">
       <tbody>
@@ -106,7 +106,7 @@
     padding-left: 2px;
     padding-right: 2px;
   }
-  .fa-trash {
+  .fas-trash {
     cursor: pointer;
   }
 </style>

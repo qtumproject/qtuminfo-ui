@@ -7,12 +7,12 @@
       <ul class="links">
         <li>
           <a target="_blank" href="https://www.facebook.com/QtumOfficial/">
-            <Icon icon="facebook"></Icon> {{ $t('footer.facebook') }}
+            <Icon icon="facebook" brands /> {{ $t('footer.facebook') }}
           </a>
         </li>
         <li>
           <a target="_blank" href="https://twitter.com/qtumofficial">
-            <Icon icon="twitter"></Icon> {{ $t('footer.twitter') }}
+            <Icon icon="twitter" brands /> {{ $t('footer.twitter') }}
           </a>
         </li>
         <li>
@@ -22,7 +22,7 @@
         </li>
         <li>
           <a target="_blank" href="https://github.com/qtumproject/qtum">
-            <Icon icon="github"></Icon> Github
+            <Icon icon="github" brands /> Github
           </a>
         </li>
       </ul>
@@ -74,7 +74,7 @@
       margin-bottom: 2.5rem;
     }
   }
-  span.fa, span.qtum-icon {
+  span.fab, span.fas, span.qtum-icon {
     font-size: 2em;
     vertical-align: middle;
   }

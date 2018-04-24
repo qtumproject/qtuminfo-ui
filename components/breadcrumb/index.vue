@@ -1,9 +1,9 @@
 <template>
   <div class="breadcrumb">
-    <ul>
+    <ul class="breadcrumb-list">
       <li>
         <nuxt-link to="/">
-          <span class="fa fa-home"></span>
+          <Icon icon="home" />
         </nuxt-link>
       </li>
       <li v-for="{name, component} in breadcrumbs">
@@ -50,11 +50,16 @@
   }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
   .breadcrumb {
     margin-left: 1em;
   }
-  span.fa:not(:only-child) {
-    margin-right: 0.3em;
+  .breadcrumb-list {
+    align-items: center;
+  }
+  span:not(:only-child) {
+    &.fab, &.fas {
+      margin-right: 0.3em;
+    }
   }
 </style>

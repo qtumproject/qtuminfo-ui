@@ -110,7 +110,7 @@
       button {
         position: absolute;
         top: 0.5em;
-        right: 1em;
+        right: 0;
       }
     }
   }
