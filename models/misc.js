@@ -5,6 +5,10 @@ class Misc {
     return QtuminfoAPI.get('/info', options)
   }
 
+  static dailyTransactions(options = {}) {
+    return QtuminfoAPI.get('/stats/daily-transactions', options)
+  }
+
   static richList({from, to}, options = {}) {
     return QtuminfoAPI.get(`/misc/rich-list`, {params: {from, to}, ...options})
   }

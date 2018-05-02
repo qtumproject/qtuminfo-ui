@@ -105,6 +105,7 @@ contract:
   transaction_list: 交易列表
 misc:
   misc: 其他
+  charts_title: 图表
   rich_list_title: 富豪榜
   biggest_miners_title: 挖矿榜
   ranking: 排名
@@ -112,6 +113,8 @@ misc:
   balance: 余额
   blocks_mined: 挖出块数
   percentage: 占比
+  stats:
+    daily_transactions: 每日交易数
   stake_calculator:
     title: 挖矿计算器
     network_weight: 网络权重

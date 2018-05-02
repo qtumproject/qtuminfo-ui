@@ -14,8 +14,11 @@
           <nuxt-link to="/block">{{ $t('blockchain.blockchain') }}</nuxt-link>
           <nuxt-link to="/contract/tokens">{{ $tc('blockchain.token') }}</nuxt-link>
           <div class="has-dropdown is-hoverable">
-            <nuxt-link to="/misc/rich-list" class="navbar-link">{{ $t('misc.misc') }}</nuxt-link>
+            <nuxt-link to="/misc/charts" class="navbar-link">{{ $t('misc.misc') }}</nuxt-link>
             <div class="navbar-dropdown is-boxed">
+              <nuxt-link to="/misc/charts" class="navbar-item">
+                {{ $t('misc.charts_title') }}
+              </nuxt-link>
               <nuxt-link to="/misc/rich-list" class="navbar-item">
                 {{ $t('misc.rich_list_title') }}
               </nuxt-link>

@@ -105,6 +105,7 @@ contract:
   transaction_list: Transaction List
 misc:
   misc: Misc
+  charts_title: Charts
   rich_list_title: Rich List
   biggest_miners_title: Biggest Miners
   ranking: Ranking
@@ -112,6 +113,8 @@ misc:
   balance: Balance
   blocks_mined: Blocks Mined
   percentage: Percentage
+  stats:
+    daily_transactions: Daily Transactions
   stake_calculator:
     title: Stake Calculator
     network_weight: Network Weight
