@@ -115,6 +115,9 @@ misc:
   percentage: Percentage
   stats:
     daily_transactions: Daily Transactions
+    coinstake_distribution: Coinstake Distribution
+    coins: Coins
+    blocks_mined: Blocks Mined
   stake_calculator:
     title: Stake Calculator
     network_weight: Network Weight

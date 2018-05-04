@@ -115,6 +115,9 @@ misc:
   percentage: 占比
   stats:
     daily_transactions: 每日交易数
+    coinstake_distribution: 挖矿分布
+    coins: 币的数量
+    blocks_mined: 挖矿数量
   stake_calculator:
     title: 挖矿计算器
     network_weight: 网络权重
