@@ -52,7 +52,7 @@
         </div>
         <div class="columns">
           <div class="column info-title">{{ $t('block.transactions') }}</div>
-          <div class="column info-value">{{ transactions.length }}</div>
+          <div class="column info-value">{{ totalCount }}</div>
         </div>
         <div class="columns" v-if="previousBlockHash && previousBlockHash != '0'.repeat(64)">
           <div class="column info-title">{{ $t('block.previous_block') }}</div>
