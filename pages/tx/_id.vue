@@ -52,6 +52,7 @@
             id, blockHeight: block && block.height, timestamp: block && block.timestamp,
             vin, vout, fees, tokenTransfers
           }"
+          detailed
           @transaction-change="refresh" />
 
         <div class="columns">
@@ -88,6 +89,13 @@
                     <li>
                       <span class="key">{{ $t('transaction.receipt.data') }}</span>
                       <span class="monospace">{{ log.data }}</span>
+                    </li>
+                    <li v-if="log.abiList.length">
+                      <ul>
+                        <pre v-for="{abi, params} in log.abiList"
+                          class="contract-event-code"
+                          v-html="formatEvent(abi, params)"></pre>
+                      </ul>
                     </li>
                   </ul>
                 </div>
@@ -178,6 +186,21 @@
           list.push(data.slice(i * 64, (i + 1) * 64))
         }
         return list
+      },
+      formatEvent(abi, params) {
+        if (params.length === 0) {
+          return abi.name + '()'
+        } else {
+          return abi.name + '(\n'
+            + abi.inputs.map((input, index) => {
+              if (input.name) {
+                return '  ' + input.name + ' = ' + params[index]
+              } else {
+                return '  ' + params[index]
+              }
+            }).join(',\n')
+            + '\n)'
+        }
       }
     }
   }
@@ -206,5 +229,9 @@
   .topic-list, .data-list {
     list-style-type: disc;
     list-style-position: inside;
+  }
+  .contract-event-code {
+    padding: 0.5em;
+    white-space: pre-wrap;
   }
 </style>

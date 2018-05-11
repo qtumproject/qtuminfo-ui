@@ -54,6 +54,7 @@ transaction:
   utxo:
     type: 类型
     script: 脚本
+    code: 代码
     contract_create: 合约创建
     contract_call: 合约调用
   receipt:

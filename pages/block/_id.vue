@@ -130,7 +130,10 @@
         if (page > 1 && block.tx.length <= (page - 1) * 20) {
           redirect(`/block/${params.id}`, {page: Math.ceil(block.tx.length / 20)})
         }
-        let transactions = await Transaction.get(block.tx.slice((page - 1) * 20, page * 20), {ip: req && req.ip})
+        let transactions = await Transaction.getBrief(
+          block.tx.slice((page - 1) * 20, page * 20),
+          {ip: req && req.ip}
+        )
         return {
           height: block.height,
           hash: block.hash,
@@ -178,7 +181,7 @@
         })
         return
       }
-      this.transactions = await Transaction.get(this.tx.slice((page - 1) * 20, page * 20))
+      this.transactions = await Transaction.getBrief(this.tx.slice((page - 1) * 20, page * 20))
       this.currentPage = page
       next()
       scrollIntoView(this.$refs['transaction-list'])

@@ -54,6 +54,7 @@ transaction:
   utxo:
     type: Type
     script: Script
+    code: Code
     contract_create: Contract Create
     contract_call: Contract Call
   receipt:

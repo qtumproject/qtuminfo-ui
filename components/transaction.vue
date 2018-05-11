@@ -2,7 +2,7 @@
   <div class="columns is-multiline transaction-item">
     <div class="column is-full is-clearfix">
       <div class="is-pulled-left collapse-bottom">
-        <Icon
+        <Icon v-if="detailed"
           :icon="collapsed ? 'chevron-right' : 'chevron-down'" fixedWidth
           class="toggle-collapse"
           @click="collapsed = !collapsed" />
@@ -35,7 +35,7 @@
     <Icon icon="arrow-right" class="column arrow collapse"></Icon>
     <div class="column is-half collapse">
       <template v-if="collapsed">
-        <div v-for="output in outputs" class="is-clearfix">
+        <div v-for="(output, index) in outputs" class="is-clearfix">
           <AddressLink v-if="output.address" :address="output.address" class="is-pulled-left"
             :highlight="highlightAddress" />
           <span v-else-if="output.scriptPubKey.type === 'nonstandard'">
@@ -48,13 +48,13 @@
           <span class="is-pulled-right amount" v-if="output.value !== '0'">
             {{ output.value | qtum(8) }} QTUM
           </span>
-          <span class="is-pulled-right" v-else-if="contractInfo">
-            {{ $t('transaction.utxo.contract_' + contractInfo.type) }}
+          <span class="is-pulled-right" v-else-if="contractInfo[index]">
+            {{ $t('transaction.utxo.contract_' + contractInfo[index].type) }}
           </span>
         </div>
       </template>
       <template v-else>
-        <div v-for="output in outputs" class="is-clearfix">
+        <div v-for="(output, index) in outputs" class="is-clearfix">
           <AddressLink v-if="output.address" :address="output.address" class="is-pulled-left"
             :highlight="highlightAddress" />
           <span v-else-if="output.scriptPubKey.type === 'nonstandard'">
@@ -67,8 +67,8 @@
           <span class="is-pulled-right amount" v-if="output.value !== '0'">
             {{ output.value | qtum(8) }} QTUM
           </span>
-          <span class="is-pulled-right" v-else-if="contractInfo">
-            {{ $t('transaction.utxo.contract_' + contractInfo.type) }}
+          <span class="is-pulled-right" v-else-if="contractInfo[index]">
+            {{ $t('transaction.utxo.contract_' + contractInfo[index].type) }}
           </span>
           <div class="is-clearfix"></div>
           <div class="output-script">
@@ -78,8 +78,22 @@
             </div>
             <div v-if="output.scriptPubKey.asm">
               <span class="key">{{ $t('transaction.utxo.script') }}</span>
-              <code class="value">{{ output.scriptPubKey.asm | qtum-script }}</code>
+              <code class="value" :class="{script: contractInfo[index]}"
+                @click="$set(showByteCode, index, !showByteCode[index])"><!--
+                -->{{ output.scriptPubKey.asm | qtum-script }}<!--
+              --></code>
             </div>
+            <template v-if="contractInfo[index]">
+              <div v-show="showByteCode[index]">
+                <span class="key">{{ $t('transaction.utxo.code') }}</span>
+                <code class="value break-word">{{ contractInfo[index].code }}</code>
+              </div>
+              <template v-if="contractInfo[index].type === 'call' && output.abiList.length">
+                <pre v-for="{abi, params} in output.abiList"
+                  class="contract-call-code break-word"
+                  v-html="formatInput(abi, params)"></pre>
+              </template>
+            </template>
           </div>
         </div>
       </template>
@@ -111,8 +125,7 @@
         </div>
       </AttributeInjector>
     </template>
-    <code class="column is-full break-word" v-if="contractInfo && !collapsed">{{ contractInfo.code }}</code>
-    <div class="column is-full has-text-right collapse-bottom" v-if="fees">
+    <div class="column is-full has-text-right collapse-bottom" v-if="fees !== '0'">
       <template v-if="fees > 0">
         {{ $t('transaction.fee') }} <span class="amount fee">{{ fees | qtum }} QTUM</span>
       </template>
@@ -129,11 +142,13 @@
   export default {
     data() {
       return {
-        collapsed: true
+        collapsed: !this.detailed,
+        showByteCode: this.transaction.vout.map(output => false)
       }
     },
     props: {
       transaction: {type: Object, required: true},
+      detailed: {type: Boolean, default: false},
       highlightAddress: {type: [String, Array], default: () => []}
     },
     computed: {
@@ -161,29 +176,58 @@
         return this.transaction.tokenTransfers
       },
       contractInfo() {
-        for (let output of this.outputs) {
-          let chunks = output.scriptPubKey.asm.split(' ')
-          switch (chunks[chunks.length - 1]) {
-          case 'OP_CREATE':
-            return {
-              type: 'create',
-              version: chunks[0],
-              gasLimit: chunks[1],
-              gasPrice: chunks[2],
-              code: chunks[3]
+        return this.outputs.map(output => {
+          if (this.detailed) {
+            let chunks = output.scriptPubKey.asm.split(' ')
+            switch (chunks[chunks.length - 1]) {
+            case 'OP_CREATE':
+              return {
+                type: 'create',
+                version: chunks[0],
+                gasLimit: chunks[1],
+                gasPrice: chunks[2],
+                code: chunks[3]
+              }
+            case 'OP_CALL':
+              return {
+                type: 'call',
+                version: chunks[0],
+                gasLimit: chunks[1],
+                gasPrice: chunks[2],
+                code: chunks[3],
+                address: chunks[4]
+              }
+            default:
+              return null
             }
-          case 'OP_CALL':
-            return {
-              type: 'call',
-              version: chunks[0],
-              gasLimit: chunks[1],
-              gasPrice: chunks[2],
-              code: chunks[3],
-              address: chunks[4]
+          } else {
+            switch (output.scriptPubKey.type) {
+            case 'create':
+              return {type: 'create'}
+            case 'call':
+              return {type: 'call'}
+            default:
+              return null
             }
           }
+        })
+      }
+    },
+    methods: {
+      formatInput(abi, params) {
+        if (params.length === 0) {
+          return abi.name + '()'
+        } else {
+          return abi.name + '(\n'
+            + abi.inputs.map((input, index) => {
+              if (input.name) {
+                return '  ' + input.name + ' = ' + params[index]
+              } else {
+                return '  ' + params[index]
+              }
+            }).join(',\n')
+            + '\n)'
         }
-        return null
       }
     },
     filters: {
@@ -304,6 +348,13 @@
     }
     code {
       word-break: break-all;
+    }
+    .script {
+      cursor: pointer;
+    }
+    .contract-call-code {
+      padding: 0.5em;
+      white-space: pre-wrap;
     }
   }
 
