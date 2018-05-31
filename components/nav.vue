@@ -11,7 +11,7 @@
     <div class="navbar-menu" :class="{'is-active': showMenu}">
       <div class="navbar-start is-uppercase">
         <AttributeInjector class="navbar-item" @click.native="showMenu = !showMenu">
-          <nuxt-link to="/block">{{ $t('blockchain.blockchain') }}</nuxt-link>
+          <nuxt-link to="/block">{{ $tc('blockchain.block', 2) }}</nuxt-link>
           <nuxt-link to="/contract/tokens">{{ $tc('blockchain.token') }}</nuxt-link>
           <div class="has-dropdown is-hoverable">
             <nuxt-link to="/misc/charts" class="navbar-link">{{ $t('misc.misc') }}</nuxt-link>

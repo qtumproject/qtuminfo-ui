@@ -4,7 +4,7 @@ blockchain:
   block: 区块
   transaction: 交易
   contract: 合约
-  token: 代币
+  token: Token
   misc: 杂项
 block:
   brief:
@@ -58,7 +58,7 @@ transaction:
     contract_create: 合约创建
     contract_call: 合约调用
   receipt:
-    gas_used: 瓦斯使用量
+    gas_used: Gas 使用量
     contract_address: 合约地址
     excepted: 异常信息
     event_logs: 事件日志
@@ -74,12 +74,12 @@ address:
   staking: 被锁定
   total_received: 收入总计
   total_sent: 支出总计
-  token_balances: 代币余额
+  token_balances: Token 余额
   blocks_mined: 挖矿数量
   transaction_count: 交易数
   transaction_list: 交易列表
   balance_changes: 余额变动
-  token_balance_changes: 代币余额变动
+  token_balance_changes: Token 余额变动
   timestamp: 时间戳
   transaction_id: 交易 ID
   changes: 变动
@@ -93,12 +93,12 @@ contract:
   owner: 创建人
   create_transaction: 创建于
   token:
-    name: 代币名称
+    name: Token 名称
     total_supply: 发行总量
-    tokens: 代币
-    mint_tokens: 铸造代币
-    burn_tokens: 烧毁代币
-    token_holders: 持币人数
+    tokens: Token
+    mint_tokens: 铸造 Token
+    burn_tokens: 烧毁 Token
+    token_holders: token持有人数
   balance: 合约余额
   total_received: 转入总计
   total_sent: 转出总计
@@ -134,7 +134,7 @@ misc:
     average_blocks_per_day: 每日挖矿数量
     average_blocks_per_year: 每年挖矿数量
 nav:
-  search: 搜索 区块 / 交易 / 地址 / 合约 / 代币
+  search: 搜索 区块 / 交易 / 地址 / 合约 / Token
 pagination:
   go_to: 前往
 footer:
