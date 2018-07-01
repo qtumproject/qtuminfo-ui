@@ -1,0 +1,114 @@
+blockchain:
+  blockchain: Blockchain
+  address: Endereço | Endereços
+  block: Bloco | Bloco
+  transaction: Transação | Transações
+  contract: Contrato | Contratos
+  token: Token | Tokens
+  misc: Diversos
+block:
+  brief:
+    address: Minerado por {0}
+    transaction: '{0} transactions in {1} secs'
+    reward: Recompensa Bloco {0} QTUM
+  list:
+    block_list: Bloco
+    height: Altura do Bloco
+    time: Tempo do Bloco
+    reward: Recompensa
+    mined_by: Minerado por
+    size: Tamanho do Bloco
+    transactions: Txs
+  summary: Sumário do Bloco
+  block_height: Altura do bloco
+  block_hash: Hash do Bloco
+  block_size: Tamanho do bloco
+  block_weight: Peso do bloco
+  bytes: bytes
+  timestamp: Timestamp
+  block_reward: Recompensa do Bloco
+  difficulty: Dificuldade.
+  merkle_root: Raiz Merkle
+  mined_by: Minerado por
+  transactions: Transações
+  previous_block: Bloco anterior
+  next_block: Próximo Bloco
+transaction:
+  summary: Resumo transação
+  confirmations: confirmação | confirmações
+  unconfirmed: não confirmado
+  transaction_id: ID da Transação
+  transaction_hash: Hash da Transação
+  included_in_block: Incluído no bloco
+  transaction_size: Tamanho da transação
+  bytes: bytes
+  timestamp: Timestamp
+  confirmation: Confirmações
+  transaction_fee: Taxa de transação
+  coinbase_input: Entrada Coinbase
+  empty_output: Saída vazia
+  op_return_output: OP_RETURN saída
+  unparsed_address: Endereço sem interrupções
+  fee: taxa
+  reward: Recompensa
+  utxo:
+    type: Type
+    script: Script
+    contract_create: Criar Contrato 
+    contract_call: Chamada de contrato
+  receipt:
+    gas_used: Gás Usado
+    contract_address: Contract Address
+    excepted: Excepted
+    event_logs: Event Logs
+    address: Address
+    topics: Topics
+    data: Data
+address:
+  summary: Address
+  address: Address
+  balance: Balance
+  unconfirmed: unconfirmed
+  staking: staking
+  total_received: Total Received
+  total_sent: Total Sent
+  token_balances: Token Balances
+  transaction_count: Transaction Count
+  transaction_list: Transaction List
+contract:
+  summary: Contract
+  address: Address Hash
+  owner: Owner
+  create_transaction: Created At
+  token:
+    name: Token Name
+    total_supply: Total Supply
+    tokens: Tokens
+    mint_tokens: Mint Tokens
+    burn_tokens: Burn Tokens
+  balance: Balance
+  total_received: Total Received
+  total_sent: Total Sent
+  transaction_count: Transaction Count
+  transaction_list: Transaction List
+misc:
+  rich_list_title: Rich List
+  biggest_miners_title: Biggest Miners
+  rank: Rank
+  address: Address
+  balance: Balance
+  blocks_mined: Blocks Mined
+  percentage: Percentage
+nav:
+  search: Search by Block / Transaction / Address / Contract / Token
+pagination:
+  go_to: Go to
+footer:
+  contact_us: Contact Us
+  facebook: Facebook
+  twitter: Twitter
+  forum: Forum
+action:
+  copy: Copy
+  view_all: View All
+go: Go
