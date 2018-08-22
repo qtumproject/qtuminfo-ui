@@ -53,7 +53,7 @@
         }
         let page = Number(query.page || 1)
         let {totalCount, tokens} = await Contract.listTokens(
-          {from: (page - 1) * 20, to: page * 20},
+          {page: page - 1, pageSize: 20},
           {ip: req && req.ip}
         )
         if (page > 1 && totalCount <= (page - 1) * 20) {
@@ -80,7 +80,7 @@
     },
     async beforeRouteUpdate(to, from, next) {
       let page = Number(to.query.page || 1)
-      let {totalCount, tokens} = await Contract.listTokens({from: (page - 1) * 20, to: page * 20})
+      let {totalCount, tokens} = await Contract.listTokens({page: page - 1, pageSize: 20})
       this.totalCount = totalCount
       if (page > this.pages && this.pages > 1) {
         this.$router.push({name: 'contract-tokens', query: {page: Math.ceil(totalCount / 20)}})

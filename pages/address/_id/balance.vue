@@ -6,15 +6,18 @@
         <tr>
           <th>{{ $t('address.timestamp') }}</th>
           <th>{{ $t('address.transaction_id') }}</th>
+          <th>{{ $t('address.balance') }}</th>
           <th>{{ $t('address.changes') }}</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="{id, block, amount} in transactions">
-          <td>{{ block.timestamp | timestamp }}</td>
+        <tr v-for="{id, blockHeight, timestamp, balance, amount} in transactions">
+          <td v-if="timestamp">{{ timestamp | timestamp }}</td>
+          <td v-else>{{ $t('transaction.mempool') }}</td>
           <td>
             <TransactionLink :transaction="id" />
           </td>
+          <td class="monospace">{{ balance | qtum(8) }} QTUM</td>
           <td class="monospace">
             <span v-if="amount > 0">+</span>
             <span v-else-if="amount < 0">-</span>
@@ -53,7 +56,7 @@
         let page = Number(query.page || 1)
         let {totalCount, transactions} = await Address.getBalanceTransactions(
           params.id,
-          {from: (page - 1) * 100, to: page * 100},
+          {page: page - 1, pageSize: 100},
           {ip: req && req.ip}
         )
         if (page > 1 && totalCount <= (page - 1) * 100) {
@@ -85,7 +88,7 @@
       let page = Number(to.query.page || 1)
       let {totalCount, transactions} = await Address.getBalanceTransactions(
         this.id,
-        {from: (page - 1) * 100, to: page * 100}
+        {page: page - 1, pageIndex: 100}
       )
       this.totalCount = totalCount
       if (page > this.pages && this.pages > 1) {

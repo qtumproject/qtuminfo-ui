@@ -88,7 +88,7 @@
                 <span class="key">{{ $t('transaction.utxo.code') }}</span>
                 <code class="value break-word">{{ contractInfo[index].code }}</code>
               </div>
-              <template v-if="contractInfo[index].type === 'call' && output.abiList.length">
+              <template v-if="contractInfo[index].type === 'call' && output.abiList && output.abiList.length">
                 <pre v-for="{abi, params} in output.abiList"
                   class="contract-call-code break-word"
                   v-html="formatInput(abi, params)"></pre>
@@ -98,13 +98,13 @@
         </div>
       </template>
     </div>
-    <template v-for="({token, from, to, amount}, index) in tokenTransfers">
+    <template v-for="({token, from, to, amount}, index) in qrc20TokenTransfers">
       <div class="column is-full flex-full"></div>
       <AttributeInjector
         class="column collapse token-transfer-list"
         :class="{
           'first-item': index === 0,
-          'last-item': index === tokenTransfers.length - 1
+          'last-item': index === qrc20TokenTransfers.length - 1
         }">
         <div class="is-clearfix">
           <AddressLink v-if="from" :address="from" class="is-pulled-left" :highlight="highlightAddress" />
@@ -143,7 +143,7 @@
     data() {
       return {
         collapsed: !this.detailed,
-        showByteCode: this.transaction.vout.map(output => false)
+        showByteCode: this.transaction.outputs.map(output => false)
       }
     },
     props: {
@@ -159,10 +159,10 @@
         return this.transaction.id
       },
       inputs() {
-        return this.transaction.vin
+        return this.transaction.inputs
       },
       outputs() {
-        return this.transaction.vout
+        return this.transaction.outputs
       },
       fees() {
         return this.transaction.fees
@@ -172,8 +172,8 @@
           ? 0
           : this.blockchain.height - this.transaction.blockHeight + 1
       },
-      tokenTransfers() {
-        return this.transaction.tokenTransfers
+      qrc20TokenTransfers() {
+        return this.transaction.qrc20TokenTransfers
       },
       contractInfo() {
         return this.outputs.map(output => {

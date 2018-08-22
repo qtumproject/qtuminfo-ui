@@ -13,16 +13,16 @@ class Address {
     return QtuminfoAPI.get(`/address/${id}/utxo`, options)
   }
 
-  static getTransactions(id, {from, to}, options = {}) {
-    return QtuminfoAPI.get(`/address/${id}/full-txs`, {params: {from, to}, ...options})
+  static getTransactions(id, {page, pageSize}, options = {}) {
+    return QtuminfoAPI.get(`/address/${id}/txs`, {params: {page, pageSize}, ...options})
   }
 
-  static getBalanceTransactions(id, {from, to}, options = {}) {
-    return QtuminfoAPI.get(`/address/${id}/txs`, {params: {from, to}, ...options})
+  static getBalanceTransactions(id, {page, pageSize}, options = {}) {
+    return QtuminfoAPI.get(`/address/${id}/balance-history`, {params: {page, pageSize}, ...options})
   }
 
-  static getTokenBalanceTransactions(id, {tokens, from, to}, options = {}) {
-    return QtuminfoAPI.get(`/address/${id}/token-txs`, {params: {tokens, from, to}, ...options})
+  static getTokenBalanceTransactions(id, {tokens, page, pageSize}, options = {}) {
+    return QtuminfoAPI.get(`/address/${id}/qrc20-balance-history`, {params: {tokens, page, pageSize}, ...options})
   }
 }
 

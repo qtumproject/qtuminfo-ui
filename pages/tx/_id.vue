@@ -50,7 +50,7 @@
         <Transaction
           :transaction="{
             id, blockHeight: block && block.height, timestamp: block && block.timestamp,
-            vin, vout, fees, tokenTransfers
+            inputs, outputs, fees, qrc20TokenTransfers
           }"
           detailed
           @transaction-change="refresh" />
@@ -90,7 +90,7 @@
                       <span class="key">{{ $t('transaction.receipt.data') }}</span>
                       <span class="monospace">{{ log.data }}</span>
                     </li>
-                    <li v-if="log.abiList.length">
+                    <li v-if="log.abiList && log.abiList.length">
                       <ul>
                         <pre v-for="{abi, params} in log.abiList"
                           class="contract-event-code"
@@ -127,10 +127,10 @@
         size: 0,
         isCoinbase: false,
         fees: 0,
-        vin: [],
-        vout: [],
+        inputs: [],
+        outputs: [],
         receipts: [],
-        tokenTransfers: []
+        qrc20TokenTransfers: []
       }
     },
     async asyncData({req, params, error}) {
@@ -146,10 +146,10 @@
           size: transaction.size,
           isCoinbase: transaction.isCoinbase,
           fees: transaction.fees,
-          vin: transaction.vin,
-          vout: transaction.vout,
+          inputs: transaction.inputs,
+          outputs: transaction.outputs,
           receipts: transaction.receipts,
-          tokenTransfers: transaction.tokenTransfers,
+          qrc20TokenTransfers: transaction.qrc20TokenTransfers,
           block
         }
       } catch (err) {
@@ -177,7 +177,7 @@
         this.block = transaction.block
         this.timestamp = transaction.block.timestamp
         this.receipts = transaction.receipts
-        this.tokenTransfers = transaction.tokenTransfers
+        this.qrc20TokenTransfers = transaction.qrc20TokenTransfers
       },
       splitData(data) {
         let chunks = data.length / 64

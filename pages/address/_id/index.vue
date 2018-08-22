@@ -39,7 +39,7 @@
         let page = Number(query.page || 1)
         let {totalCount, transactions} = await Address.getTransactions(
           params.id,
-          {from: (page - 1) * 20, to: page * 20},
+          {page: page - 1, pageSize: 20},
           {ip: req && req.ip}
         )
         if (page > 1 && totalCount <= (page - 1) * 20) {
@@ -86,7 +86,7 @@
       let page = Number(to.query.page || 1)
       let {totalCount, transactions} = await Address.getTransactions(
         this.id,
-        {from: (page - 1) * 20, to: page * 20}
+        {page: page - 1, pageSize: 20}
       )
       this.totalCount = totalCount
       if (page > this.pages && this.pages > 1) {

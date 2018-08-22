@@ -18,17 +18,17 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="{height, timestamp, size, reward, minedBy, txLength} of list">
+        <tr v-for="{height, timestamp, size, reward, miner, transactionCount} of list">
           <td>
             <BlockLink :block="height" :clipboard="false" />
           </td>
           <td>{{ timestamp | timestamp() }}</td>
           <td class="is-hidden-touch monospace">{{ reward | qtum(8) }} QTUM</td>
           <td class="is-hidden-touch">
-            <AddressLink :address="minedBy" />
+            <AddressLink :address="miner" />
           </td>
           <td class="is-hidden-touch monospace">{{ size.toLocaleString() }}</td>
-          <td>{{ txLength }}</td>
+          <td>{{ transactionCount }}</td>
         </tr>
       </tbody>
     </table>
@@ -101,7 +101,7 @@
     mounted() {
       this.$websocket.subscribe('block')
       this.$websocket.on('block', block => {
-        block.txLength = block.tx.length
+        block.transactionCount = block.tx.length
         let todayTimestamp = Date.parse(this.date + 'T00:00:00') / 1000
         if (block.timestamp >= todayTimestamp && block.timestamp < todayTimestamp + 60 * 60 * 24) {
           this.list.unshift(block)

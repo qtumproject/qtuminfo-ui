@@ -65,6 +65,7 @@ transaction:
     address: Address
     topics: Topics
     data: Data
+  mempool: Mempool
 address:
   invalid_address: Invalid Address
   summary: Address
@@ -117,6 +118,7 @@ misc:
   stats:
     daily_transactions: Daily Transactions
     coinstake_distribution: Coinstake Distribution
+    address_growth: Address Growth
     coins: Coins
     blocks_mined: Blocks Mined
   stake_calculator:

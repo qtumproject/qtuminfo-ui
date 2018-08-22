@@ -13,14 +13,23 @@
           <tr>
             <th>{{ $t('address.timestamp') }}</th>
             <th>{{ $t('address.transaction_id') }}</th>
+            <th>{{ $t('address.token_balances') }}</th>
             <th>{{ $t('address.changes') }}</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="{id, block, data} in transactions">
-            <td>{{ block.timestamp | timestamp }}</td>
+          <tr v-for="{id, timestamp, data} in transactions">
+            <td>{{ timestamp | timestamp }}</td>
             <td>
               <TransactionLink :transaction="id" />
+            </td>
+            <td class="monospace">
+              <div v-for="{token, balance} in data">
+                {{ balance.replace('-', '') | qrc20(token.decimals) }}
+                <AddressLink :address="token.address">
+                  {{ token.symbol || $t('contract.token.tokens') }}
+                </AddressLink>
+              </div>
             </td>
             <td class="monospace">
               <div v-for="{token, amount} in data">
@@ -67,7 +76,7 @@
         let page = Number(query.page || 1)
         let {totalCount, transactions} = await Address.getTokenBalanceTransactions(
           params.id,
-          {from: (page - 1) * 100, to: page * 100, tokens: query.tokens},
+          {page: page - 1, pageSize: 100, tokens: query.tokens},
           {ip: req && req.ip}
         )
         if (page > 1 && totalCount <= (page - 1) * 100) {
@@ -116,7 +125,7 @@
       let tokens = to.query.tokens
       let {totalCount, transactions} = await Address.getTokenBalanceTransactions(
         this.id,
-        {from: (page - 1) * 100, to: page * 100, tokens}
+        {page: page - 1, pageIndex: 100, tokens}
       )
       this.totalCount = totalCount
       if (page > this.pages && this.pages > 1) {

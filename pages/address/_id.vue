@@ -26,7 +26,7 @@
           <div class="column info-title">{{ $t('address.address') }}</div>
           <div class="column info-value">
             <div v-for="address in addresses">
-              <AddressLink :address="address" plain />
+              <AddressLink :address="address" :plain="addresses.length === 1" />
             </div>
           </div>
         </div>
@@ -69,9 +69,9 @@
             </div>
           </div>
         </div>
-        <div class="columns" v-if="blocksMined">
+        <div class="columns" v-if="blocksStaked">
           <div class="column info-title">{{ $t('address.blocks_mined') }}</div>
-          <div class="column info-value">{{ blocksMined }}</div>
+          <div class="column info-value">{{ blocksStaked }}</div>
         </div>
         <div class="columns">
           <div class="column info-title">{{ $t('address.transaction_count') }}</div>
@@ -93,7 +93,7 @@
             {{ $t('address.balance_changes') }}
           </nuxt-link>
         </li>
-        <li v-if="tokenBalances.length"
+        <li v-if="qrc20TokenBalances.length"
           :class="{'is-active': $route.matched.some(route => route.name === 'address-id-token-balance')}">
           <nuxt-link :to="{name: 'address-id-token-balance', params: {id}}">
             {{ $t('address.token_balance_changes') }}
@@ -101,7 +101,7 @@
         </li>
       </ul>
     </div>
-    <nuxt-child :tokens="tokenBalances.map(({address, name, symbol}) => ({address, name, symbol}))" />
+    <nuxt-child :tokens="qrc20TokenBalances.map(({address, name, symbol}) => ({address, name, symbol}))" />
   </section>
 </template>
 
@@ -127,9 +127,9 @@
         totalSent: '0',
         unconfirmed: '0',
         staking: '0',
-        tokenBalances: [],
+        qrc20TokenBalances: [],
         ranking: 0,
-        blocksMined: 0,
+        blocksStaked: 0,
         totalCount: 0
       }
     },
@@ -159,7 +159,7 @@
         return result
       },
       existingTokenBalances() {
-        return this.tokenBalances.filter(token => token.balance !== '0')
+        return this.qrc20TokenBalances.filter(token => token.balance !== '0')
       },
       myAddresses() {
         return this.$store.state.address.myAddresses

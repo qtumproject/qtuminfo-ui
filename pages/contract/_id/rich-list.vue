@@ -52,7 +52,7 @@
         let page = Number(query.page || 1)
         let {totalCount, list} = await Contract.richList(
           params.id,
-          {from: (page - 1) * 100, to: page * 100},
+          {page: page - 1, pageSize: 100},
           {ip: req && req.ip}
         )
         if (page > 1 && totalCount <= (page - 1) * 100) {
@@ -84,7 +84,7 @@
       let page = Number(to.query.page || 1)
       let {totalCount, list} = await Contract.richList(
         this.id,
-        {from: (page - 1) * 100, to: page * 100}
+        {page: page - 1, pageSize: 100}
       )
       this.totalCount = totalCount
       if (page > this.pages && this.pages > 1) {

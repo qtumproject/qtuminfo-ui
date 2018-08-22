@@ -65,6 +65,7 @@ transaction:
     address: 地址
     topics: 主题
     data: 数据
+  mempool: 内存池
 address:
   invalid_address: 无效的地址
   summary: 账户信息
@@ -117,6 +118,7 @@ misc:
   stats:
     daily_transactions: 每日交易数
     coinstake_distribution: 挖矿分布
+    address_growth: 地址数增长
     coins: 币的数量
     blocks_mined: 挖矿数量
   stake_calculator:

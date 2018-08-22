@@ -26,10 +26,10 @@
                   <div class="level-item">
                     <div>
                       <i18n path="block.brief.address">
-                        <AddressLink :address="block.minedBy" />
+                        <AddressLink :address="block.miner" />
                       </i18n>
                       <br>
-                      {{ $t('block.brief.transaction', [block.txLength, block.duration]) }}
+                      {{ $t('block.brief.transaction', [block.transactionCount, block.duration]) }}
                       <br>
                       <span class="monospace">
                         {{ $t('block.brief.reward') }} {{ block.reward | qtum }} QTUM
@@ -91,7 +91,7 @@
       this.$websocket.subscribe('block')
       this.$websocket.subscribe('mempool/transaction')
       this.$websocket.on('block', block => {
-        block.txLength = block.tx.length
+        block.transactionCount = block.tx.length
         this.recentBlocks.unshift(block)
         this.recentBlocks.pop()
       })

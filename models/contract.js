@@ -9,16 +9,16 @@ class Contract {
     return QtuminfoAPI.get(`/contract/${id}/utxo`, options)
   }
 
-  static getTransactions(id, {from, to}, options = {}) {
-    return QtuminfoAPI.get(`/contract/${id}/txs`, {params: {from, to}, ...options})
+  static getTransactions(id, {page, pageSize}, options = {}) {
+    return QtuminfoAPI.get(`/contract/${id}/txs`, {params: {page, pageSize}, ...options})
   }
 
-  static listTokens({from, to}, options = {}) {
-    return QtuminfoAPI.get(`/contract/tokens`, {params: {from, to}, ...options})
+  static listTokens({page, pageSize}, options = {}) {
+    return QtuminfoAPI.get(`/contract/qrc20-tokens`, {params: {page, pageSize}, ...options})
   }
 
-  static richList(id, {from, to}, options = {}) {
-    return QtuminfoAPI.get(`/contract/${id}/rich-list`, {params: {from, to}, ...options})
+  static richList(id, {page, pageSize}, options = {}) {
+    return QtuminfoAPI.get(`/contract/${id}/rich-list`, {params: {page, pageSize}, ...options})
   }
 }
 

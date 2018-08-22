@@ -4,7 +4,10 @@
       <div class="chart" ref="daily-transactions"></div>
     </div>
     <div class="chart-wrapper">
-      <div class="chart" ref="coin-stake"></div>
+      <div class="chart" ref="coinstake"></div>
+    </div>
+    <div class="chart-wrapper">
+      <div class="chart" ref="address-growth"></div>
     </div>
   </section>
 </template>
@@ -22,16 +25,18 @@
     data() {
       return {
         dailyTransactions: [],
-        coinStakeList: []
+        coinstakeList: [],
+        addressGrowth: []
       }
     },
     async asyncData({req, error}) {
       try {
-        let [dailyTransactions, coinStakeList] = await Promise.all([
+        let [dailyTransactions, coinstakeList, addressGrowth] = await Promise.all([
           Misc.dailyTransactions({ip: req && req.ip}),
-          Misc.coinStake({ip: req && req.ip})
+          Misc.coinstake({ip: req && req.ip}),
+          Misc.addressGrowth({ip: req && req.ip})
         ])
-        return {dailyTransactions, coinStakeList}
+        return {dailyTransactions, coinstakeList, addressGrowth}
       } catch (err) {
         if (err instanceof RequestError) {
           error({statusCode: err.code, message: err.message})
@@ -60,6 +65,7 @@
             name: this.$tc('blockchain.transaction', 2),
             smooth: true,
             smoothMonotone: 'x',
+            symbol: 'none',
             itemStyle: {color: 'rgba(46, 154, 208, 1)'},
             lineStyle: {color: 'rgba(46, 154, 208, 1)'},
             areaStyle: {
@@ -74,7 +80,10 @@
             },
             data: this.dailyTransactions.map(({time, transactions}) => [time, transactions])
           },
-          dataZoom: {type: 'slider'},
+          dataZoom: {
+            type: 'slider',
+            startValue: Date.now() - 30 * 24 * 3600 * 1000
+          },
           useUTC: true
         })
       },
@@ -84,15 +93,20 @@
           import('echarts/lib/chart/line'),
           import('echarts/lib/component/title')
         ])
-        let chart = echarts.init(this.$refs['coin-stake'])
+        let chart = echarts.init(this.$refs.coinstake)
         chart.setOption({
           title: {text: this.$t('misc.stats.coinstake_distribution')},
-          xAxis: {type: 'log', name: this.$t('misc.stats.coins')},
+          xAxis: {
+            type: 'log',
+            name: this.$t('misc.stats.coins'),
+            min: 0.1, max: 1e6
+          },
           yAxis: {type: 'log', name: this.$t('misc.stats.blocks_mined')},
           series: {
             type: 'line',
             name: 'Blocks Mined',
             smoothMonotone: 'x',
+            symbol: 'none',
             itemStyle: {color: 'rgba(46, 154, 208, 1)'},
             lineStyle: {color: 'rgba(46, 154, 208, 1)'},
             areaStyle: {
@@ -105,14 +119,43 @@
                 ]
               }
             },
-            data: this.coinStakeList.filter(({count}) => count).map(({minimum, maximum, count}) => [minimum, count])
+            data: this.coinstakeList.filter(({count}) => count).map(({minimum, maximum, count}) => [minimum, count])
           }
+        })
+      },
+      async renderAddressGrowth() {
+        const [echarts] = await Promise.all([
+          import('echarts/lib/echarts'),
+          import('echarts/lib/chart/line'),
+          import('echarts/lib/component/title'),
+          import('echarts/lib/component/tooltip'),
+          import('echarts/lib/component/dataZoom')
+        ])
+        let chart = echarts.init(this.$refs['address-growth'])
+        chart.setOption({
+          title: {text: this.$t('misc.stats.address_growth')},
+          tooltip: {trigger: 'axis', axisPointer: {axis: 'x'}},
+          xAxis: {type: 'time'},
+          yAxis: {type: 'value'},
+          series: {
+            type: 'line',
+            name: this.$tc('blockchain.address', 2),
+            smooth: true,
+            smoothMonotone: 'x',
+            symbol: 'none',
+            itemStyle: {color: 'rgba(46, 154, 208, 1)'},
+            lineStyle: {color: 'rgba(46, 154, 208, 1)'},
+            data: this.addressGrowth.map(({time, addresses}) => [time, addresses])
+          },
+          dataZoom: {type: 'slider'},
+          useUTC: true
         })
       }
     },
     mounted() {
       this.renderDailyTransactionsChart()
       this.renderCoinStakeChart()
+      this.renderAddressGrowth()
     }
   }
 </script>

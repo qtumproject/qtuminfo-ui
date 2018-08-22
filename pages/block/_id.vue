@@ -44,10 +44,10 @@
           <div class="column info-title">{{ $t('block.merkle_root') }}</div>
           <div class="column info-value monospace">{{ merkleRoot }}</div>
         </div>
-        <div class="columns" v-if="minedBy">
+        <div class="columns" v-if="miner">
           <div class="column info-title">{{ $t('block.mined_by') }}</div>
           <div class="column info-value">
-            <AddressLink :address="minedBy" />
+            <AddressLink :address="miner" />
           </div>
         </div>
         <div class="columns">
@@ -110,7 +110,7 @@
         reward: 0,
         difficulty: 0,
         merkleRoot: '',
-        minedBy: null,
+        miner: null,
         previousBlockHash: null,
         nextBlockHash: null,
         tx: [],
@@ -126,11 +126,11 @@
         }
         let block = await Block.get(id, {ip: req && req.ip})
         let page = Number(query.page || 1)
-        if (page > 1 && block.tx.length <= (page - 1) * 20) {
-          redirect(`/block/${params.id}`, {page: Math.ceil(block.tx.length / 20)})
+        if (page > 1 && block.transactions.length <= (page - 1) * 20) {
+          redirect(`/block/${params.id}`, {page: Math.ceil(block.transactions.length / 20)})
         }
         let transactions = await Transaction.getBrief(
-          block.tx.slice((page - 1) * 20, page * 20),
+          block.transactions.slice((page - 1) * 20, page * 20),
           {ip: req && req.ip}
         )
         return {
@@ -142,10 +142,10 @@
           reward: block.reward,
           difficulty: block.difficulty,
           merkleRoot: block.merkleRoot,
-          minedBy: block.minedBy || null,
+          miner: block.miner || null,
           previousBlockHash: block.previousBlockHash || null,
           nextBlockHash: block.nextBlockHash || null,
-          tx: block.tx,
+          tx: block.transactions,
           transactions
         }
       } catch (err) {

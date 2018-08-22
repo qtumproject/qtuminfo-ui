@@ -74,7 +74,7 @@
             item.balance = oldItem.balance
           } else {
             Address.getBalance(item.address).then(
-              ({balance}) => item.balance = balance,
+              balance => item.balance = balance,
               console.error.bind(console)
             )
           }

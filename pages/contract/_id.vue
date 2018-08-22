@@ -24,7 +24,7 @@
           <div class="columns">
             <div class="column info-title">{{ $t('contract.create_transaction') }}</div>
             <div class="column info-value">
-              <TransactionLink :transaction="txid" />
+              <TransactionLink :transaction="createTransactionId" />
             </div>
           </div>
         </template>
@@ -33,11 +33,28 @@
             <div class="column info-title">{{ $t('contract.token.name') }}</div>
             <div class="column info-value">{{ qrc20.name }}</div>
           </div>
-          <div class="columns">
+          <div class="columns" v-if="qrc20.holders">
             <div class="column info-title">{{ $t('contract.token.total_supply') }}</div>
             <div class="column info-value monospace">
               {{ qrc20.totalSupply | qrc20(qrc20.decimals, true) }}
               {{ qrc20.symbol || $t('contract.token.tokens') }}
+            </div>
+          </div>
+          <div class="columns">
+            <div class="column info-title">Token Holders</div>
+            <div class="column info-value">{{ qrc20.holders }}</div>
+          </div>
+        </template>
+        <template v-if="qrc721">
+          <div class="columns" v-if="qrc721.name">
+            <div class="column info-title">{{ $t('contract.token.name') }}</div>
+            <div class="column info-value">{{ qrc721.name }}</div>
+          </div>
+          <div class="columns">
+            <div class="column info-title">{{ $t('contract.token.total_supply') }}</div>
+            <div class="column info-value monospace">
+              {{ qrc721.totalSupply }}
+              {{ qrc721.symbol || $t('contract.token.tokens') }}
             </div>
           </div>
         </template>
@@ -103,14 +120,15 @@
     },
     data() {
       return {
-        txid: '',
+        createTransactionId: '',
         owner: '',
         type: '',
         qrc20: null,
+        qrc721: null,
         balance: '0',
         totalReceived: '0',
         totalSent: '0',
-        tokenBalances: [],
+        qrc20TokenBalances: [],
         totalCount: 0
       }
     },
@@ -118,14 +136,15 @@
       try {
         let contract = await Contract.get(params.id)
         return {
-          txid: contract.txid,
+          createTransactionId: contract.createTransactionId,
           owner: contract.owner,
           type: contract.type,
           qrc20: contract.qrc20,
+          qrc721: contract.qrc721,
           balance: contract.balance,
           totalReceived: contract.totalReceived,
           totalSent: contract.totalSent,
-          tokenBalances: contract.tokenBalances,
+          qrc20TokenBalances: contract.qrc20TokenBalances,
           totalCount: contract.totalCount
         }
       } catch (err) {
@@ -148,7 +167,7 @@
         return Math.ceil(this.totalCount / 20)
       },
       existingTokenBalances() {
-        return this.tokenBalances.filter(token => token.balance !== '0')
+        return this.qrc20TokenBalances.filter(token => token.balance !== '0')
       }
     }
   }
