@@ -26,17 +26,17 @@
     "axios": "^0.18.0",
     "bn.js": "^4.11.8",
     "bs58": "^4.0.1",
-    "buffer": "^5.1.0",
+    "buffer": "^5.2.0",
     "crypto-browserify": "^3.12.0",
-    "moment": "^2.22.1",
-    "nuxt": "^1.4.0",
-    "vue-i18n": "^7.6.0"
+    "moment": "^2.22.2",
+    "nuxt": "^1.4.2",
+    "vue-i18n": "^7.8.1"
   },
   "devDependencies": {
-    "@fortawesome/fontawesome-free": "^5.1.0-4",
+    "@fortawesome/fontawesome-free": "^5.2.0",
     "bulma": "^0.7.1",
     "echarts": "^4.1.0",
-    "less": "^3.0.2",
+    "less": "^3.8.1",
     "less-loader": "^4.1.0",
     "yaml-loader": "^0.5.0"
   }
