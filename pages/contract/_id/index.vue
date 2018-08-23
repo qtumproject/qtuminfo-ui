@@ -80,9 +80,29 @@
         oldTransaction.receipts = newTransaction.receipts
         oldTransaction.qrc20TokenTransfers = newTransaction.qrc20TokenTransfers
         oldTransaction.qrc721TokenTransfers = newTransaction.qrc721TokenTransfers
+      },
+      subscribeTransactions() {
+        let category = 'address/' + this.id + '/transaction'
+        this.$websocket.subscribe(category)
+        this.$websocket.on(category, transaction => {
+          if (this.transactions.every(item => item.id !== transaction.id)) {
+            this.transactions.unshift(transaction)
+          }
+        })
+        this.$subscribedAddress = this.id
+      },
+      unsubscribeTransactions() {
+        this.$websocket.unsubscribe('address/' + this.$subscribedAddress + '/transaction')
       }
     },
+    mounted() {
+      this.subscribeTransactions()
+    },
+    beforeDestroy() {
+      this.unsubscribeTransactions()
+    },
     async beforeRouteUpdate(to, from, next) {
+      this.unsubscribeTransactions()
       let page = Number(to.query.page || 1)
       let {totalCount, transactions} = await Contract.getTransactions(
         this.id,
@@ -100,6 +120,7 @@
       this.transactions = await Transaction.getBrief(transactions)
       this.currentPage = page
       next()
+      this.subscribeTransactions()
       scrollIntoView(this.$refs['transaction-list'])
     },
     scrollToTop: true
