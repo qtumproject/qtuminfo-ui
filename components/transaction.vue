@@ -125,6 +125,33 @@
         </div>
       </AttributeInjector>
     </template>
+    <template v-for="({token, from, to, tokenId}, index) in qrc721TokenTransfers">
+      <div class="column is-full flex-full"></div>
+      <AttributeInjector
+        class="column collapse token-transfer-list"
+        :class="{
+          'first-item': index === 0,
+          'last-item': index === qrc721TokenTransfers.length - 1
+        }">
+        <div class="is-clearfix">
+          <AddressLink v-if="from" :address="from" class="is-pulled-left" :highlight="highlightAddress" />
+          <template v-else>{{ $t('contract.token.mint_tokens') }}</template>
+        </div>
+        <Icon icon="arrow-right" class="arrow"></Icon>
+        <div class="is-half">
+          <div v-if="to" class="is-clearfix">
+            <AddressLink :address="to" class="is-pulled-left" :highlight="highlightAddress" />
+            <span class="is-pulled-right amount break-word">
+              {{ tokenId }}
+              <AddressLink :address="token.address" :highlight="highlightAddress">
+                {{ token.symbol || $t('contract.token.tokens') }}
+              </AddressLink>
+            </span>
+          </div>
+          <template v-else>{{ $t('contract.token.burn_tokens') }}</template>
+        </div>
+      </AttributeInjector>
+    </template>
     <div class="column is-full has-text-right collapse-bottom" v-if="fees !== '0'">
       <template v-if="fees > 0">
         {{ $t('transaction.fee') }} <span class="amount fee">{{ fees | qtum }} QTUM</span>
@@ -174,6 +201,9 @@
       },
       qrc20TokenTransfers() {
         return this.transaction.qrc20TokenTransfers
+      },
+      qrc721TokenTransfers() {
+        return this.transaction.qrc721TokenTransfers
       },
       contractInfo() {
         return this.outputs.map(output => {

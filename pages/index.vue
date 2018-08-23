@@ -57,7 +57,7 @@
             <div v-for="transaction in recentTransactions" :key="transaction.id" class="is-size-7 transaction">
               <div class="level">
                 <TransactionLink :transaction="transaction.id" class="level-left" />
-                <span class="level-right">{{ transaction.valueOut | qtum }} QTUM</span>
+                <span class="level-right">{{ transaction.outputValue | qtum }} QTUM</span>
               </div>
             </div>
           </div>
@@ -91,7 +91,7 @@
       this.$websocket.subscribe('block')
       this.$websocket.subscribe('mempool/transaction')
       this.$websocket.on('block', block => {
-        block.transactionCount = block.tx.length
+        block.transactionCount = block.transactions.length
         this.recentBlocks.unshift(block)
         this.recentBlocks.pop()
       })

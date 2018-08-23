@@ -20,11 +20,11 @@
             <TransactionLink :transaction="id" plain :clipboard="hash">{{ hash }}</TransactionLink>
           </div>
         </div>
-        <div class="columns" v-if="block">
+        <div class="columns" v-if="blockHash">
           <div class="column info-title">{{ $t('transaction.included_in_block') }}</div>
           <div class="column info-value">
-            <BlockLink :block="block.height" :clipboard="block.hash">
-              {{ block.height }} ({{ block.hash }})
+            <BlockLink :block="blockHeight" :clipboard="blockHash">
+              {{ blockHeight }} ({{ blockHash }})
             </BlockLink>
           </div>
         </div>
@@ -32,10 +32,10 @@
           <div class="column info-title">{{ $t('transaction.transaction_size') }}</div>
           <div class="column info-value">{{ size.toLocaleString() }} bytes</div>
         </div>
-        <div class="columns" v-if="block">
+        <div class="columns" v-if="timestamp">
           <div class="column info-title">{{ $t('transaction.timestamp') }}</div>
           <div class="column info-value">
-            <FromNow :timestamp="block.timestamp" /> ({{ block.timestamp | timestamp }})
+            <FromNow :timestamp="timestamp" /> ({{ timestamp | timestamp }})
           </div>
         </div>
         <div class="columns">
@@ -49,8 +49,8 @@
 
         <Transaction
           :transaction="{
-            id, blockHeight: block && block.height, timestamp: block && block.timestamp,
-            inputs, outputs, fees, qrc20TokenTransfers
+            id, blockHeight, timestamp,
+            inputs, outputs, fees, qrc20TokenTransfers, qrc721TokenTransfers
           }"
           detailed
           @transaction-change="refresh" />
@@ -121,36 +121,38 @@
     },
     data() {
       return {
-        block: null,
         id: '',
         hash: '',
-        size: 0,
         isCoinbase: false,
         fees: 0,
         inputs: [],
         outputs: [],
+        blockHeight: null,
+        blockHash: null,
+        timestamp: null,
+        size: 0,
         receipts: [],
-        qrc20TokenTransfers: []
+        qrc20TokenTransfers: [],
+        qrc721TokenTransfers: []
       }
     },
     async asyncData({req, params, error}) {
       try {
         let transaction = await Transaction.get(params.id, {ip: req && req.ip})
-        let block = null
-        if (transaction.blockHeight != null) {
-          block = await Block.get(transaction.blockHash, {ip: req && req.ip})
-        }
         return {
           id: transaction.id,
           hash: transaction.hash,
-          size: transaction.size,
           isCoinbase: transaction.isCoinbase,
           fees: transaction.fees,
           inputs: transaction.inputs,
           outputs: transaction.outputs,
+          blockHeight: transaction.blockHeight,
+          blockHash: transaction.blockHash,
+          timestamp: transaction.timestamp,
+          size: transaction.size,
           receipts: transaction.receipts,
           qrc20TokenTransfers: transaction.qrc20TokenTransfers,
-          block
+          qrc721TokenTransfers: transaction.qrc721TokenTransfers
         }
       } catch (err) {
         if (err instanceof RequestError) {
@@ -169,15 +171,17 @@
         return this.$store.state.blockchain
       },
       confirmations() {
-        return this.block ? this.blockchain.height - this.block.height + 1 : 0
+        return this.blockHeight == null ? 0 : this.blockchain.height - this.blockHeight + 1
       }
     },
     methods: {
-      async refresh(transaction) {
-        this.block = transaction.block
-        this.timestamp = transaction.block.timestamp
+      refresh(transaction) {
+        this.blockHeight = transaction.blockHeight
+        this.blockHash = transaction.blockHash
+        this.timestamp = transaction.timestamp
         this.receipts = transaction.receipts
         this.qrc20TokenTransfers = transaction.qrc20TokenTransfers
+        this.qrc721TokenTransfers = transaction.qrc721TokenTransfers
       },
       splitData(data) {
         let chunks = data.length / 64

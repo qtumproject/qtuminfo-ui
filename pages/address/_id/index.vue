@@ -77,9 +77,12 @@
         return {name: 'address-id', params: {id: this.id}, query: {page}}
       },
       transactionChange(oldTransaction, newTransaction) {
-        Vue.set(oldTransaction, 'blockHeight', newTransaction.block.height)
-        Vue.set(oldTransaction, 'blockHash', newTransaction.block.hash)
-        oldTransaction.tokenTransfers = newTransaction.tokenTransfers
+        oldTransaction.blockHeight = newTransaction.blockHeight
+        oldTransaction.blockHash = newTransaction.blockHash
+        oldTransaction.timestamp = newTransaction.timestamp
+        oldTransaction.receipts = newTransaction.receipts
+        oldTransaction.qrc20TokenTransfers = newTransaction.qrc20TokenTransfers
+        oldTransaction.qrc721TokenTransfers = newTransaction.qrc721TokenTransfers
       }
     },
     async beforeRouteUpdate(to, from, next) {
