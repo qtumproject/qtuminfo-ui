@@ -133,8 +133,9 @@ misc:
     days: 天
     months: 月
     years: 年
-    average_blocks_per_day: 每日挖矿数量
-    average_blocks_per_year: 每年挖矿数量
+    average_blocks_per_day: 每日挖出区块数量
+    average_blocks_per_year: 每年挖出区块数量
+    yearly_roi: 年化收益率
 nav:
   search: 搜索 区块 / 交易 / 地址 / 合约 / Token
 pagination:

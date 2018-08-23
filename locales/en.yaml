@@ -135,6 +135,7 @@ misc:
     years: years
     average_blocks_per_day: Average Blocks Per Day
     average_blocks_per_year: Average Blocks Per Year
+    yearly_roi: Yearly ROI
 nav:
   search: Search by Block / Transaction / Address / Contract / Token
 pagination:

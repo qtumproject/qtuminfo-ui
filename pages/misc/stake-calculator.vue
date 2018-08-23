@@ -38,6 +38,14 @@
         </div>
       </div>
     </template>
+    <div class="field">
+      <label>{{ $t('misc.stake_calculator.yearly_roi') }}</label>
+      <div class="control">
+        <output class="monospace">
+          {{ (reward * 365 * 600 / this.netStakeWeight * 100).toFixed(2) }}%
+        </output>
+      </div>
+    </div>
   </form>
 </template>
 
@@ -73,6 +81,9 @@
       }
     },
     computed: {
+      blockchain() {
+        return this.$store.state.blockchain
+      },
       weight() {
         return Math.round(Number(this.weightInput.replace(',')) * 1e8) || 0
       },
@@ -93,6 +104,12 @@
         } else {
           return (this.expectedTime / 60 / 60 / 24 / 365).toFixed(2) + ' ' + this.$t('misc.stake_calculator.years')
         }
+      },
+      reward() {
+        let height = this.blockchain.height - 5001
+        let interval = 985500
+        let halvings = Math.floor(height / interval)
+        return halvings === 7 ? 0 : 4e8 >>> halvings
       }
     },
     watch: {
