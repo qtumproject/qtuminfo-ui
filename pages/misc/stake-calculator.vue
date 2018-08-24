@@ -22,7 +22,7 @@
       <div class="field">
         <label>{{ $t('misc.stake_calculator.expected_time') }}</label>
         <div class="control">
-          <output>{{ duration }}</output>
+          <output>{{ interval }}</output>
         </div>
       </div>
       <div v-if="expectedTime < 100000" class="field">
@@ -90,7 +90,7 @@
       expectedTime() {
         return 144 * this.netStakeWeight / this.weight
       },
-      duration() {
+      interval() {
         if (this.expectedTime < 60) {
           return this.expectedTime.toFixed(2) + ' ' + this.$t('misc.stake_calculator.seconds')
         } else if (this.expectedTime < 60 * 60) {

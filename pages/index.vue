@@ -29,7 +29,7 @@
                         <AddressLink :address="block.miner" />
                       </i18n>
                       <br>
-                      {{ $t('block.brief.transaction', [block.transactionCount, block.duration]) }}
+                      {{ $t('block.brief.transaction', [block.transactionCount, block.interval]) }}
                       <br>
                       <span class="monospace">
                         {{ $t('block.brief.reward') }} {{ block.reward | qtum }} QTUM
