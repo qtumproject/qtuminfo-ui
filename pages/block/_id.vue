@@ -54,19 +54,19 @@
           <div class="column info-title">{{ $t('block.transactions') }}</div>
           <div class="column info-value">{{ tx.length }}</div>
         </div>
-        <div class="columns" v-if="previousBlockHash && previousBlockHash != '0'.repeat(64)">
+        <div class="columns" v-if="prevHash && prevHash != '0'.repeat(64)">
           <div class="column info-title">{{ $t('block.previous_block') }}</div>
           <div class="column info-value">
-            <BlockLink :block="height - 1" :clipboard="previousBlockHash">
-              {{ previousBlockHash }}
+            <BlockLink :block="height - 1" :clipboard="prevHash">
+              {{ prevHash }}
             </BlockLink>
           </div>
         </div>
-        <div class="columns" v-if="nextBlockHash">
+        <div class="columns" v-if="nextHash">
           <div class="column info-title">{{ $t('block.next_block') }}</div>
           <div class="column info-value">
-            <BlockLink :block="height + 1" :clipboard="nextBlockHash">
-              {{ nextBlockHash }}
+            <BlockLink :block="height + 1" :clipboard="nextHash">
+              {{ nextHash }}
             </BlockLink>
           </div>
         </div>
@@ -111,8 +111,8 @@
         difficulty: 0,
         merkleRoot: '',
         miner: null,
-        previousBlockHash: null,
-        nextBlockHash: null,
+        prevHash: null,
+        nextHash: null,
         tx: [],
         transactions: [],
         currentPage: Number(this.$route.query.page || 1)
@@ -143,8 +143,8 @@
           difficulty: block.difficulty,
           merkleRoot: block.merkleRoot,
           miner: block.miner || null,
-          previousBlockHash: block.previousBlockHash || null,
-          nextBlockHash: block.nextBlockHash || null,
+          prevHash: block.prevHash || null,
+          nextHash: block.nextHash || null,
           tx: block.transactions,
           transactions
         }
