@@ -9,6 +9,10 @@ class Misc {
     return QtuminfoAPI.get('/stats/daily-transactions', options)
   }
 
+  static blockInterval(options = {}) {
+    return QtuminfoAPI.get('/stats/block-interval', options)
+  }
+
   static coinstake(options = {}) {
     return QtuminfoAPI.get('/stats/coinstake', options)
   }

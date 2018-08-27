@@ -4,6 +4,9 @@
       <div class="chart" ref="daily-transactions"></div>
     </div>
     <div class="chart-wrapper">
+      <div class="chart" ref="block-interval"></div>
+    </div>
+    <div class="chart-wrapper">
       <div class="chart" ref="coinstake"></div>
     </div>
     <div class="chart-wrapper">
@@ -25,18 +28,20 @@
     data() {
       return {
         dailyTransactions: [],
+        blockInterval: [],
         coinstakeList: [],
         addressGrowth: []
       }
     },
     async asyncData({req, error}) {
       try {
-        let [dailyTransactions, coinstakeList, addressGrowth] = await Promise.all([
+        let [dailyTransactions, blockInterval, coinstakeList, addressGrowth] = await Promise.all([
           Misc.dailyTransactions({ip: req && req.ip}),
+          Misc.blockInterval({ip: req && req.ip}),
           Misc.coinstake({ip: req && req.ip}),
           Misc.addressGrowth({ip: req && req.ip})
         ])
-        return {dailyTransactions, coinstakeList, addressGrowth}
+        return {dailyTransactions, blockInterval, coinstakeList, addressGrowth}
       } catch (err) {
         if (err instanceof RequestError) {
           error({statusCode: err.code, message: err.message})
@@ -49,7 +54,7 @@
       async renderDailyTransactionsChart() {
         const [echarts] = await Promise.all([
           import('echarts/lib/echarts'),
-          import('echarts/lib/chart/line'),
+          import('echarts/lib/chart/bar'),
           import('echarts/lib/component/title'),
           import('echarts/lib/component/tooltip'),
           import('echarts/lib/component/dataZoom')
@@ -59,12 +64,10 @@
           title: {text: this.$t('misc.stats.daily_transactions')},
           tooltip: {trigger: 'axis', axisPointer: {axis: 'x'}},
           xAxis: {type: 'time'},
-          yAxis: {type: 'value'},
+          yAxis: {type: 'value', minInterval: 1},
           series: {
-            type: 'line',
+            type: 'bar',
             name: this.$tc('blockchain.transaction', 2),
-            smooth: true,
-            smoothMonotone: 'x',
             symbol: 'none',
             itemStyle: {color: 'rgba(46, 154, 208, 1)'},
             lineStyle: {color: 'rgba(46, 154, 208, 1)'},
@@ -87,7 +90,55 @@
           useUTC: true
         })
       },
-      async renderCoinStakeChart() {
+      async renderBlockIntervalChart() {
+        const [echarts] = await Promise.all([
+          import('echarts/lib/echarts'),
+          import('echarts/lib/chart/bar'),
+          import('echarts/lib/chart/line'),
+          import('echarts/lib/component/title'),
+          import('echarts/lib/component/tooltip'),
+          import('echarts/lib/component/dataZoom')
+        ])
+        let total = this.blockInterval.reduce((initial, {count}) => initial + count, 0)
+        let maxInterval = Math.ceil(Math.log(total * 2 / 9) / Math.log(9 / 8))
+        let chart = echarts.init(this.$refs['block-interval'])
+        chart.setOption({
+          title: {text: this.$t('misc.stats.block_interval')},
+          tooltip: {trigger: 'axis', axisPointer: {axis: 'x'}},
+          xAxis: {
+            type: 'value',
+            name: this.$t('misc.stats.interval'),
+            minInterval: 16
+          },
+          yAxis: {
+            type: 'value',
+            name: this.$t('misc.stats.blocks'),
+            minInterval: 1
+          },
+          series: [
+            {
+              type: 'bar',
+              name: this.$t('misc.stats.blocks'),
+              symbol: 'none',
+              itemStyle: {color: 'rgba(46, 154, 208, 1)'},
+              lineStyle: {color: 'rgba(46, 154, 208, 1)'},
+              data: this.blockInterval.map(({interval, count}) => [interval, count])
+            },
+            {
+              type: 'line',
+              name: this.$t('misc.stats.expected_value'),
+              smooth: 1,
+              symbol: 'none',
+              data: [...Array(maxInterval).keys()].map((_, index) => [
+                (index + 1) * 16,
+                Math.round(total / 9 * (8 / 9) ** index)
+              ])
+            }
+          ],
+          dataZoom: {type: 'slider', endValue: 600}
+        })
+      },
+      async renderCoinstakeChart() {
         const [echarts] = await Promise.all([
           import('echarts/lib/echarts'),
           import('echarts/lib/chart/line'),
@@ -105,7 +156,6 @@
           series: {
             type: 'line',
             name: 'Blocks Mined',
-            smoothMonotone: 'x',
             symbol: 'none',
             itemStyle: {color: 'rgba(46, 154, 208, 1)'},
             lineStyle: {color: 'rgba(46, 154, 208, 1)'},
@@ -136,12 +186,11 @@
           title: {text: this.$t('misc.stats.address_growth')},
           tooltip: {trigger: 'axis', axisPointer: {axis: 'x'}},
           xAxis: {type: 'time'},
-          yAxis: {type: 'value'},
+          yAxis: {type: 'value', minInterval: 1},
           series: {
             type: 'line',
             name: this.$tc('blockchain.address', 2),
             smooth: true,
-            smoothMonotone: 'x',
             symbol: 'none',
             itemStyle: {color: 'rgba(46, 154, 208, 1)'},
             lineStyle: {color: 'rgba(46, 154, 208, 1)'},
@@ -154,7 +203,8 @@
     },
     mounted() {
       this.renderDailyTransactionsChart()
-      this.renderCoinStakeChart()
+      this.renderBlockIntervalChart()
+      this.renderCoinstakeChart()
       this.renderAddressGrowth()
     }
   }

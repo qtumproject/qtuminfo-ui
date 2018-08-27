@@ -117,8 +117,12 @@ misc:
   percentage: Percentage
   stats:
     daily_transactions: Daily Transactions
+    block_interval: Block Interval
     coinstake_distribution: Coinstake Distribution
     address_growth: Address Growth
+    blocks: Blocks
+    interval: 'Interval (seconds)'
+    expected_value: Expected Value
     coins: Coins
     blocks_mined: Blocks Mined
   stake_calculator:
