@@ -1,7 +1,7 @@
 <template>
   <form @submit.prevent>
     <div class="field">
-      <label>{{ $t('misc.stake_calculator.network_weight') }}</label>
+      <label>{{ $t('blockchain.network_weight') }}</label>
       <div class="control">
         <output class="monospace">{{ netStakeWeight | qtum(8) }}</output>
       </div>

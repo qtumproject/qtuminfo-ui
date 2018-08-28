@@ -6,6 +6,9 @@ blockchain:
   contract: 合约
   token: Token
   misc: 杂项
+  blockchain_height: 区块高度
+  network_weight: 网络权重
+  fee_rate: 费率
 block:
   brief:
     address: 由 {0} 挖出
@@ -115,6 +118,7 @@ misc:
   balance: 余额
   blocks_mined: 挖出块数
   percentage: 占比
+  network_statistics: 网络状态
   stats:
     daily_transactions: 每日交易数
     block_interval: 区块时间间隔
@@ -127,7 +131,6 @@ misc:
     blocks_mined: 挖矿数量
   stake_calculator:
     title: 挖矿计算器
-    network_weight: 网络权重
     enter_address: 输入你的地址（可选）
     weight: 你的 QTUM 数量
     expected_time: 期望用时

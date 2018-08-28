@@ -47,6 +47,31 @@
         <div class="card">
           <div class="card-header">
             <div class="card-header-icon">
+              <Icon icon="tachometer-alt" fixedWidth />
+            </div>
+            <h3 class="card-header-title">
+              {{ $t('misc.network_statistics') }}
+            </h3>
+          </div>
+          <div class="card-body">
+            <p class="information">
+              <span class="key">{{ $t('blockchain.blockchain_height') }}</span>:
+              <span class="value">{{ blockchain.height.toLocaleString() }}</span>
+            </p>
+            <p class="information">
+              <span class="key">{{ $t('blockchain.network_weight') }}</span>:
+              <span class="value">{{ netStakeWeight | qtum(8) }}</span>
+            </p>
+            <p class="information">
+              <span class="key">{{ $t('blockchain.fee_rate') }}</span>:
+              <span class="value">{{ feeRate }} kB/QTUM</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-header-icon">
               <Icon icon="list-alt" fixedWidth />
             </div>
             <h3 class="card-header-title">
@@ -69,6 +94,8 @@
 
 <script>
   import Block from "@/models/block"
+  import Misc from '@/models/misc'
+  import {RequestError} from '@/services/qtuminfo-api'
 
   export default {
     head() {
@@ -80,12 +107,28 @@
     data() {
       return {
         recentBlocks: [],
-        recentTransactions: []
+        recentTransactions: [],
+        netStakeWeight: 0,
+        feeRate: 0
       }
     },
     async asyncData({req}) {
-      let recentBlocks = await Block.getRecentBlocks({ip: req && req.ip})
-      return {recentBlocks}
+      try {
+        let recentBlocks = await Block.getRecentBlocks({ip: req && req.ip})
+        let {netStakeWeight, feeRate} = await Misc.info({ip: req && req.ip})
+        return {recentBlocks, netStakeWeight, feeRate}
+      } catch (err) {
+        if (err instanceof RequestError) {
+          error({statusCode: err.code, message: err.message})
+        } else {
+          error({statusCode: 500, message: err.message})
+        }
+      }
+    },
+    computed: {
+      blockchain() {
+        return this.$store.state.blockchain
+      }
     },
     mounted() {
       this.$websocket.subscribe('block')
@@ -101,10 +144,22 @@
           this.recentTransactions.pop()
         }
       })
+      this.$interval = setInterval(async () => {
+        try {
+          let {netStakeWeight, feeRate} = await Misc.info({ip: req && req.ip})
+          this.netStakeWeight = netStakeWeight
+          this.feeRate = feeRate
+        } catch (err) {
+          if (!(err instanceof RequestError)) {
+            throw err
+          }
+        }
+      }, 10 * 60 * 1000)
     },
     beforeDestroy() {
       this.$websocket.unsubscribe('block')
       this.$websocket.unsubscribe('mempool/transaction')
+      clearInterval(this.$interval)
     }
   }
 </script>
@@ -114,6 +169,10 @@
 
   .columns.is-desktop {
     margin: 0;
+  }
+
+  .card:not(:first-child) {
+    margin-top: 1.5em;
   }
 
   .qtum-block {
@@ -132,6 +191,19 @@
     color: inherit;
     &:hover {
       outline: 1px solid @qtum;
+    }
+  }
+
+  .information {
+    padding: 0.1em 1em;
+    &:first-child {
+      padding-top: 0.5em;
+    }
+    &:last-child {
+      padding-bottom: 0.5em;
+    }
+    .value {
+      font-family: monospace
     }
   }
 

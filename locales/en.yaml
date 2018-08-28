@@ -6,6 +6,9 @@ blockchain:
   contract: Contract | Contracts
   token: Token | Tokens
   misc: Misc
+  blockchain_height: Blockchain Height
+  network_weight: Network Weight
+  fee_rate: Fee Rate
 block:
   brief:
     address: Mined by {0}
@@ -115,6 +118,7 @@ misc:
   balance: Balance
   blocks_mined: Blocks Mined
   percentage: Percentage
+  network_statistics: Network Statistics
   stats:
     daily_transactions: Daily Transactions
     block_interval: Block Interval
