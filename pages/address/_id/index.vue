@@ -77,9 +77,9 @@
         return {name: 'address-id', params: {id: this.id}, query: {page}}
       },
       transactionChange(oldTransaction, newTransaction) {
-        oldTransaction.blockHeight = newTransaction.blockHeight
-        oldTransaction.blockHash = newTransaction.blockHash
-        oldTransaction.timestamp = newTransaction.timestamp
+        Vue.set(oldTransaction, 'blockHeight', newTransaction.blockHeight)
+        Vue.set(oldTransaction, 'blockHash', newTransaction.blockHash)
+        Vue.set(oldTransaction, 'timestamp', newTransaction.timestamp)
         oldTransaction.receipts = newTransaction.receipts
         oldTransaction.qrc20TokenTransfers = newTransaction.qrc20TokenTransfers
         oldTransaction.qrc721TokenTransfers = newTransaction.qrc721TokenTransfers
