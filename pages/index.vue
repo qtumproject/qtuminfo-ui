@@ -137,10 +137,14 @@
     mounted() {
       this.$websocket.subscribe('block')
       this.$websocket.subscribe('mempool/transaction')
-      this.$websocket.on('block', block => {
-        block.transactionCount = block.transactions.length
-        this.recentBlocks.unshift(block)
-        this.recentBlocks.pop()
+      this.$websocket.on('block', async block => {
+        if (block.height === recentBlocks[0].height + 1) {
+          block.transactionCount = block.transactions.length
+          this.recentBlocks.unshift(block)
+          this.recentBlocks.pop()
+        } else {
+          this.recentBlocks = await Block.getRecentBlocks()
+        }
       })
       this.$websocket.on('mempool/transaction', transaction => {
         this.recentTransactions.unshift(transaction)
