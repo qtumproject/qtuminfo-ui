@@ -44,7 +44,7 @@ Vue.component('FromNow', {
     tag: {type: String, default: 'span'},
   },
   render(createElement) {
-    return createElement(this.tag, '\n' + moment(this.timestamp * 1000).fromNow() + '\n')
+    return createElement(this.tag, moment(this.timestamp * 1000).fromNow())
   },
   mounted() {
     this.$interval = setInterval(() => this.$forceUpdate(), 1000)
