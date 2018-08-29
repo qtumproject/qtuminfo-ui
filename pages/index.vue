@@ -142,7 +142,7 @@
       this.$websocket.subscribe('block')
       this.$websocket.subscribe('mempool/transaction')
       this.$websocket.on('block', async block => {
-        if (block.height === recentBlocks[0].height + 1) {
+        if (block.height === this.recentBlocks[0].height + 1) {
           block.transactionCount = block.transactions.length
           this.recentBlocks.unshift(block)
           this.recentBlocks.pop()
