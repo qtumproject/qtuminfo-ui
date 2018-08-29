@@ -62,4 +62,11 @@
       margin-right: 0.3em;
     }
   }
+  @media (max-width: 768px) {
+    span {
+      max-width: 15em;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
 </style>

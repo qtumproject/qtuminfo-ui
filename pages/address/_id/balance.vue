@@ -3,28 +3,58 @@
     <Pagination v-if="pages > 1" :pages="pages" :currentPage="currentPage" :getLink="getLink" />
     <table class="table is-fullwidth is-bordered is-striped">
       <thead>
-        <tr>
+        <tr v-if="responsive.isTablet">
           <th>{{ $t('address.timestamp') }}</th>
           <th>{{ $t('address.transaction_id') }}</th>
           <th>{{ $t('address.balance') }}</th>
           <th>{{ $t('address.changes') }}</th>
         </tr>
+        <template v-else>
+          <tr>
+            <th>{{ $t('address.timestamp') }}</th>
+            <th>{{ $t('address.transaction_id') }}</th>
+          </tr>
+          <tr>
+            <th>{{ $t('address.balance') }}</th>
+            <th>{{ $t('address.changes') }}</th>
+          </tr>
+        </template>
       </thead>
       <tbody>
-        <tr v-for="{id, blockHeight, timestamp, balance, amount} in transactions">
-          <td v-if="timestamp">{{ timestamp | timestamp }}</td>
-          <td v-else>{{ $t('transaction.mempool') }}</td>
-          <td>
-            <TransactionLink :transaction="id" />
-          </td>
-          <td class="monospace">{{ balance | qtum(8) }} QTUM</td>
-          <td class="monospace">
-            <span v-if="amount > 0">+</span>
-            <span v-else-if="amount < 0">-</span>
-            <span v-else>&nbsp;</span>
-            {{ Math.abs(amount) | qtum(8) }} QTUM
-          </td>
-        </tr>
+        <template v-for="{id, blockHeight, timestamp, balance, amount} in transactions">
+          <tr v-if="responsive.isTablet">
+            <td v-if="timestamp">{{ timestamp | timestamp }}</td>
+            <td v-else>{{ $t('transaction.mempool') }}</td>
+            <td>
+              <TransactionLink :transaction="id" />
+            </td>
+            <td class="monospace">{{ balance | qtum(8) }} QTUM</td>
+            <td class="monospace">
+              <span v-if="amount > 0">+</span>
+              <span v-else-if="amount < 0">-</span>
+              <span v-else>&nbsp;</span>
+              {{ Math.abs(amount) | qtum(8) }} QTUM
+            </td>
+          </tr>
+          <template v-else>
+            <tr>
+              <td v-if="timestamp">{{ timestamp | timestamp }}</td>
+              <td v-else>{{ $t('transaction.mempool') }}</td>
+              <td>
+                <TransactionLink :transaction="id" />
+              </td>
+            </tr>
+            <tr>
+              <td class="monospace">{{ balance | qtum(8) }} QTUM</td>
+              <td class="monospace">
+                <span v-if="amount > 0">+</span>
+                <span v-else-if="amount < 0">-</span>
+                <span v-else>&nbsp;</span>
+                {{ Math.abs(amount) | qtum(8) }} QTUM
+              </td>
+            </tr>
+          </template>
+        </template>
       </tbody>
     </table>
     <Pagination v-if="pages > 1" :pages="pages" :currentPage="currentPage" :getLink="getLink" />
@@ -33,11 +63,13 @@
 
 <script>
   import Vue from 'vue'
+  import {Responsive} from '@/plugins/mixins'
   import Address from '@/models/address'
   import {RequestError} from '@/services/qtuminfo-api'
   import {scrollIntoView} from '@/utils/dom'
 
   export default {
+    mixins: [Responsive],
     data() {
       return {
         totalCount: 0,

@@ -8,7 +8,7 @@
           <th>{{ $t('misc.address') }}</th>
           <th>{{ $t('misc.blocks_mined') }}</th>
           <th>{{ $t('misc.percentage') }}</th>
-          <th>{{ $t('misc.balance') }}</th>
+          <th class="is-hidden-touch">{{ $t('misc.balance') }}</th>
         </tr>
       </thead>
       <tbody>
@@ -19,7 +19,7 @@
           </td>
           <td>{{ blocks }}</td>
           <td class="monospace">{{ (blocks / posBlocks * 100).toFixed(4) + '%' }}</td>
-          <td class="monospace">{{ balance | qtum(8) }}</td>
+          <td class="monospace is-hidden-touch">{{ balance | qtum(8) }}</td>
         </tr>
       </tbody>
     </table>

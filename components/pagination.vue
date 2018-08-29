@@ -1,7 +1,7 @@
 <template>
-  <nav class="pagination is-centered" :class="showFull ? '' : 'is-small'">
+  <nav class="pagination is-centered" :class="responsive.isTablet ? '' : 'is-small'">
     <ul class="pagination-list">
-      <template v-if="showFull">
+      <template v-if="responsive.isTablet">
         <li v-if="currentPage > 3">
           <nuxt-link :to="getLink(1)" class="pagination-link">1</nuxt-link>
         </li>
@@ -37,7 +37,7 @@
           {{ currentPage + 1 }}
         </nuxt-link>
       </li>
-      <template v-if="showFull">
+      <template v-if="responsive.isTablet">
         <li v-if="currentPage < pages - 1">
           <nuxt-link :to="getLink(currentPage + 2)" class="pagination-link">
             {{ currentPage + 2 }}
@@ -66,7 +66,7 @@
         <form class="pagination-form" @submit.prevent="submit">
           <label class="label">{{ $t('pagination.go_to') }}</label>
           <div class="control">
-            <input type="text" class="input has-text-centered" :class="{'is-small': !showFull}"
+            <input type="text" class="input has-text-centered" :class="{'is-small': !responsive.isTablet}"
               v-model="inputValue" ref="input">
           </div>
         </form>
@@ -76,10 +76,12 @@
 </template>
 
 <script>
+  import {Responsive} from '@/plugins/mixins'
+
   export default {
+    mixins: [Responsive],
     data() {
       return {
-        showFull: true,
         inputValue: ''
       }
     },
@@ -89,9 +91,6 @@
       getLink: {type: Function, required: true}
     },
     methods: {
-      resize() {
-        this.showFull = document.documentElement.clientWidth > 768
-      },
       submit() {
         let input = this.inputValue.trim()
         if (/^[1-9]\d*$/.test(input)) {
@@ -107,13 +106,6 @@
         this.inputValue = ''
         this.$refs.input.blur()
       }
-    },
-    mounted() {
-      this.resize()
-      window.addEventListener('resize', this.resize, false)
-    },
-    beforeDestory() {
-      window.removeEventListener('resize', this.resize)
     }
   }
 </script>
