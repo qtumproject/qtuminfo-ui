@@ -27,6 +27,9 @@
             :highlight="highlightAddress" />
           <span v-else class="is-pulled-left">{{ $t('transaction.unparsed_address' )}}</span>
           <span class="is-pulled-right amount">
+            <TransactionLink :transaction="input.prevTxId" :clipboard="false">
+              <Icon icon="search" />
+            </TransactionLink>
             {{ input.value | qtum(8) }} QTUM
           </span>
         </div>
@@ -46,6 +49,9 @@
           </span>
           <span v-else class="is-pulled-left">{{ $t('transaction.unparsed_address' )}}</span>
           <span class="is-pulled-right amount" v-if="output.value !== '0'">
+            <TransactionLink v-if="output.spentTxId" :transaction="output.spentTxId" :clipboard="false">
+              <Icon icon="search" />
+            </TransactionLink>
             {{ output.value | qtum(8) }} QTUM
           </span>
           <span class="is-pulled-right" v-else-if="contractInfo[index]">
@@ -65,6 +71,9 @@
           </span>
           <span v-else class="is-pulled-left">{{ $t('transaction.unparsed_address' )}}</span>
           <span class="is-pulled-right amount" v-if="output.value !== '0'">
+            <TransactionLink v-if="output.spentTxId" :transaction="output.spentTxId" :clipboard="false">
+              <Icon icon="search" />
+            </TransactionLink>
             {{ output.value | qtum(8) }} QTUM
           </span>
           <span class="is-pulled-right" v-else-if="contractInfo[index]">
