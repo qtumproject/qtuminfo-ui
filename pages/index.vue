@@ -98,6 +98,7 @@
 
 <script>
   import Block from "@/models/block"
+  import Transaction from "@/models/transaction"
   import Misc from '@/models/misc'
   import {RequestError} from '@/services/qtuminfo-api'
 
@@ -116,11 +117,14 @@
         feeRate: 0
       }
     },
-    async asyncData({req}) {
+    async asyncData({req, error}) {
       try {
-        let recentBlocks = await Block.getRecentBlocks({ip: req && req.ip})
-        let {netStakeWeight, feeRate} = await Misc.info({ip: req && req.ip})
-        return {recentBlocks, netStakeWeight, feeRate}
+        let [recentBlocks, recentTransactions, {netStakeWeight, feeRate}] = await Promise.all([
+          Block.getRecentBlocks({ip: req && req.ip}),
+          Transaction.getRecentTransactions({ip: req && req.ip}),
+          Misc.info({ip: req && req.ip})
+        ])
+        return {recentBlocks, recentTransactions, netStakeWeight, feeRate}
       } catch (err) {
         if (err instanceof RequestError) {
           error({statusCode: err.code, message: err.message})

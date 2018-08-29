@@ -24,6 +24,10 @@ class Transaction {
       return QtuminfoAPI.get(`/tx/${id}`, {params: {brief: ''}, ...options})
     }
   }
+
+  static getRecentTransactions(options = {}) {
+    return QtuminfoAPI.get('/recent-txs', options)
+  }
 }
 
 export default Transaction
