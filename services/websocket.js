@@ -1,10 +1,11 @@
 class WS {
-  constructor(uri) {
+  constructor(uri, {autoSubscribeAfterReconnect = false} = {}) {
     this._messages = []
     this._eventHandlers = []
     this._threshold = 20000
     this._lastActiveTime = Date.now()
     this._uri = uri
+    this._autoSubscribeAfterReconnect = autoSubscribeAfterReconnect
     this._subscriptions = {}
     this._connection = null
     this.connect()
@@ -57,6 +58,13 @@ class WS {
         this._messages = []
         this._lastActiveTime = Date.now()
         this._connection.addEventListener('message', this.receive.bind(this))
+        if (this._autoSubscribeAfterReconnect) {
+          for (let [event, count] of Object.entries(this._subscriptions)) {
+            if (count) {
+              this.send({type: 'subscribe', data: event})
+            }
+          }
+        }
       })
     } catch (err) {}
   }
