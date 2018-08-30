@@ -11,7 +11,7 @@
           </td>
           <td class="monospace has-text-right">{{ balance | qtum(8) }}</td>
           <td>
-            <Icon icon="trash" @click="remove(address)"></Icon>
+            <Icon icon="trash" @click="remove(address)" />
           </td>
         </tr>
       </tbody>

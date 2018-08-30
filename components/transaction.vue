@@ -35,7 +35,7 @@
         </div>
       </template>
     </div>
-    <Icon icon="arrow-right" class="column arrow collapse"></Icon>
+    <Icon icon="arrow-right" class="column arrow collapse" />
     <div class="column is-half collapse">
       <template v-if="collapsed">
         <div v-for="(output, index) in outputs" class="is-clearfix">
@@ -119,7 +119,7 @@
           <AddressLink v-if="from" :address="from" class="is-pulled-left" :highlight="highlightAddress" />
           <template v-else>{{ $t('contract.token.mint_tokens') }}</template>
         </div>
-        <Icon icon="arrow-right" class="arrow"></Icon>
+        <Icon icon="arrow-right" class="arrow" />
         <div class="is-half">
           <div v-if="to" class="is-clearfix">
             <AddressLink :address="to" class="is-pulled-left" :highlight="highlightAddress" />
@@ -146,7 +146,7 @@
           <AddressLink v-if="from" :address="from" class="is-pulled-left" :highlight="highlightAddress" />
           <template v-else>{{ $t('contract.token.mint_tokens') }}</template>
         </div>
-        <Icon icon="arrow-right" class="arrow"></Icon>
+        <Icon icon="arrow-right" class="arrow" />
         <div class="is-half">
           <div v-if="to" class="is-clearfix">
             <AddressLink :address="to" class="is-pulled-left" :highlight="highlightAddress" />
