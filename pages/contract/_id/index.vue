@@ -82,6 +82,8 @@
         Vue.set(oldTransaction, 'blockHeight', newTransaction.blockHeight)
         Vue.set(oldTransaction, 'blockHash', newTransaction.blockHash)
         Vue.set(oldTransaction, 'timestamp', newTransaction.timestamp)
+        oldTransaction.inputs = newTransaction.inputs
+        oldTransaction.outputs = newTransaction.outputs
         oldTransaction.receipts = newTransaction.receipts
         oldTransaction.qrc20TokenTransfers = newTransaction.qrc20TokenTransfers
         oldTransaction.qrc721TokenTransfers = newTransaction.qrc721TokenTransfers
