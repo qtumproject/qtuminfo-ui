@@ -156,3 +156,5 @@ action:
   copy: 复制
   view_all: 查看全部
   go: 前往
+notification:
+  new_transaction_received: 你收到了一条新交易

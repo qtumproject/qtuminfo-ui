@@ -62,22 +62,54 @@
         if (this.$el !== event.target && !this.$el.contains(event.target)) {
           this.show = false
         }
+      },
+      subscribeAddress(address) {
+        let category = 'address/' + address + '/transaction'
+        this.$websocket.subscribe(category)
+        if (window.Notification) {
+          Notification.requestPermission()
+        }
+        this.$websocket.on(category, transaction => {
+          if (window.Notification && Notification.permission === 'granted') {
+            let notification = new Notification(
+              this.$t('notification.new_transaction_received'),
+              {
+                body: transaction.id,
+                icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Qtum_logo.svg/102px-Qtum_logo.svg.png',
+                data: transaction
+              }
+            )
+            notification.addEventListener('click', event => {
+              event.preventDefault()
+              window.open('/tx/' + transaction.id)
+            })
+          }
+        })
+      },
+      unsubscribeAddress(address) {
+        this.$websocket.unsubscribe('address/' + address + '/transaction')
       }
     },
     watch: {
       addresses() {
         let oldList = this.list
+        let oldSet = new Set(this.list.map(item => item.address))
         this.list = this.addresses.map(address => ({address, balance: 0}))
         for (let item of this.list) {
+          oldSet.delete(item.address)
           let oldItem = oldList.find(oldItem => oldItem.address === item.address)
           if (oldItem) {
             item.balance = oldItem.balance
           } else {
+            this.subscribeAddress(item.address)
             Address.getBalance(item.address).then(
               balance => item.balance = balance,
               console.error.bind(console)
             )
           }
+        }
+        for (let deleted of oldSet) {
+          this.unsubscribeAddress(deleted)
         }
       }
     },
@@ -88,6 +120,9 @@
     },
     beforeDestroy() {
       document.body.removeEventListener('click', this.clickOutside)
+      for (let address of this.addresses) {
+        this.unsubscribeAddress(address)
+      }
     }
   }
 </script>

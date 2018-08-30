@@ -157,3 +157,5 @@ action:
   copy: Copy
   view_all: View All
   go: Go
+notification:
+  new_transaction_received: You received a new transaction
