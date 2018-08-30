@@ -63,20 +63,26 @@
           this.show = false
         }
       },
-      onTransaction(transaction) {
+      async onTransaction(transaction) {
         if (window.Notification && Notification.permission === 'granted') {
-          let notification = new Notification(
-            this.$t('notification.new_transaction_received'),
-            {
-              body: transaction.id,
-              icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Qtum_logo.svg/102px-Qtum_logo.svg.png',
-              data: transaction
-            }
-          )
-          notification.addEventListener('click', event => {
-            event.preventDefault()
-            window.open('/tx/' + transaction.id)
-          })
+          let title = this.$t('notification.new_transaction_received')
+          let options = {
+                body: transaction.id,
+                icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Qtum_logo.svg/102px-Qtum_logo.svg.png',
+                data: transaction,
+                renotify: true,
+                tag: 'transaction/' + transaction.id
+              }
+          if (navigator.serviceWorker) {
+            let registration = await navigator.serviceWorker.ready
+            registration.showNotification(title, options)
+          } else {
+            let notification = new Notification(title, options)
+            notification.addEventListener('click', event => {
+              event.preventDefault()
+              window.open('/tx/' + transaction.id)
+            })
+          }
         }
       },
       subscribeAddress(address) {
@@ -111,9 +117,6 @@
     },
     mounted() {
       this._onTransaction = this.onTransaction.bind(this)
-      if (window.Notification) {
-        Notification.requestPermission()
-      }
       let addresses = (localStorage.getItem('my-addresses') || '').split(',').filter(Boolean)
       this.$store.commit('address/my-addresses/add', addresses)
       document.body.addEventListener('click', this.clickOutside)

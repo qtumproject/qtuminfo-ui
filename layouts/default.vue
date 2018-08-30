@@ -30,6 +30,17 @@
         }
       }
     },
+    mounted() {
+      if (navigator.serviceWorker) {
+        navigator.serviceWorker.register('/service-worker.js').then(registration => {
+          registration.update()
+          setInterval(() => registration.update(), 3600 * 1000)
+        })
+      }
+      if (window.Notification) {
+        Notification.requestPermission()
+      }
+    },
     components: {Navigator, Breadcrumb, Footer, MyAddresses}
   }
 </script>
