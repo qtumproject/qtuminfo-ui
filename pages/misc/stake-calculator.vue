@@ -98,7 +98,7 @@
         } else if (this.expectedTime < 60 * 60 * 24) {
           return (this.expectedTime / 60 / 60).toFixed(2) + ' ' + this.$t('misc.stake_calculator.hours')
         } else if (this.expectedTime < 60 * 60 * 24 * 30) {
-          return (this.expectedTime / 60 / 60 / 34).toFixed(2) + ' ' + this.$t('misc.stake_calculator.days')
+          return (this.expectedTime / 60 / 60 / 24).toFixed(2) + ' ' + this.$t('misc.stake_calculator.days')
         } else if (this.expectedTime < 60 * 60 * 24 * 360) {
           return (this.expectedTime / 60 / 60 / 24 / 30).toFixed(2) + ' ' + this.$t('misc.stake_calculator.months')
         } else {
