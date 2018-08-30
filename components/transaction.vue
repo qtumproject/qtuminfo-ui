@@ -24,7 +24,7 @@
       <template v-else>
         <div v-for="input in inputs" class="is-clearfix">
           <AddressLink v-if="input.address" :address="input.address" class="is-pulled-left"
-            :highlight="highlightAddress" />
+            :plain="input.isInvalidContract" :highlight="highlightAddress" :clipboard="false" />
           <span v-else class="is-pulled-left">{{ $t('transaction.unparsed_address' )}}</span>
           <span class="is-pulled-right amount">
             <TransactionLink :transaction="input.prevTxId" :clipboard="false">
@@ -40,7 +40,7 @@
       <template v-if="collapsed">
         <div v-for="(output, index) in outputs" class="is-clearfix">
           <AddressLink v-if="output.address" :address="output.address" class="is-pulled-left"
-            :highlight="highlightAddress" />
+            :plain="output.isInvalidContract" :highlight="highlightAddress" :clipboard="false" />
           <span v-else-if="output.scriptPubKey.type === 'nonstandard'">
             {{ $t('transaction.empty_output') }}
           </span>
@@ -62,7 +62,7 @@
       <template v-else>
         <div v-for="(output, index) in outputs" class="is-clearfix">
           <AddressLink v-if="output.address" :address="output.address" class="is-pulled-left"
-            :highlight="highlightAddress" />
+            :plain="output.isInvalidContract" :highlight="highlightAddress" :clipboard="false" />
           <span v-else-if="output.scriptPubKey.type === 'nonstandard'">
             {{ $t('transaction.empty_output') }}
           </span>
