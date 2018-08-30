@@ -70,6 +70,7 @@ class WS {
   }
 
   on(event, callback) {
+    this.subscribe(event)
     if (!(event in this._eventHandlers)) {
       this._eventHandlers[event] = [callback]
     } else if (!this._eventHandlers[event].includes(callback)) {
@@ -82,10 +83,12 @@ class WS {
       return
     }
     if (!callback) {
+      this.unsubscribeAll(event)
       this._eventHandlers[event] = []
     }
     let index = this._eventHandlers[event].indexOf(callback)
     if (index >= 0) {
+      this.unsubscribe(event)
       this._eventHandlers[event].splice(index, 1)
     }
   }
@@ -112,6 +115,13 @@ class WS {
       return
     }
     if (--this._subscriptions[event] === 0) {
+      this.send({type: 'unsubscribe', data: event})
+    }
+  }
+
+  unsubscribeAll(event) {
+    if (this._subscriptions[event]) {
+      this._subscriptions[event] = 0
       this.send({type: 'unsubscribe', data: event})
     }
   }

@@ -138,10 +138,8 @@
         return this.$store.state.blockchain
       }
     },
-    mounted() {
-      this.$websocket.subscribe('block')
-      this.$websocket.subscribe('mempool/transaction')
-      this.$websocket.on('block', async block => {
+    methods: {
+      async onBlock(block) {
         if (block.height === this.recentBlocks[0].height + 1) {
           block.transactionCount = block.transactions.length
           this.recentBlocks.unshift(block)
@@ -149,13 +147,19 @@
         } else {
           this.recentBlocks = await Block.getRecentBlocks()
         }
-      })
-      this.$websocket.on('mempool/transaction', transaction => {
+      },
+      onMempoolTransaction(transaction) {
         this.recentTransactions.unshift(transaction)
         if (this.recentTransactions.length > 27) {
           this.recentTransactions.pop()
         }
-      })
+      }
+    },
+    mounted() {
+      this._onBlock = this.onBlock.bind(this)
+      this._onMempoolTransaction = this.onMempoolTransaction.bind(this)
+      this.$websocket.on('block', this._onBlock)
+      this.$websocket.on('mempool/transaction', this._onMempoolTransaction)
       this.$interval = setInterval(async () => {
         try {
           let {netStakeWeight, feeRate} = await Misc.info()
@@ -169,8 +173,8 @@
       }, 10 * 60 * 1000)
     },
     beforeDestroy() {
-      this.$websocket.unsubscribe('block')
-      this.$websocket.unsubscribe('mempool/transaction')
+      this.$websocket.off('block', this._onBlock)
+      this.$websocket.off('mempool/transaction', this._onMempoolTransaction)
       clearInterval(this.$interval)
     }
   }

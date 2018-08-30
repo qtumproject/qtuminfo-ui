@@ -96,20 +96,21 @@
           return
         }
         this.$router.push({name: 'block', query: {date: formatUTCTimestamp(date)}})
-      }
-    },
-    mounted() {
-      this.$websocket.subscribe('block')
-      this.$websocket.on('block', block => {
+      },
+      onBlock(block) {
         block.transactionCount = block.tx.length
         let todayTimestamp = Date.parse(this.date + 'T00:00:00') / 1000
         if (block.timestamp >= todayTimestamp && block.timestamp < todayTimestamp + 60 * 60 * 24) {
           this.list.unshift(block)
         }
-      })
+      }
+    },
+    mounted() {
+      this._onBlock = this.onBlock.bind(this)
+      this.$websocket.on('block', this._onBlock)
     },
     beforeDestroy() {
-      this.$websocket.unsubscribe('block')
+      this.$websocket.off('block', this._onBlock)
     },
     async beforeRouteUpdate(to, from, next) {
       let date = to.query.date && new Date(to.query.date)

@@ -63,31 +63,27 @@
           this.show = false
         }
       },
-      subscribeAddress(address) {
-        let category = 'address/' + address + '/transaction'
-        this.$websocket.subscribe(category)
-        if (window.Notification) {
-          Notification.requestPermission()
+      onTransaction(transaction) {
+        if (window.Notification && Notification.permission === 'granted') {
+          let notification = new Notification(
+            this.$t('notification.new_transaction_received'),
+            {
+              body: transaction.id,
+              icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Qtum_logo.svg/102px-Qtum_logo.svg.png',
+              data: transaction
+            }
+          )
+          notification.addEventListener('click', event => {
+            event.preventDefault()
+            window.open('/tx/' + transaction.id)
+          })
         }
-        this.$websocket.on(category, transaction => {
-          if (window.Notification && Notification.permission === 'granted') {
-            let notification = new Notification(
-              this.$t('notification.new_transaction_received'),
-              {
-                body: transaction.id,
-                icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Qtum_logo.svg/102px-Qtum_logo.svg.png',
-                data: transaction
-              }
-            )
-            notification.addEventListener('click', event => {
-              event.preventDefault()
-              window.open('/tx/' + transaction.id)
-            })
-          }
-        })
+      },
+      subscribeAddress(address) {
+        this.$websocket.on('address/' + address + '/transaction', this._onTransaction)
       },
       unsubscribeAddress(address) {
-        this.$websocket.unsubscribe('address/' + address + '/transaction')
+        this.$websocket.off('address/' + address + '/transaction', this._onTransaction)
       }
     },
     watch: {
@@ -114,6 +110,10 @@
       }
     },
     mounted() {
+      this._onTransaction = this.onTransaction.bind(this)
+      if (window.Notification) {
+        Notification.requestPermission()
+      }
       let addresses = (localStorage.getItem('my-addresses') || '').split(',').filter(Boolean)
       this.$store.commit('address/my-addresses/add', addresses)
       document.body.addEventListener('click', this.clickOutside)

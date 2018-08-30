@@ -267,6 +267,10 @@
             }).join(',\n')
             + '\n)'
         }
+      },
+      onTransaction(transaction) {
+        this.$emit('transaction-change', transaction)
+        this.$websocket.off('transaction/' + this.id, this._onTransaction)
       }
     },
     filters: {
@@ -281,23 +285,15 @@
       }
     },
     mounted() {
+      this._onTransaction = this.onTransaction.bind(this)
       if (this.transaction.confirmations) {
         return
       }
-      this.$websocket.subscribe('transaction/' + this.id)
-      this.$options.subscribing = true
-      this.$websocket.on('transaction/' + this.id, transaction => {
-        this.$emit('transaction-change', transaction)
-        this.$websocket.unsubscribe('transaction/' + this.id)
-        this.$options.subscribing = false
-      })
+      this.$websocket.on('transaction/' + this.id, this._onTransaction)
     },
     beforeDestroy() {
-      if (this.$options.subscribing) {
-        this.$websocket.unsubscribe('transaction/' + this.id)
-      }
-    },
-    subscribing: false
+      this.$websocket.off('transaction/' + this.id, this._onTransaction)
+    }
   }
 </script>
 

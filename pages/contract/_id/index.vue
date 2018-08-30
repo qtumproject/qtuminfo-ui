@@ -73,6 +73,11 @@
       getLink(page) {
         return {name: 'contract-id', params: {id: this.id}, query: {page}}
       },
+      onTransaction(transaction) {
+        if (this.transactions.every(item => item.id !== transaction.id)) {
+          this.transactions.unshift(transaction)
+        }
+      },
       transactionChange(oldTransaction, newTransaction) {
         Vue.set(oldTransaction, 'blockHeight', newTransaction.blockHeight)
         Vue.set(oldTransaction, 'blockHash', newTransaction.blockHash)
@@ -82,20 +87,15 @@
         oldTransaction.qrc721TokenTransfers = newTransaction.qrc721TokenTransfers
       },
       subscribeTransactions() {
-        let category = 'address/' + this.id + '/transaction'
-        this.$websocket.subscribe(category)
-        this.$websocket.on(category, transaction => {
-          if (this.transactions.every(item => item.id !== transaction.id)) {
-            this.transactions.unshift(transaction)
-          }
-        })
+        this.$websocket.on('address/' + this.id + '/transaction', this._onTransaction)
         this.$subscribedAddress = this.id
       },
       unsubscribeTransactions() {
-        this.$websocket.unsubscribe('address/' + this.$subscribedAddress + '/transaction')
+        this.$websocket.off('address/' + this.$subscribedAddress + '/transaction', this._onTransaction)
       }
     },
     mounted() {
+      this._onTransaction = this.onTransaction.bind(this)
       this.subscribeTransactions()
     },
     beforeDestroy() {
