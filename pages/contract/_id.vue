@@ -41,7 +41,7 @@
             </div>
           </div>
           <div class="columns">
-            <div class="column info-title">Token Holders</div>
+            <div class="column info-title">{{ $t('contract.token.token_holders') }}</div>
             <div class="column info-value">{{ qrc20.holders }}</div>
           </div>
         </template>
