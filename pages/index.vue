@@ -22,7 +22,7 @@
             </p>
             <p class="information">
               <span class="key">{{ $t('blockchain.fee_rate') }}</span>:
-              <span class="value">{{ feeRate }} kB/QTUM</span>
+              <span class="value">{{ feeRate }} QTUM/kB</span>
             </p>
           </div>
         </div>
