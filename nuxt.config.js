@@ -1,6 +1,6 @@
-const webpack = require('webpack')
+import webpack from 'webpack'
 
-module.exports = {
+export default {
   head: {
     titleTemplate: '%s - qtum.info',
     meta: [
@@ -25,7 +25,8 @@ module.exports = {
     extend(config, {isServer}) {
       config.module.rules.push({
         test: /\.ya?ml$/,
-        use: ['json-loader', 'yaml-loader']
+        type: 'json',
+        use: 'yaml-loader'
       })
       config.plugins.push(new webpack.DefinePlugin({
         'process.env.qtuminfoAPIBase': JSON.stringify(process.env.QTUMINFO_API_BASE
@@ -39,12 +40,8 @@ module.exports = {
     },
     extractCSS: true,
     postcss: {
-      plugins: {
-        'postcss-cssnext': {
-          features: {
-            customProperties: false
-          }
-        }
+      features: {
+        customProperties: false
       }
     }
   },

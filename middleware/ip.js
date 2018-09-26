@@ -1,4 +1,4 @@
-module.exports = function(req, res, next) {
+export default function(req, res, next) {
   req.ip = req.headers['x-forwarded-for']
       || req.connection.remoteAddress
       || req.socket.remoteAddress
