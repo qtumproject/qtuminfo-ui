@@ -54,6 +54,7 @@ transaction:
   unparsed_address: 无法解析的地址
   fee: 手续费
   reward: 奖励
+  gas_refund: Gas 退款
   utxo:
     type: 类型
     script: 脚本

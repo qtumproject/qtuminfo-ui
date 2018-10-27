@@ -50,7 +50,8 @@
         <Transaction
           :transaction="{
             id, blockHeight, timestamp,
-            inputs, outputs, fees, qrc20TokenTransfers, qrc721TokenTransfers
+            inputs, outputs, refundValue, fees,
+            qrc20TokenTransfers, qrc721TokenTransfers
           }"
           detailed
           @transaction-change="refresh" />
@@ -124,9 +125,10 @@
         id: '',
         hash: '',
         isCoinbase: false,
-        fees: 0,
+        fees: '0',
         inputs: [],
         outputs: [],
+        refundValue: '0',
         blockHeight: null,
         blockHash: null,
         timestamp: null,
@@ -146,6 +148,7 @@
           fees: transaction.fees,
           inputs: transaction.inputs,
           outputs: transaction.outputs,
+          refundValue: transaction.refundValue,
           blockHeight: transaction.blockHeight,
           blockHash: transaction.blockHash,
           timestamp: transaction.timestamp,

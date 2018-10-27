@@ -107,6 +107,22 @@
         </div>
       </template>
     </div>
+    <template v-if="refundValue !== '0'">
+      <div class="column is-full flex-full"></div>
+      <AttributeInjector class="column collapse">
+        <div class="is-clearfix">{{ $t('transaction.gas_refund') }}</div>
+        <Icon icon="arrow-right" class="arrow" />
+        <div class="is-half">
+          <div class="is-clearfix">
+            <AddressLink :address="inputs[0].address" class="is-pulled-left"
+              :highlight="highlightAddress" :clipboard="false" />
+            <span class="is-pulled-right amount break-word">
+              {{ refundValue | qtum(8) }} QTUM
+            </span>
+          </div>
+        </div>
+      </AttributeInjector>
+    </template>
     <template v-for="({token, from, to, amount}, index) in qrc20TokenTransfers">
       <div class="column is-full flex-full"></div>
       <AttributeInjector
@@ -199,6 +215,9 @@
       },
       outputs() {
         return this.transaction.outputs
+      },
+      refundValue() {
+        return this.transaction.refundValue
       },
       fees() {
         return this.transaction.fees

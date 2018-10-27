@@ -54,6 +54,7 @@ transaction:
   unparsed_address: Unparsed Address
   fee: Fee
   reward: Reward
+  gas_refund: Gas 退款
   utxo:
     type: Type
     script: Script

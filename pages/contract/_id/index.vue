@@ -84,6 +84,8 @@
         Vue.set(oldTransaction, 'timestamp', newTransaction.timestamp)
         oldTransaction.inputs = newTransaction.inputs
         oldTransaction.outputs = newTransaction.outputs
+        oldTransaction.refundValue = newTransaction.refundValue
+        oldTransaction.fees = newTransaction.fees
         oldTransaction.receipts = newTransaction.receipts
         oldTransaction.qrc20TokenTransfers = newTransaction.qrc20TokenTransfers
         oldTransaction.qrc721TokenTransfers = newTransaction.qrc721TokenTransfers
