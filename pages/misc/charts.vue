@@ -65,24 +65,29 @@
           tooltip: {trigger: 'axis', axisPointer: {axis: 'x'}},
           xAxis: {type: 'time'},
           yAxis: {type: 'value', minInterval: 1},
-          series: {
-            type: 'bar',
-            name: this.$tc('blockchain.transaction', 2),
-            symbol: 'none',
-            itemStyle: {color: 'rgba(46, 154, 208, 1)'},
-            lineStyle: {color: 'rgba(46, 154, 208, 1)'},
-            areaStyle: {
-              color: {
-                type: 'linear',
-                x: 0, y: 0, x2: 0, y2: 1,
-                colorStops: [
-                  {offset: 0, color: 'rgba(46, 154, 208, 0.8)'},
-                  {offset: 1, color: 'rgba(46, 154, 208, 0.2)'}
-                ]
-              }
+          series: [
+            {
+              type: 'bar',
+              name: this.$tc('misc.stats.contract_transactions', 2),
+              stack: 1,
+              itemStyle: {color: '#64cc6d'},
+              data: this.dailyTransactions.map(({time, contractTransactionCount}) => [time, contractTransactionCount])
             },
-            data: this.dailyTransactions.map(({time, transactions}) => [time, transactions])
-          },
+            {
+              type: 'bar',
+              name: this.$tc('misc.stats.total_transactions', 2),
+              stack: 1,
+              itemStyle: {color: 'rgba(46, 154, 208, 1)'},
+              data: this.dailyTransactions.map(({time, transactionCount, contractTransactionCount}) => [
+                time, transactionCount - contractTransactionCount, transactionCount
+              ]),
+              encode: {
+                x: 0,
+                y: 1,
+                tooltip: 2
+              }
+            }
+          ],
           dataZoom: {
             type: 'slider',
             startValue: Date.now() - 30 * 24 * 3600 * 1000

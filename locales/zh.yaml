@@ -122,6 +122,8 @@ misc:
   network_statistics: 网络状态
   stats:
     daily_transactions: 每日交易数
+    total_transactions: 总交易数
+    contract_transactions: 合约交易数
     block_interval: 区块时间间隔
     coinstake_distribution: 挖矿分布
     address_growth: 地址数增长

@@ -122,6 +122,8 @@ misc:
   network_statistics: Network Statistics
   stats:
     daily_transactions: Daily Transactions
+    total_transactions: Total Transactions
+    contract_transactions: Contract Transactions
     block_interval: Block Interval
     coinstake_distribution: Coinstake Distribution
     address_growth: Address Growth
