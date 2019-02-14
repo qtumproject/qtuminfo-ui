@@ -51,6 +51,7 @@
           :transaction="{
             id, blockHeight, timestamp,
             inputs, outputs, refundValue, fees,
+            contractSpends,
             qrc20TokenTransfers, qrc721TokenTransfers
           }"
           detailed
@@ -63,10 +64,10 @@
                 <div class="column info-title">{{ $t('transaction.receipt.gas_used') }}</div>
                 <div class="column info-value monospace">{{ receipt.gasUsed.toLocaleString() }}</div>
               </div>
-              <div class="columns" v-if="receipt.contractAddress !== '0'.repeat(40)">
+              <div class="columns" v-if="receipt.contractAddressHex !== '0'.repeat(40)">
                 <div class="column info-title">{{ $t('transaction.receipt.contract_address') }}</div>
                 <div class="column info-value">
-                  <AddressLink :address="receipt.contractAddress" />
+                  <AddressLink :address="receipt.contractAddressHex" />
                 </div>
               </div>
               <div class="columns" v-if="receipt.excepted !== 'None'">
@@ -79,7 +80,7 @@
                   <ul v-for="log in receipt.logs" class="event-log">
                     <li>
                       <span class="key">{{ $t('transaction.receipt.address') }}</span>
-                      <AddressLink :address="log.address" />
+                      <AddressLink :address="log.addressHex" />
                     </li>
                     <li>
                       <span class="key">{{ $t('transaction.receipt.topics') }}</span>
@@ -133,9 +134,9 @@
         blockHash: null,
         timestamp: null,
         size: 0,
-        receipts: [],
+        contractSpends: [],
         qrc20TokenTransfers: [],
-        qrc721TokenTransfers: []
+        qrc721TokenTransfers: [],
       }
     },
     async asyncData({req, params, error}) {
@@ -153,7 +154,7 @@
           blockHash: transaction.blockHash,
           timestamp: transaction.timestamp,
           size: transaction.size,
-          receipts: transaction.receipts,
+          contractSpends: transaction.contractSpends,
           qrc20TokenTransfers: transaction.qrc20TokenTransfers,
           qrc721TokenTransfers: transaction.qrc721TokenTransfers
         }
@@ -175,14 +176,20 @@
       },
       confirmations() {
         return this.blockHeight == null ? 0 : this.blockchain.height - this.blockHeight + 1
+      },
+      receipts() {
+        return this.outputs.map(output => output.receipt).filter(Boolean)
       }
     },
     methods: {
       refresh(transaction) {
+        this.outputs = transaction.outputs
         this.blockHeight = transaction.blockHeight
         this.blockHash = transaction.blockHash
         this.timestamp = transaction.timestamp
-        this.receipts = transaction.receipts
+        this.fees = transaction.fees
+        this.refundValue = transaction.refundValue
+        this.contractSpends = transaction.contractSpends
         this.qrc20TokenTransfers = transaction.qrc20TokenTransfers
         this.qrc721TokenTransfers = transaction.qrc721TokenTransfers
       },

@@ -63,16 +63,18 @@
           this.show = false
         }
       },
-      async onTransaction(transaction) {
+      async onTransaction({address, id}) {
+        if (!list.some(item => item.address === address)) {
+          return
+        }
         if (window.Notification && Notification.permission === 'granted') {
           let title = this.$t('notification.new_transaction_received')
           let options = {
-                body: transaction.id,
-                icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Qtum_logo.svg/102px-Qtum_logo.svg.png',
-                data: transaction,
-                renotify: true,
-                tag: 'transaction/' + transaction.id
-              }
+            body: id,
+            icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Qtum_logo.svg/102px-Qtum_logo.svg.png',
+            data: id,
+            tag: 'transaction/' + id
+          }
           if (navigator.serviceWorker) {
             let registration = await navigator.serviceWorker.ready
             registration.showNotification(title, options)
@@ -80,16 +82,16 @@
             let notification = new Notification(title, options)
             notification.addEventListener('click', event => {
               event.preventDefault()
-              window.open('/tx/' + transaction.id)
+              window.open('/tx/' + id)
             })
           }
         }
       },
       subscribeAddress(address) {
-        this.$websocket.on('address/' + address + '/transaction', this._onTransaction)
+        this.$subscribe('address/' + address, 'address/transaction', this._onTransaction)
       },
       unsubscribeAddress(address) {
-        this.$websocket.off('address/' + address + '/transaction', this._onTransaction)
+        this.$unsubscribe('address/' + address, 'address/transaction', this._onTransaction)
       }
     },
     watch: {

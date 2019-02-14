@@ -69,18 +69,18 @@
             </div>
           </div>
         </div>
-        <div class="columns" v-if="blocksStaked">
+        <div class="columns" v-if="blocksMined">
           <div class="column info-title">{{ $t('address.blocks_mined') }}</div>
-          <div class="column info-value">{{ blocksStaked }}</div>
+          <div class="column info-value">{{ blocksMined }}</div>
         </div>
         <div class="columns">
           <div class="column info-title">{{ $t('address.transaction_count') }}</div>
-          <div class="column info-value">{{ totalCount }}</div>
+          <div class="column info-value">{{ transactionCount }}</div>
         </div>
       </div>
     </div>
 
-    <div v-if="totalCount" class="tabs is-centered">
+    <div v-if="transactionCount" class="tabs is-centered">
       <ul>
         <li :class="{'is-active': $route.matched.some(route => route.name === 'address-id')}">
           <nuxt-link :to="{name: 'address-id', params: {id}}">
@@ -93,7 +93,7 @@
             {{ $t('address.balance_changes') }}
           </nuxt-link>
         </li>
-        <li v-if="qrc20TokenBalances.length"
+        <li v-if="qrc20Balances.length"
           :class="{'is-active': $route.matched.some(route => route.name === 'address-id-token-balance')}">
           <nuxt-link :to="{name: 'address-id-token-balance', params: {id}}">
             {{ $t('address.token_balance_changes') }}
@@ -101,7 +101,7 @@
         </li>
       </ul>
     </div>
-    <nuxt-child :tokens="qrc20TokenBalances.map(({address, name, symbol}) => ({address, name, symbol}))" />
+    <nuxt-child :tokens="qrc20Balances.map(({address, name, symbol}) => ({address, name, symbol}))" />
   </section>
 </template>
 
@@ -127,10 +127,10 @@
         totalSent: '0',
         unconfirmed: '0',
         staking: '0',
-        qrc20TokenBalances: [],
+        qrc20Balances: [],
         ranking: 0,
-        blocksStaked: 0,
-        totalCount: 0
+        blocksMined: 0,
+        transactionCount: 0
       }
     },
     async asyncData({req, params, query, redirect, error}) {
@@ -159,7 +159,7 @@
         return result
       },
       existingTokenBalances() {
-        return this.qrc20TokenBalances.filter(token => token.balance !== '0')
+        return this.qrc20Balances.filter(token => token.balance !== '0')
       },
       myAddresses() {
         return this.$store.state.address.myAddresses

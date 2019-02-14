@@ -31,10 +31,10 @@ export default {
       config.plugins.push(new webpack.DefinePlugin({
         'process.env.qtuminfoAPIBase': JSON.stringify(process.env.QTUMINFO_API_BASE
           || process.env[isServer ? 'QTUMINFO_API_BASE_SERVER' : 'QTUMINFO_API_BASE_CLIENT']
-          || 'http://localhost:3001/qtuminfo-api/'),
+          || 'http://localhost:7001/'),
         'process.env.qtuminfoWSBase': JSON.stringify(process.env.QTUMINFO_WS_BASE
           || process.env.QTUMINFO_API_BASE_WS
-          || '//localhost:3002/qtuminfo-ws/'),
+          || '//localhost:7001/'),
         'process.env.network': JSON.stringify(process.env.QTUM_NETWORK || 'mainnet')
       }))
     },
@@ -45,7 +45,7 @@ export default {
       }
     }
   },
-  serverMiddleware: ['middleware/ip.js'],
+  serverMiddleware: ['~/middleware/ip.js'],
   plugins: [
     '~/plugins/components.js',
     '~/plugins/i18n.js',

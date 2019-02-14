@@ -38,6 +38,7 @@
     "echarts": "^4.2.0-rc.2",
     "less": "^3.9.0",
     "less-loader": "^4.1.0",
+    "socket.io-client": "^2.2.0",
     "yaml-loader": "^0.5.0"
   }
 }

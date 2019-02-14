@@ -139,43 +139,51 @@
       }
     },
     methods: {
-      async onBlock(block) {
-        if (block.height === this.recentBlocks[0].height + 1) {
-          block.transactionCount = block.transactions.length
-          this.recentBlocks.unshift(block)
-          this.recentBlocks.pop()
-        } else {
-          this.recentBlocks = await Block.getRecentBlocks()
-        }
-      },
       onMempoolTransaction(transaction) {
         this.recentTransactions.unshift(transaction)
         if (this.recentTransactions.length > 27) {
           this.recentTransactions.pop()
         }
+      },
+      onStakeWeight(stakeWeight) {
+        this.netStakeWeight = stakeWeight
+      },
+      onFeeRate(feeRate) {
+        this.feeRate = feeRate
+      }
+    },
+    watch: {
+      async 'blockchain.height'(height) {
+        if (height === this.recentBlocks[0].height + 1) {
+          let block = await Block.get(height)
+          this.recentBlocks.unshift({
+            hash: block.hash,
+            height: block.height,
+            timestamp: block.timestamp,
+            interval: block.interval,
+            size: block.size,
+            transactionCount: block.transactions.length,
+            miner: block.miner,
+            reward: block.reward
+          })
+          this.recentBlocks.pop()
+        } else {
+          this.recentBlocks = await Block.getRecentBlocks()
+        }
       }
     },
     mounted() {
-      this._onBlock = this.onBlock.bind(this)
       this._onMempoolTransaction = this.onMempoolTransaction.bind(this)
-      this.$websocket.on('block', this._onBlock)
-      this.$websocket.on('mempool/transaction', this._onMempoolTransaction)
-      this.$interval = setInterval(async () => {
-        try {
-          let {netStakeWeight, feeRate} = await Misc.info()
-          this.netStakeWeight = netStakeWeight
-          this.feeRate = feeRate
-        } catch (err) {
-          if (!(err instanceof RequestError)) {
-            throw err
-          }
-        }
-      }, 10 * 60 * 1000)
+      this._onStakeWeight = this.onStakeWeight.bind(this)
+      this._onFeeRate = this.onFeeRate.bind(this)
+      this.$subscribe('mempool', 'mempool/transaction', this._onMempoolTransaction)
+      this.$subscribe('blockchain', 'stakeweight', this._onStakeWeight)
+      this.$subscribe('blockchain', 'feerate', this._onFeeRate)
     },
     beforeDestroy() {
-      this.$websocket.off('block', this._onBlock)
-      this.$websocket.off('mempool/transaction', this._onMempoolTransaction)
-      clearInterval(this.$interval)
+      this.$unsubscribe('mempool', 'mempool/transaction', this._onMempoolTransaction)
+      this.$unsubscribe('blockchain', 'stakeweight', this._onStakeWeight)
+      this.$unsubscribe('blockchain', 'feerate', this._onFeeRate)
     }
   }
 </script>

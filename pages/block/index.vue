@@ -85,6 +85,11 @@
         }
       }
     },
+    computed: {
+      blockchain() {
+        return this.$store.state.blockchain
+      }
+    },
     methods: {
       submit() {
         let date = new Date(this.date)
@@ -105,12 +110,27 @@
         }
       }
     },
-    mounted() {
-      this._onBlock = this.onBlock.bind(this)
-      this.$websocket.on('block', this._onBlock)
-    },
-    beforeDestroy() {
-      this.$websocket.off('block', this._onBlock)
+    watch: {
+      async 'blockchain.height'(height) {
+        if (height === this.list[0].height + 1) {
+          let block = await Block.get(height)
+          let todayTimestamp = Date.parse(this.date + 'T00:00:00') / 1000
+          if (block.timestamp >= todayTimestamp && block.timestamp < todayTimestamp + 60 * 60 * 24) {
+            this.list.unshift({
+              hash: block.hash,
+              height: block.height,
+              timestamp: block.timestamp,
+              interval: block.interval,
+              size: block.size,
+              transactionCount: block.transactions.length,
+              miner: block.miner,
+              reward: block.reward
+            })
+          }
+        } else {
+          this.list = await Block.getBlocksByDate(date)
+        }
+      }
     },
     async beforeRouteUpdate(to, from, next) {
       let date = to.query.date && new Date(to.query.date)

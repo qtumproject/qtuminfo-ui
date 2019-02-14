@@ -14,11 +14,11 @@ class Contract {
   }
 
   static listTokens({page, pageSize}, options = {}) {
-    return QtuminfoAPI.get(`/contract/qrc20-tokens`, {params: {page, pageSize}, ...options})
+    return QtuminfoAPI.get(`/qrc20`, {params: {page, pageSize}, ...options})
   }
 
   static richList(id, {page, pageSize}, options = {}) {
-    return QtuminfoAPI.get(`/contract/${id}/rich-list`, {params: {page, pageSize}, ...options})
+    return QtuminfoAPI.get(`/qrc20/${id}/rich-list`, {params: {page, pageSize}, ...options})
   }
 }
 

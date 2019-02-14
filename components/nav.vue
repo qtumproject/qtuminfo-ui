@@ -63,7 +63,7 @@
         }
         this.searching = true
         try {
-          let {type, id} = await qtuminfoGet(`/search/${searchString}`)
+          let {type, id, addressHex} = await qtuminfoGet(`/search`, {params: {query: searchString}})
           switch (type) {
           case 'address':
             this.searchString = ''
@@ -75,8 +75,8 @@
             break
           case 'contract':
             this.searchString = ''
-            if (id) {
-              this.$router.push(`/contract/${id}`)
+            if (addressHex) {
+              this.$router.push(`/contract/${addressHex}`)
             } else {
               this.$router.push(`/contract/${searchString}`)
             }

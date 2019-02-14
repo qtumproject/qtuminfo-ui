@@ -76,28 +76,27 @@
       getLink(page) {
         return {name: 'address-id', params: {id: this.id}, query: {page}}
       },
-      onTransaction(transaction) {
-        if (this.transactions.every(item => item.id !== transaction.id)) {
-          this.transactions.unshift(transaction)
+      async onTransaction({address, id}) {
+        if (this.addresses.includes(address) && this.transactions.every(item => item.id !== id)) {
+          this.transactions.unshift(await Transaction.getBrief(id))
         }
       },
       transactionChange(oldTransaction, newTransaction) {
         Vue.set(oldTransaction, 'blockHeight', newTransaction.blockHeight)
         Vue.set(oldTransaction, 'blockHash', newTransaction.blockHash)
         Vue.set(oldTransaction, 'timestamp', newTransaction.timestamp)
-        oldTransaction.inputs = newTransaction.inputs
         oldTransaction.outputs = newTransaction.outputs
         oldTransaction.refundValue = newTransaction.refundValue
         oldTransaction.fees = newTransaction.fees
-        oldTransaction.receipts = newTransaction.receipts
+        oldTransaction.contractSpends = newTransaction.contractSpends
         oldTransaction.qrc20TokenTransfers = newTransaction.qrc20TokenTransfers
         oldTransaction.qrc721TokenTransfers = newTransaction.qrc721TokenTransfers
       },
       subscribeAddress(address) {
-        this.$websocket.on('address/' + address + '/transaction', this._onTransaction)
+        this.$subscribe('address/' + address, 'address/transaction', this._onTransaction)
       },
       unsubscribeAddress(address) {
-        this.$websocket.off('address/' + address + '/transaction', this._onTransaction)
+        this.$unsubscribe('address/' + address, 'address/transaction', this._onTransaction)
       }
     },
     mounted() {

@@ -129,20 +129,17 @@
         }
       }
     },
+    methods: {
+      onStakeWeight(stakeWeight) {
+        this.netStakeWeight = stakeWeight
+      }
+    },
     mounted() {
-      this.$interval = setInterval(async () => {
-        try {
-          let {netStakeWeight} = await Misc.info({ip: req && req.ip})
-          this.netStakeWeight = netStakeWeight
-        } catch (err) {
-          if (!(err instanceof RequestError)) {
-            throw err
-          }
-        }
-      }, 10 * 60 * 1000)
+      this._onStakeWeight = this.onStakeWeight.bind(this)
+      this.$subscribe('blockchain', 'stakeweight', this._onStakeWeight)
     },
     beforeDestroy() {
-      clearInterval(this.$interval)
+      this.$unsubscribe('blockchain', 'stakeweight', this._onStakeWeight)
     }
   }
 </script>
