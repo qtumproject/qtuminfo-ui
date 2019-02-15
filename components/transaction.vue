@@ -319,6 +319,7 @@
       async onTransaction(id) {
         this.$emit('transaction-change', await Transaction.get(id))
         this.$unsubscribe('transaction/' + this.id, 'transaction/confirm', this._onTransaction)
+        this.$subscribing = false
       }
     },
     filters: {
@@ -338,9 +339,12 @@
         return
       }
       this.$subscribe('transaction/' + this.id, 'transaction/confirm', this._onTransaction)
+      this.$subscribing = true
     },
     beforeDestroy() {
-      this.$unsubscribe('transaction/' + this.id, 'transaction/confirm', this._onTransaction)
+      if (this.$subscribing) {
+        this.$unsubscribe('transaction/' + this.id, 'transaction/confirm', this._onTransaction)
+      }
     }
   }
 </script>

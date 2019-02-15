@@ -23,7 +23,7 @@ export default function({app}) {
           eventMapping[event] = new Map([[callback, 1]])
         }
       } else {
-        subscriptions[room] = {event: 1}
+        subscriptions[room] = {[event]: new Map([[callback, 1]])}
         ws.emit('subscribe', room)
       }
       let listener = listeners[event]
@@ -57,7 +57,7 @@ export default function({app}) {
             mapping.set(callback, count - 1)
           }
         }
-        if (Object.keys(subscriptions).length === 0) {
+        if (Object.keys(eventMapping).length === 0) {
           delete subscriptions[room]
           ws.emit('unsubscribe', room)
         }

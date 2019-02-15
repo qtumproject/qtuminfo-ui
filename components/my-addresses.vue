@@ -64,7 +64,7 @@
         }
       },
       async onTransaction({address, id}) {
-        if (!list.some(item => item.address === address)) {
+        if (this.list.every(item => item.address !== address)) {
           return
         }
         if (window.Notification && Notification.permission === 'granted') {
