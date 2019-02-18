@@ -120,7 +120,7 @@
       let page = Number(to.query.page || 1)
       let {totalCount, transactions} = await Address.getBalanceTransactions(
         this.id,
-        {page: page - 1, pageIndex: 100}
+        {page: page - 1, pageSize: 100}
       )
       this.totalCount = totalCount
       if (page > this.pages && this.pages > 1) {
