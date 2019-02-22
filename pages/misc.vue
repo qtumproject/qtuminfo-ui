@@ -14,6 +14,9 @@
         <li :class="{'is-active': $route.matched.some(route => route.name === 'misc-stake-calculator')}">
           <nuxt-link to="/misc/stake-calculator">{{ $t('misc.stake_calculator.title') }}</nuxt-link>
         </li>
+        <li :class="{'is-active': $route.matched.some(route => route.name === 'misc-raw-tx')}">
+          <nuxt-link to="/misc/raw-tx">Send Raw Transaction</nuxt-link>
+        </li>
       </ul>
     </div>
     <nuxt-child />

@@ -3,6 +3,6 @@ export default {
     return createElement('div')
   },
   fetch({redirect}) {
-    redirect('/misc/rich-list')
+    redirect('/misc/charts')
   }
 }

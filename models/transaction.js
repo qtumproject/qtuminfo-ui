@@ -28,6 +28,10 @@ class Transaction {
   static getRecentTransactions(options = {}) {
     return QtuminfoAPI.get('/recent-txs', options)
   }
+
+  static sendRawTransaction(data, options = {}) {
+    return QtuminfoAPI.post('/tx/send', {rawtx: data}, options)
+  }
 }
 
 export default Transaction

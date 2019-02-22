@@ -28,6 +28,9 @@
               <nuxt-link to="/misc/stake-calculator" class="navbar-item">
                 {{ $t('misc.stake_calculator.title') }}
               </nuxt-link>
+              <nuxt-link to="/misc/raw-tx" class="navbar-item">
+                Send Raw Transaction
+              </nuxt-link>
             </div>
           </div>
         </AttributeInjector>
