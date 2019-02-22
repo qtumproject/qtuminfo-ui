@@ -46,7 +46,7 @@
             </span>
           </div>
         </div>
-        <div class="columns" v-if="balance !== '0'">
+        <div class="columns" v-if="ranking">
           <div class="column info-title">{{ $t('misc.ranking') }}</div>
           <div class="column info-value">{{ ranking }}</div>
         </div>

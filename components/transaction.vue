@@ -129,9 +129,6 @@
         <div v-for="input in inputs" class="is-clearfix">
           <AddressLink :address="input.addressHex || input.address" class="is-pulled-left" :highlight="highlightAddress" :clipboard="false" />
           <span class="is-pulled-right amount">
-            <TransactionLink :transaction="input.prevTxId" :clipboard="false">
-              <Icon icon="search" />
-            </TransactionLink>
             {{ input.value | qtum(8) }} QTUM
           </span>
         </div>
@@ -141,9 +138,6 @@
         <div v-for="output in outputs" class="is-clearfix">
           <AddressLink :address="output.addressHex || output.address" class="is-pulled-left" :highlight="highlightAddress" :clipboard="false" />
           <span class="is-pulled-right amount">
-            <TransactionLink v-if="output.spentTxId" :transaction="output.spentTxId" :clipboard="false">
-              <Icon icon="search" />
-            </TransactionLink>
             {{ output.value | qtum(8) }} QTUM
           </span>
         </div>
