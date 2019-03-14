@@ -128,7 +128,7 @@
             })
           }
         } else {
-          this.list = await Block.getBlocksByDate(date)
+          this.list = await Block.getBlocksByDate(this.date)
         }
       }
     },
