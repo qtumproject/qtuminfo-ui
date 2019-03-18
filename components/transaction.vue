@@ -187,10 +187,10 @@
           <div v-if="to" class="is-clearfix">
             <AddressLink :address="toHex || to" class="is-pulled-left" :highlight="highlightAddress" />
             <span class="is-pulled-right amount break-word">
-              {{ tokenId }}
               <AddressLink :address="addressHex" :highlight="highlightAddress">
                 {{ symbol || name || $t('contract.token.tokens') }}
               </AddressLink>
+              #0x{{ tokenId.replace(/^0+/, '') || '0' }}
             </span>
           </div>
           <template v-else>{{ $t('contract.token.burn_tokens') }}</template>

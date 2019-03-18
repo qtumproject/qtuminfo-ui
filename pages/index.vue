@@ -234,5 +234,17 @@
       border-top: none;
     }
     font-family: monospace;
+    @media (min-width: 769px) {
+      .level-left {
+        flex-shrink: 1;
+        overflow: hidden;
+        white-space: nowrap;
+        margin-right: 1em;
+        a {
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
+      }
+    }
   }
 </style>
