@@ -42,7 +42,7 @@
       async submit() {
         if (/^([0-9a-f][0-9a-f])+$/i.test(this.data)) {
           try {
-            let result = await Transaction.sendRawTransaction(data)
+            let result = await Transaction.sendRawTransaction(this.data)
             if (result.status) {
               alert(result.message)
             } else {
