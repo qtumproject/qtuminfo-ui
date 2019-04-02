@@ -10,7 +10,11 @@
         <button type="submit" class="button is-link">Submit</button>
       </div>
     </div>
-    <Transaction v-if="transaction" :transaction="transaction" detailed @transaction-change="refresh" />
+    <div v-if="transaction" class="card section-card">
+      <div class="card-body info-table">
+        <Transaction :transaction="transaction" detailed @transaction-change="refresh" />
+      </div>
+    </div>
   </form>
 </template>
 
@@ -44,9 +48,13 @@
           try {
             let result = await Transaction.sendRawTransaction(this.data)
             if (result.status) {
-              alert(result.message)
+              if (result.id) {
+                alert('Transaction ' + result.id + ' still processing')
+              } else {
+                alert(result.message)
+              }
             } else {
-              this.transaction = await Transaction.get(result.id)
+              this.transaction = result
             }
           } catch (err) {
             if (!err instanceof RequestError) {
