@@ -12,7 +12,18 @@
     </div>
     <div v-if="transaction" class="card section-card">
       <div class="card-body info-table">
-        <Transaction :transaction="transaction" detailed @transaction-change="refresh" />
+        <Transaction :transaction="transaction" />
+      </div>
+    </div>
+    <div v-else-if="id" class="card section-card">
+      <div class="card-body info-table">
+        <div class="columns is-multiline transaction-item">
+          <div class="column is-full is-clearfix">
+            <div class="is-pulled-left collapse-bottom">
+              <TransactionLink :transaction="id" />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </form>
@@ -20,7 +31,6 @@
 
 <script>
   import Transaction from '@/models/transaction'
-  import {RequestError} from '@/services/qtuminfo-api'
 
   export default {
     head() {
@@ -31,44 +41,59 @@
     data() {
       return {
         data: '',
+        id: null,
         transaction: null
-      }
-    },
-    watch: {
-      data() {
-        if (this.data.length === 0) {
-          this.id = null
-          this.fetched = null
-        }
       }
     },
     methods: {
       async submit() {
         if (/^([0-9a-f][0-9a-f])+$/i.test(this.data)) {
-          try {
-            let result = await Transaction.sendRawTransaction(this.data)
-            if (result.status) {
-              if (result.id) {
-                alert('Transaction ' + result.id + ' still processing')
-              } else {
-                alert(result.message)
-              }
-            } else {
-              this.transaction = result
-            }
-          } catch (err) {
-            if (!err instanceof RequestError) {
-              throw err
-            }
+          let result = await Transaction.sendRawTransaction(this.data)
+          if (result.status) {
+            alert(result.message)
+          } else {
+            this.id = result.id
+            this.transaction = null
           }
         } else {
           alert('TX decode failed')
         }
+      },
+      onMempoolTransaction(transaction) {
+        if (transaction.id === this.id) {
+          this.transaction = transaction
+        }
       }
+    },
+    mounted() {
+      this._onMempoolTransaction = this.onMempoolTransaction.bind(this)
+      this.$subscribe('mempool', 'mempool/transaction', this._onMempoolTransaction)
+    },
+    beforeDestroy() {
+      this.$unsubscribe('mempool', 'mempool/transaction', this._onMempoolTransaction)
     }
   }
 </script>
 
-<style scoped>
-  
+<style lang="less" scoped>
+  .transaction-item {
+    padding-left: 0.75em;
+    padding-right: 0.75em;
+    &::before {
+      display: block;
+      width: 100%;
+      height: 1px;
+      background-color: #ccc;
+      content: "";
+    }
+    &:first-child {
+      margin-top: 0;
+      &::before {
+        display: none;
+      }
+    }
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
 </style>
