@@ -27,7 +27,7 @@
         </li>
       </ul>
       <div class="copyright">
-        2018-2019 QTUM Project &copy; All rights Reserved
+        2017 - 2019 QTUM CHAIN FOUNDATION &copy; All rights Reserved
       </div>
     </div>
   </footer>
