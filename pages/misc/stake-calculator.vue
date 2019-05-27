@@ -88,7 +88,8 @@
         return Math.round(Number(this.weightInput.replace(',')) * 1e8) || 0
       },
       expectedTime() {
-        return 144 * this.netStakeWeight / this.weight
+        let p = this.weight / this.netStakeWeight
+        return 144 / (1 - Math.exp(-p))
       },
       interval() {
         if (this.expectedTime < 60) {
@@ -117,8 +118,8 @@
         let addresses = this.address.split(',')
         try {
           if (addresses.every(toHexAddress)) {
-            let {mature} = await Address.get(this.address)
-            this.weightInput = (mature / 1e8).toFixed(8)
+            let {balance} = await Address.get(this.address)
+            this.weightInput = (balance / 1e8).toFixed(8)
           } else {
             this.weightInput = ''
           }
