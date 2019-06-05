@@ -115,26 +115,14 @@
             name: this.$t('misc.stats.blocks'),
             minInterval: 1
           },
-          series: [
-            {
-              type: 'bar',
-              name: this.$t('misc.stats.blocks'),
-              symbol: 'none',
-              itemStyle: {color: 'rgba(46, 154, 208, 1)'},
-              lineStyle: {color: 'rgba(46, 154, 208, 1)'},
-              data: this.blockInterval.map(({interval, count}) => [interval, count])
-            },
-            {
-              type: 'line',
-              name: this.$t('misc.stats.expected_value'),
-              smooth: 1,
-              symbol: 'none',
-              data: [...Array(maxInterval).keys()].map((_, index) => [
-                (index + 1) * 16,
-                Math.round(total / 9 * (8 / 9) ** index)
-              ])
-            }
-          ],
+          series: {
+            type: 'bar',
+            name: this.$t('misc.stats.blocks'),
+            symbol: 'none',
+            itemStyle: {color: 'rgba(46, 154, 208, 1)'},
+            lineStyle: {color: 'rgba(46, 154, 208, 1)'},
+            data: this.blockInterval.map(({interval, count}) => [interval, count])
+          },
           dataZoom: {type: 'slider', endValue: 600}
         })
       },

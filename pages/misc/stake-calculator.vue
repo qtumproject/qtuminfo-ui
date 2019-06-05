@@ -42,7 +42,7 @@
       <label>{{ $t('misc.stake_calculator.yearly_roi') }}</label>
       <div class="control">
         <output class="monospace">
-          {{ (reward * 365 * 600 / this.netStakeWeight * 100).toFixed(2) }}%
+          {{ (reward * 365 * 675 / this.netStakeWeight * 100).toFixed(2) }}%
         </output>
       </div>
     </div>
@@ -89,7 +89,7 @@
       },
       expectedTime() {
         let p = this.weight / this.netStakeWeight
-        return 144 / (1 - Math.exp(-p))
+        return 128 / (1 - Math.exp(-p))
       },
       interval() {
         if (this.expectedTime < 60) {
