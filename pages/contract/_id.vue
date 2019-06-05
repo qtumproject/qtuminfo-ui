@@ -14,20 +14,6 @@
             <AddressLink :address="addressHex" plain />
           </div>
         </div>
-        <template v-if="owner">
-          <div class="columns">
-            <div class="column info-title">{{ $t('contract.owner') }}</div>
-            <div class="column info-value">
-              <AddressLink :address="owner" />
-            </div>
-          </div>
-          <div class="columns">
-            <div class="column info-title">{{ $t('contract.create_transaction') }}</div>
-            <div class="column info-value">
-              <TransactionLink :transaction="createTxId" />
-            </div>
-          </div>
-        </template>
         <template v-if="qrc20">
           <div class="columns" v-if="qrc20.name">
             <div class="column info-title">{{ $t('contract.token.name') }}</div>
@@ -124,8 +110,6 @@
         addressHex: '',
         vm: '',
         type: '',
-        owner: '',
-        createTxId: '',
         qrc20: null,
         qrc721: null,
         balance: '0',
@@ -143,8 +127,6 @@
           addressHex: contract.addressHex,
           vm: contract.vm,
           type: contract.type,
-          owner: contract.owner,
-          createTxId: contract.createTxId,
           qrc20: contract.qrc20,
           qrc721: contract.qrc721,
           balance: contract.balance,
