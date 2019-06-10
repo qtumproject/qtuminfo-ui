@@ -62,8 +62,9 @@ transaction:
     contract_create: Contract Create
     contract_call: Contract Call
   receipt:
-    gas_used: Gas Used
+    sender: Sender
     contract_address: Contract Address
+    gas_used: Gas Used
     excepted: Excepted
     event_logs: Event Logs
     address: Address

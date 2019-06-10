@@ -61,14 +61,20 @@
           <div class="column">
             <div v-for="receipt in receipts" class="receipt-item">
               <div class="columns">
-                <div class="column info-title">{{ $t('transaction.receipt.gas_used') }}</div>
-                <div class="column info-value monospace">{{ receipt.gasUsed.toLocaleString() }}</div>
+                <div class="column info-title">{{ $t('transaction.receipt.sender') }}</div>
+                <div class="column info-value">
+                  <AddressLink :address="receipt.sender" />
+                </div>
               </div>
               <div class="columns" v-if="receipt.contractAddressHex !== '0'.repeat(40)">
                 <div class="column info-title">{{ $t('transaction.receipt.contract_address') }}</div>
                 <div class="column info-value">
                   <AddressLink :address="receipt.contractAddressHex" />
                 </div>
+              </div>
+              <div class="columns">
+                <div class="column info-title">{{ $t('transaction.receipt.gas_used') }}</div>
+                <div class="column info-value monospace">{{ receipt.gasUsed.toLocaleString() }}</div>
               </div>
               <div class="columns" v-if="receipt.excepted !== 'None'">
                 <div class="column info-title">{{ $t('transaction.receipt.excepted') }}</div>

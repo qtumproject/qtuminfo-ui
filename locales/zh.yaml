@@ -62,8 +62,9 @@ transaction:
     contract_create: 合约创建
     contract_call: 合约调用
   receipt:
-    gas_used: Gas 使用量
+    sender: 调用方
     contract_address: 合约地址
+    gas_used: Gas 使用量
     excepted: 异常信息
     event_logs: 事件日志
     address: 地址
