@@ -41,7 +41,7 @@
         <div v-for="(output, index) in outputs" class="is-clearfix">
           <AddressLink v-if="output.address" :address="output.addressHex || output.address" class="is-pulled-left"
             :plain="output.isInvalidContract" :highlight="highlightAddress" :clipboard="false" />
-          <span v-else-if="output.scriptPubKey.type === 'nonstandard'">
+          <span v-else-if="output.scriptPubKey.type === 'empty'">
             {{ $t('transaction.empty_output') }}
           </span>
           <span v-else-if="output.scriptPubKey.type === 'nulldata'">
@@ -262,21 +262,42 @@
             let chunks = output.scriptPubKey.asm.split(' ')
             switch (chunks[chunks.length - 1]) {
             case 'OP_CREATE':
-              return {
-                type: 'create',
-                version: chunks[0],
-                gasLimit: chunks[1],
-                gasPrice: chunks[2],
-                code: chunks[3]
+              if (chunks.includes('OP_SENDER')) {
+                return {
+                  type: 'create',
+                  version: chunks[4],
+                  gasLimit: chunks[5],
+                  gasPrice: chunks[6],
+                  code: chunks[7]
+                }
+              } else {
+                return {
+                  type: 'create',
+                  version: chunks[0],
+                  gasLimit: chunks[1],
+                  gasPrice: chunks[2],
+                  code: chunks[3]
+                }
               }
             case 'OP_CALL':
-              return {
-                type: 'call',
-                version: chunks[0],
-                gasLimit: chunks[1],
-                gasPrice: chunks[2],
-                code: chunks[3],
-                address: chunks[4]
+              if (chunks.includes('OP_SENDER')) {
+                return {
+                  type: 'call',
+                  version: chunks[4],
+                  gasLimit: chunks[5],
+                  gasPrice: chunks[6],
+                  code: chunks[7],
+                  address: chunks[8]
+                }
+              } else {
+                return {
+                  type: 'call',
+                  version: chunks[0],
+                  gasLimit: chunks[1],
+                  gasPrice: chunks[2],
+                  code: chunks[3],
+                  address: chunks[4]
+                }
               }
             default:
               return null
@@ -320,7 +341,11 @@
       'qtum-script'(asm) {
         let chunks = asm.split(' ')
         if (['OP_CREATE', 'OP_CALL'].includes(chunks[chunks.length - 1])) {
-          chunks[3] = '[byte code]'
+          if (chunks.includes('OP_SENDER')) {
+            chunks[7] = '[byte code]'
+          } else {
+            chunks[3] = '[byte code]'
+          }
           return chunks.join(' ')
         } else {
           return asm
