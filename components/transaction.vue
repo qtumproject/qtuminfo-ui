@@ -63,7 +63,7 @@
         <div v-for="(output, index) in outputs" class="is-clearfix">
           <AddressLink v-if="output.address" :address="output.addressHex || output.address" class="is-pulled-left"
             :plain="output.isInvalidContract" :highlight="highlightAddress" :clipboard="false" />
-          <span v-else-if="output.scriptPubKey.type === 'nonstandard'">
+          <span v-else-if="output.scriptPubKey.type === 'empty'">
             {{ $t('transaction.empty_output') }}
           </span>
           <span v-else-if="output.scriptPubKey.type === 'nulldata'">
