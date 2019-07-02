@@ -72,13 +72,13 @@
                   <AddressLink :address="receipt.contractAddressHex" />
                 </div>
               </div>
-              <div class="columns">
+              <div class="columns" v-if="receipt.gasUsed !== 0">
                 <div class="column info-title">{{ $t('transaction.receipt.gas_used') }}</div>
                 <div class="column info-value monospace">{{ receipt.gasUsed.toLocaleString() }}</div>
               </div>
               <div class="columns" v-if="receipt.excepted !== 'None'">
                 <div class="column info-title">{{ $t('transaction.receipt.excepted') }}</div>
-                <div class="column info-value">{{ receipt.excepted }}</div>
+                <div class="column info-value">{{ receipt.exceptedMessage || receipt.excepted }}</div>
               </div>
               <div class="columns" v-if="receipt.logs.length">
                 <div class="column info-title">{{ $t('transaction.receipt.event_logs') }}</div>
