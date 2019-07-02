@@ -76,7 +76,7 @@
                 <div class="column info-title">{{ $t('transaction.receipt.gas_used') }}</div>
                 <div class="column info-value monospace">{{ receipt.gasUsed.toLocaleString() }}</div>
               </div>
-              <div class="columns" v-if="receipt.excepted !== 'None'">
+              <div class="columns" v-if="receipt.excepted && receipt.excepted !== 'None'">
                 <div class="column info-title">{{ $t('transaction.receipt.excepted') }}</div>
                 <div class="column info-value">{{ receipt.exceptedMessage || receipt.excepted }}</div>
               </div>

@@ -21,8 +21,8 @@ class Address {
     return QtuminfoAPI.get(`/address/${id}/balance-history`, {params: {page, pageSize}, ...options})
   }
 
-  static getTokenBalanceTransactions(id, {tokens, page, pageSize}, options = {}) {
-    return QtuminfoAPI.get(`/address/${id}/qrc20-balance-history`, {params: {tokens, page, pageSize}, ...options})
+  static getTokenBalanceTransactions(id, {token, page, pageSize}, options = {}) {
+    return QtuminfoAPI.get(`/address/${id}/qrc20-balance-history`, {params: {token, page, pageSize}, ...options})
   }
 }
 

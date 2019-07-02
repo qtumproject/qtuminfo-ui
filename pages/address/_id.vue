@@ -101,7 +101,7 @@
         </li>
       </ul>
     </div>
-    <nuxt-child :tokens="qrc20Balances.map(({address, name, symbol}) => ({address, name, symbol}))" />
+    <nuxt-child :tokens="qrc20Balances.map(({address, addressHex, name, symbol}) => ({address, addressHex, name, symbol}))" />
   </section>
 </template>
 
