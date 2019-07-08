@@ -7,11 +7,12 @@
           <th>{{ $t('misc.ranking') }}</th>
           <th>{{ $t('contract.token.name') }}</th>
           <th>{{ $t('contract.token.total_supply') }}</th>
-          <th>{{ $t('contract.token.token_holders') }}</th>
+          <th>{{ $t('contract.token.token_transactions') }}</th>
+          <th class="is-hidden-touch">{{ $t('contract.token.token_holders') }}</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="({addressHex, name, symbol, decimals, totalSupply, holders}, index) of tokens">
+        <tr v-for="({addressHex, name, symbol, decimals, totalSupply, transactions, holders}, index) of tokens">
           <td>{{ 20 * (currentPage - 1) + index + 1 }}</td>
           <td>
             <AddressLink :address="addressHex">{{ name }}</AddressLink>
@@ -20,7 +21,8 @@
             {{ totalSupply | qrc20(decimals, true) }}
             {{ symbol || name || $t('contract.token.tokens') }}
           </td>
-          <td>{{ holders }}</td>
+          <td>{{ transactions }}</td>
+          <td class="is-hidden-touch">{{ holders }}</td>
         </tr>
       </tbody>
     </table>

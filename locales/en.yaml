@@ -104,6 +104,7 @@ contract:
     tokens: Tokens
     mint_tokens: Mint Tokens
     burn_tokens: Burn Tokens
+    token_transactions: Transactions
     token_holders: Token Holders
   balance: Balance
   total_received: Total Received

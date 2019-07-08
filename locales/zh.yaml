@@ -104,6 +104,7 @@ contract:
     tokens: Token
     mint_tokens: 铸造 Token
     burn_tokens: 烧毁 Token
+    token_transactions: 交易数
     token_holders: Token 持有人数
   balance: 合约余额
   total_received: 转入总计
