@@ -304,11 +304,12 @@
             }
           } else {
             switch (output.scriptPubKey.type) {
-            case 'create':
-            case 'create_sender':
+            case 'evm_create':
+            case 'evm_create_sender':
               return {type: 'create'}
             case 'call':
-            case 'call_sender':
+            case 'evm_call':
+            case 'evm_call_sender':
               return {type: 'call'}
             default:
               return null
