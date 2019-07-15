@@ -16,24 +16,24 @@ export function request(...args) {
 }
 
 export async function get(url, {params, ip} = {}) {
-  let response = await resource.get(url, {
-    params,
-    ...(ip ? {headers: {'X-Forwarded-For': ip}} : {})
-  })
-  if (response.status === 200) {
+  try {
+    let response = await resource.get(url, {
+      params,
+      ...(ip ? {headers: {'X-Forwarded-For': ip}} : {})
+    })
     return response.data
-  } else {
-    throw new RequestError(response.statusText, response.status)
+  } catch (err) {
+    throw new RequestError(err.response.statusText, err.response.status)
   }
 }
 
 export async function post(url, data, {ip} = {}) {
-  let response = await resource.post(url, data, {
-    ...(ip ? {headers: {'X-Forwarded-For': ip}} : {})
-  })
-  if (response.status === 200) {
+  try {
+    let response = await resource.post(url, data, {
+      ...(ip ? {headers: {'X-Forwarded-For': ip}} : {})
+    })
     return response.data
-  } else {
-    throw new RequestError(response.statusText, response.status)
+  } catch (err) {
+    throw new RequestError(err.response.statusText, err.response.status)
   }
 }
