@@ -1,257 +1,164 @@
 <template>
-  <section class="container">
-    <div class="card section-card">
-      <div class="card-header">
-        <div class="card-header-icon">
-          <Icon icon="list-alt" fixedWidth />
+  <div class="container">
+    <Panel width="100%" height="255px" title="交易概览" noMargin="true">
+      <div class="block-info">
+        <div class="block-info-left list">
+          <ul>
+            <li>
+              <div class="item-title">所属区块</div>
+              <div class="item-info">{{blockHeight}}</div>
+            </li>
+            <li>
+              <div class="item-title">确认数</div>
+              <div class="item-info">{{confirmation}}</div>
+            </li>
+            <li>
+              <div class="item-title">时间</div>
+              <div class="item-info">{{timestamp | timestamp}}</div>
+            </li>
+            <li>
+              <div class="item-title">大小</div>
+              <div class="item-info">{{size}}</div>
+            </li>
+          </ul>
         </div>
-        <h3 class="card-header-title">{{ $t('transaction.summary') }}</h3>
+        <div class="block-info-right list">
+          <ul>
+            <li>
+              <div class="item-title">输入</div>
+              <div class="item-info">{{inputsValue | qtum(7)}} QTUM</div>
+            </li>
+            <li>
+              <div class="item-title">输出</div>
+              <div class="item-info">{{outputsValue | qtum(7)}} QTUM</div>
+            </li>
+            <li>
+              <div class="item-title">矿工费</div>
+              <div class="item-info">{{fees | qtum(7)}} QTUM</div>
+            </li>
+          </ul>
+        </div>
       </div>
-      <div class="card-body info-table">
-        <div class="columns">
-          <div class="column info-title">{{ $t('transaction.transaction_id') }}</div>
-          <div class="column info-value monospace">
-            <TransactionLink :transaction="id" plain />
-          </div>
-        </div>
-        <div class="columns" v-if="id !== hash">
-          <div class="column info-title">{{ $t('transaction.transaction_hash') }}</div>
-          <div class="column info-value monospace">
-            <TransactionLink :transaction="id" plain :clipboard="hash">{{ hash }}</TransactionLink>
-          </div>
-        </div>
-        <div class="columns" v-if="blockHash">
-          <div class="column info-title">{{ $t('transaction.included_in_block') }}</div>
-          <div class="column info-value">
-            <BlockLink :block="blockHeight" :clipboard="blockHash">
-              {{ blockHeight }} ({{ blockHash }})
-            </BlockLink>
-          </div>
-        </div>
-        <div class="columns">
-          <div class="column info-title">{{ $t('transaction.transaction_size') }}</div>
-          <div class="column info-value">{{ size.toLocaleString() }} bytes</div>
-        </div>
-        <div class="columns" v-if="timestamp">
-          <div class="column info-title">{{ $t('transaction.timestamp') }}</div>
-          <div class="column info-value">
-            <FromNow :timestamp="timestamp" /> ({{ timestamp | timestamp }})
-          </div>
-        </div>
-        <div class="columns">
-          <div class="column info-title">{{ $t('transaction.confirmation') }}</div>
-          <div class="column info-value">{{ confirmations }}</div>
-        </div>
-        <div class="columns" v-if="fees > 0">
-          <div class="column info-title">{{ $t('transaction.transaction_fee') }}</div>
-          <div class="column info-value monospace">{{ fees | qtum }} QTUM</div>
-        </div>
+    </Panel>
 
-        <Transaction
-          :transaction="{
-            id, blockHeight, timestamp,
-            inputs, outputs, refundValue, fees,
-            contractSpends,
-            qrc20TokenTransfers, qrc721TokenTransfers
-          }"
-          detailed
-          @transaction-change="refresh" />
-
-        <div class="columns">
-          <div class="column">
-            <div v-for="receipt in receipts" class="receipt-item">
-              <div class="columns">
-                <div class="column info-title">{{ $t('transaction.receipt.sender') }}</div>
-                <div class="column info-value">
-                  <AddressLink :address="receipt.sender" />
-                </div>
-              </div>
-              <div class="columns" v-if="receipt.contractAddressHex !== '0'.repeat(40)">
-                <div class="column info-title">{{ $t('transaction.receipt.contract_address') }}</div>
-                <div class="column info-value">
-                  <AddressLink :address="receipt.contractAddressHex" />
-                </div>
-              </div>
-              <div class="columns" v-if="receipt.gasUsed !== 0">
-                <div class="column info-title">{{ $t('transaction.receipt.gas_used') }}</div>
-                <div class="column info-value monospace">{{ receipt.gasUsed.toLocaleString() }}</div>
-              </div>
-              <div class="columns" v-if="receipt.excepted && receipt.excepted !== 'None'">
-                <div class="column info-title">{{ $t('transaction.receipt.excepted') }}</div>
-                <div class="column info-value">{{ receipt.exceptedMessage || receipt.excepted }}</div>
-              </div>
-              <div class="columns" v-if="receipt.logs.length">
-                <div class="column info-title">{{ $t('transaction.receipt.event_logs') }}</div>
-                <div class="column info-value">
-                  <ul v-for="log in receipt.logs" class="event-log">
-                    <li>
-                      <span class="key">{{ $t('transaction.receipt.address') }}</span>
-                      <AddressLink :address="log.addressHex" />
-                    </li>
-                    <li>
-                      <span class="key">{{ $t('transaction.receipt.topics') }}</span>
-                      <ul class="topic-list monospace">
-                        <li v-for="topic in log.topics">{{ topic }}</li>
-                      </ul>
-                    </li>
-                    <li>
-                      <span class="key">{{ $t('transaction.receipt.data') }}</span>
-                      <span class="monospace">{{ log.data }}</span>
-                    </li>
-                    <li v-if="log.abiList && log.abiList.length">
-                      <ul>
-                        <pre v-for="{abi, params} in log.abiList"
-                          class="contract-event-code"
-                          v-html="formatEvent(abi, params)"></pre>
-                      </ul>
-                    </li>
-                  </ul>
-                </div>
-              </div>
+    <div class="deal-detail">
+      <Panel width="100%" title="交易明细">
+        <div class="deal-detail-info">
+          <div class="deal-detail-list">
+            <div class="list-send">
+              <div>输入 ({{inputs.length}}) {{inputsValue|qtum(7)}} QTUM</div>
+              <ul>
+                <li v-for="input in inputs">
+                  <span>{{input.address}}</span>
+                  <span>{{input.value | qtum(3)}}QTUM</span>
+                </li>
+              </ul>
+            </div>
+            <div class="list-icon"></div>
+            <div class="list-receive">
+              <div>输出 ({{outputs.length}}) {{outputsValue|qtum(7)}} BTC</div>
+              <ul>
+                <li v-for="output in outputs">
+                  <span>{{output.address}}</span>
+                  <span>{{output.value | qtum(3)}}QTUM</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="script">
+            <div class="script-input">
+              <div class="script-caption">输入脚本</div>
+              <ul>
+                <li v-for="input in inputs">{{input.scriptSig.asm}}</li>
+              </ul>
+            </div>
+            <div class="script-output">
+              <div class="script-caption">输出脚本</div>
+              <ul>
+                <li v-for="output in outputs">{{output.scriptPubKey.asm}}</li>
+              </ul>
             </div>
           </div>
         </div>
-      </div>
+      </Panel>
     </div>
-  </section>
+  </div>
 </template>
 
 <script>
-  import Block from '@/models/block'
-  import Transaction from '@/models/transaction'
-  import {RequestError} from '@/services/qtuminfo-api'
-
-  export default {
-    head() {
+import Panel from "../../components/panel";
+import Block from "@/models/block";
+import Transaction from "@/models/transaction";
+import RequestError from "@/services/qtuminfo-api";
+export default {
+  components: { Panel },
+  head() {
+    return {
+      title: ""
+    };
+  },
+  data() {
+    return {
+      id: "",
+      hash: "",
+      isCoinbase: false,
+      confirmation: "",
+      fees: "0",
+      inputs: [],
+      inputsValue: "0",
+      outputs: [],
+      outputsValue: "0",
+      refundValue: "0",
+      blockHeight: null,
+      blockHash: null,
+      timestamp: null,
+      size: 0,
+      contractSpends: [],
+      qrc20TokenTransfers: [],
+      qrc721TokenTransfers: []
+    };
+  },
+  async asyncData({ req, params, error }) {
+    try {
+      let transaction = await Transaction.get(params.id, { ip: req && req.ip });
+      console.log(transaction);
       return {
-        title: this.$t('blockchain.transaction') + ' ' + this.id
-      }
-    },
-    data() {
-      return {
-        id: '',
-        hash: '',
-        isCoinbase: false,
-        fees: '0',
-        inputs: [],
-        outputs: [],
-        refundValue: '0',
-        blockHeight: null,
-        blockHash: null,
-        timestamp: null,
-        size: 0,
-        contractSpends: [],
-        qrc20TokenTransfers: [],
-        qrc721TokenTransfers: [],
-      }
-    },
-    async asyncData({req, params, error}) {
-      try {
-        let transaction = await Transaction.get(params.id, {ip: req && req.ip})
-        return {
-          id: transaction.id,
-          hash: transaction.hash,
-          isCoinbase: transaction.isCoinbase,
-          fees: transaction.fees,
-          inputs: transaction.inputs,
-          outputs: transaction.outputs,
-          refundValue: transaction.refundValue,
-          blockHeight: transaction.blockHeight,
-          blockHash: transaction.blockHash,
-          timestamp: transaction.timestamp,
-          size: transaction.size,
-          contractSpends: transaction.contractSpends,
-          qrc20TokenTransfers: transaction.qrc20TokenTransfers,
-          qrc721TokenTransfers: transaction.qrc721TokenTransfers
-        }
-      } catch (err) {
-        if (err instanceof RequestError) {
-          if (err.code === 404) {
-            error({statusCode: 404, message: `Transaction ${param.id} not found`})
-          } else {
-            error({statusCode: err.code, message: err.message})
-          }
+        id: transaction.id,
+        hash: transaction.hash,
+        isCoinbase: transaction.isCoinbase,
+        confirmation: transaction.confirmations,
+        fees: transaction.fees,
+        inputs: transaction.inputs,
+        inputsValue: transaction.inputValue,
+        outputs: transaction.outputs,
+        outputsValue: transaction.outputValue,
+        refundValue: transaction.refundValue,
+        blockHeight: transaction.blockHeight,
+        blockHash: transaction.blockHash,
+        timestamp: transaction.timestamp,
+        size: transaction.size,
+        contractSpends: transaction.contractSpends,
+        qrc20TokenTransfers: transaction.qrc20TokenTransfers,
+        qrc721TokenTransfers: transaction.qrc721TokenTransfers
+      };
+    } catch (err) {
+      if (err instanceof RequestError) {
+        if (err.code === 404) {
+          error({
+            statusCode: 404,
+            message: `Transaction ${param.id} not found`
+          });
         } else {
-          error({statusCode: 500, message: err.message})
+          error({ statusCode: err.code, message: err.message });
         }
-      }
-    },
-    computed: {
-      blockchain() {
-        return this.$store.state.blockchain
-      },
-      confirmations() {
-        return this.blockHeight == null ? 0 : this.blockchain.height - this.blockHeight + 1
-      },
-      receipts() {
-        return this.outputs.map(output => output.receipt).filter(Boolean)
-      }
-    },
-    methods: {
-      refresh(transaction) {
-        this.outputs = transaction.outputs
-        this.blockHeight = transaction.blockHeight
-        this.blockHash = transaction.blockHash
-        this.timestamp = transaction.timestamp
-        this.fees = transaction.fees
-        this.refundValue = transaction.refundValue
-        this.contractSpends = transaction.contractSpends
-        this.qrc20TokenTransfers = transaction.qrc20TokenTransfers
-        this.qrc721TokenTransfers = transaction.qrc721TokenTransfers
-      },
-      splitData(data) {
-        let chunks = data.length / 64
-        let list = []
-        for (let i = 0; i < chunks; ++i) {
-          list.push(data.slice(i * 64, (i + 1) * 64))
-        }
-        return list
-      },
-      formatEvent(abi, params) {
-        if (params.length === 0) {
-          return abi.name + '()'
-        } else {
-          return abi.name + '(\n'
-            + abi.inputs.map((input, index) => {
-              if (input.name) {
-                return '  ' + input.name + ' = ' + params[index]
-              } else {
-                return '  ' + params[index]
-              }
-            }).join(',\n')
-            + '\n)'
-        }
+      } else {
+        error({ statusCode: 500, message: err.message });
       }
     }
   }
+};
 </script>
 
 <style lang="less" scoped>
-  .receipt-item::before {
-    display: block;
-    height: 1px;
-    background-color: #ccc;
-    content: "";
-  }
-  .event-log {
-    display: inline-block;
-    &:not(:first-child) {
-      margin-top: 0.5em;
-    }
-    padding: 0.5em 1em;
-    border: 1px solid #ccc;
-    .key {
-      display: inline-block;
-      margin-right: 0.5em;
-      font-weight: bold;
-    }
-  }
-  .topic-list, .data-list {
-    list-style-type: disc;
-    list-style-position: inside;
-  }
-  .contract-event-code {
-    padding: 0.5em;
-    white-space: pre-wrap;
-  }
+@import "./_id.less";
 </style>

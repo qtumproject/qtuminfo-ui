@@ -1,138 +1,123 @@
 <template>
-  <section class="container">
-    <div class="card section-card">
-      <div class="card-header">
-        <div class="card-header-icon">
-          <Icon icon="cubes" fixedWidth />
+  <div class="container">
+    <Panel width="100%" height="255px" title="区块详情" noMargin="true">
+      <div class="block-info">
+        <div class="block-info-left list">
+          <ul>
+            <li>
+              <div class="item-title">区块高度</div>
+              <div class="item-info">3423333</div>
+            </li>
+            <li class="border">
+              <div class="item-title">区块哈希</div>
+              <div class="item-info">3423333</div>
+            </li>
+            <li class="border">
+              <div class="item-title">区块大小</div>
+              <div class="item-info">3423333</div>
+            </li>
+            <li class="border">
+              <div class="item-title">确认数</div>
+              <div class="item-info">3423333</div>
+            </li>
+            <li>
+              <div class="item-title">区块大小</div>
+              <div class="item-info">3423333</div>
+            </li>
+          </ul>
         </div>
-        <h3 class="card-header-title">{{ $t('block.summary') }}</h3>
-      </div>
-      <div class="card-body info-table">
-        <div class="columns">
-          <div class="column info-title">{{ $t('block.block_height') }}</div>
-          <div class="column info-value">{{ height }}</div>
-        </div>
-        <div class="columns">
-          <div class="column info-title">{{ $t('block.block_hash') }}</div>
-          <div class="column info-value">
-            <BlockLink :block="hash" plain />
-          </div>
-        </div>
-        <div class="columns">
-          <div class="column info-title">{{ $t('block.block_size') }}</div>
-          <div class="column info-value">{{ size.toLocaleString() }} {{ $t('block.bytes') }}</div>
-        </div>
-        <div class="columns">
-          <div class="column info-title">{{ $t('block.block_weight') }}</div>
-          <div class="column info-value">{{ weight.toLocaleString() }} {{ $t('block.bytes') }}</div>
-        </div>
-        <div class="columns">
-          <div class="column info-title">{{ $t('block.timestamp') }}</div>
-          <div class="column info-value">
-            <FromNow :timestamp="timestamp" /> ({{ timestamp | timestamp }})
-          </div>
-        </div>
-        <div class="columns">
-          <div class="column info-title">{{ $t('block.block_reward') }}</div>
-          <div class="column info-value monospace">{{ reward | qtum }} QTUM</div>
-        </div>
-        <div class="columns">
-          <div class="column info-title">{{ $t('block.difficulty') }}</div>
-          <div class="column info-value">{{ difficulty }}</div>
-        </div>
-        <div class="columns">
-          <div class="column info-title">{{ $t('block.merkle_root') }}</div>
-          <div class="column info-value monospace">{{ merkleRoot }}</div>
-        </div>
-        <div class="columns" v-if="miner">
-          <div class="column info-title">{{ $t('block.mined_by') }}</div>
-          <div class="column info-value">
-            <AddressLink :address="miner" />
-          </div>
-        </div>
-        <div class="columns">
-          <div class="column info-title">{{ $t('block.transactions') }}</div>
-          <div class="column info-value">{{ tx.length }}</div>
-        </div>
-        <div class="columns" v-if="prevHash && prevHash != '0'.repeat(64)">
-          <div class="column info-title">{{ $t('block.previous_block') }}</div>
-          <div class="column info-value">
-            <BlockLink :block="height - 1" :clipboard="prevHash">
-              {{ prevHash }}
-            </BlockLink>
-          </div>
-        </div>
-        <div class="columns" v-if="nextHash">
-          <div class="column info-title">{{ $t('block.next_block') }}</div>
-          <div class="column info-value">
-            <BlockLink :block="height + 1" :clipboard="nextHash">
-              {{ nextHash }}
-            </BlockLink>
-          </div>
+        <div class="block-info-right list">
+          <ul>
+            <li>
+              <div class="item-title">区块高度</div>
+              <div class="item-info">3423333</div>
+            </li>
+            <li>
+              <div class="item-title">区块哈希</div>
+              <div class="item-info">3423333</div>
+            </li>
+            <li>
+              <div class="item-title">区块大小</div>
+              <div class="item-info">3423333</div>
+            </li>
+            <li>
+              <div class="item-title">确认数</div>
+              <div class="item-info">3423333</div>
+            </li>
+            <li>
+              <div class="item-title">区块大小</div>
+              <div class="item-info">3423333</div>
+            </li>
+          </ul>
         </div>
       </div>
-    </div>
+    </Panel>
 
-    <div class="card section-card transaction-list" ref="transaction-list">
-      <div class="card-header">
-        <div class="card-header-icon">
-          <Icon icon="list-alt" fixedWidth />
-        </div>
-        <div class="card-header-title">{{ $tc('blockchain.transaction', 2) }}</div>
-      </div>
-      <div class="card-body">
-        <Pagination v-if="pages > 1" :pages="pages" :currentPage="currentPage" :getLink="getLink" />
-        <Transaction v-for="transaction in transactions" :key="transaction.id" :transaction="transaction" />
-        <Pagination v-if="pages > 1" :pages="pages" :currentPage="currentPage" :getLink="getLink" />
-      </div>
+    <div class="deal-detail">
+      <Panel width="100%" height="952.5px" title="交易明细">
+        <table>
+          <thead>
+            <tr>
+              <td>交易id</td>
+              <td>时间</td>
+              <td>手续费</td>
+              <td>交易类型</td>
+              <td>确认数</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="transaction in transactions">
+              <td>{{transaction.id | format(15,6)}}</td>
+              <td><FromNow :timestamp="transaction.timestamp" /></td>
+              <td>{{transaction.fees | qtum(3)}}QTUM</td>
+              <td>QTUM类型</td>
+              <td>{{transaction.confirmations}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </Panel>
     </div>
-  </section>
+  </div>
 </template>
 
 <script>
-  import Block from '@/models/block'
-  import Transaction from '@/models/transaction'
-  import RequestError from '@/services/qtuminfo-api'
-  import {scrollIntoView} from '@/utils/dom'
-
-  export default {
-    head() {
-      return {
-        title: this.$t('blockchain.block') + ' #' + this.height
-      }
-    },
-    data() {
-      return {
-        height: 0,
-        hash: 0,
-        time: 0,
-        size: 0,
-        reward: 0,
-        difficulty: 0,
-        merkleRoot: '',
-        miner: null,
-        prevHash: null,
-        nextHash: null,
-        tx: [],
-        transactions: [],
-        currentPage: Number(this.$route.query.page || 1)
-      }
-    },
-    async asyncData({req, params, query, redirect, error}) {
-      let id = params.id
+import Panel from "../../components/panel";
+import Block from "@/models/block";
+import Transaction from "@/models/transaction";
+import RequestError from "@/services/qtuminfo-api";
+export default {
+  components: { Panel },
+  head() {
+    return {
+      title: ''
+    };
+  },
+  data() {
+    return {
+      height: 0,
+      hash: 0,
+      time: 0,
+      size: 0,
+      reward: 0,
+      difficulty: 0,
+      merkleRoot: "",
+      miner: null,
+      prevHash: null,
+      nextHash: null,
+      tx: [],
+      transactions: [],
+      currentPage: Number(this.$route.query.page || 1)
+    };
+  },
+    async asyncData({ req, params, query, redirect, error }) {
+      let id = params.id;
       try {
-        if (query.page && !/^[1-9]\d*$/.test(query.page)) {
-          redirect(`/block/${params.id}`)
-        }
-        let block = await Block.get(id, {ip: req && req.ip})
-        let page = Number(query.page || 1)
-        if (page > 1 && block.transactions.length <= (page - 1) * 20) {
-          redirect(`/block/${params.id}`, {page: Math.ceil(block.transactions.length / 20)})
-        }
+        let block = await Block.get(id, { ip: req && req.ip });
+
         let transactions = await Transaction.getBrief(
-          block.transactions.slice((page - 1) * 20, page * 20),
-          {ip: req && req.ip}
-        )
+          block.transactions.slice(0, 20),
+          { ip: req && req.ip }
+        );
         return {
           height: block.height,
           hash: block.hash,
@@ -147,49 +132,22 @@
           nextHash: block.nextHash || null,
           tx: block.transactions,
           transactions
-        }
+        };
       } catch (err) {
         if (err instanceof RequestError) {
           if (err.code === 404) {
-            error({statusCode: 404, message: `Block ${id} not found`})
+            error({ statusCode: 404, message: `Block ${id} not found` });
           } else {
-            error({statusCode: err.code, message: err.message})
+            error({ statusCode: err.code, message: err.message });
           }
         } else {
-          error({statusCode: 500, message: err.message})
+          error({ statusCode: 500, message: err.message });
         }
       }
-    },
-    computed: {
-      pages() {
-        return Math.ceil(this.tx.length / 20)
-      }
-    },
-    methods: {
-      getLink(page) {
-        return {name: 'block-id', params: {id: this.height}, query: {page}}
-      }
-    },
-    async beforeRouteUpdate(to, from, next) {
-      let page = Number(to.query.page || 1)
-      if (page > this.pages && this.pages > 1) {
-        this.$router.push({
-          name: 'block-id',
-          params: {id: this.height},
-          query: {page: Math.ceil(this.tx.length / 20)}
-        })
-        return
-      }
-      this.transactions = await Transaction.getBrief(this.tx.slice((page - 1) * 20, page * 20))
-      this.currentPage = page
-      next()
-      scrollIntoView(this.$refs['transaction-list'])
     }
-  }
+};
 </script>
 
 <style lang="less" scoped>
-  .pagination {
-    padding: 1em;
-  }
+@import "./_id.less";
 </style>

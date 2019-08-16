@@ -1,6 +1,6 @@
 <template>
   <nav class="navbar">
-    <div class="navbar-brand is-size-4">
+    <!-- <div class="navbar-brand is-size-4">
       <nuxt-link to="/" class="navbar-item navbar-logo">
         <span class="qtum-icon qtum-icon--qtum" /> qtum.info
       </nuxt-link>
@@ -35,6 +35,7 @@
           </div>
         </AttributeInjector>
       </div>
+
       <form class="navbar-end" @submit.prevent="search">
         <div class="navbar-item input-item">
           <input type="text" class="input" v-model="searchString" :placeholder="$t('nav.search')">
@@ -43,81 +44,84 @@
           </button>
         </div>
       </form>
-    </div>
+      
+    </div>-->
   </nav>
 </template>
 
 <script>
-  import {get as qtuminfoGet} from '@/services/qtuminfo-api'
+import { get as qtuminfoGet } from "@/services/qtuminfo-api";
 
-  export default {
-    data() {
-      return {
-        showMenu: false,
-        searchString: '',
-        searching: false
+export default {
+  data() {
+    return {
+      showMenu: false,
+      searchString: "",
+      searching: false
+    };
+  },
+  methods: {
+    async search() {
+      let searchString = this.searchString.trim();
+      if (!searchString || this.searching) {
+        return;
       }
-    },
-    methods: {
-      async search() {
-        let searchString = this.searchString.trim()
-        if (!searchString || this.searching) {
-          return
-        }
-        this.searching = true
-        try {
-          let {type, id, addressHex} = await qtuminfoGet(`/search`, {params: {query: searchString}})
-          switch (type) {
-          case 'address':
-            this.searchString = ''
-            this.$router.push(`/address/${searchString}`)
-            break
-          case 'block':
-            this.searchString = ''
-            this.$router.push(`/block/${searchString}`)
-            break
-          case 'contract':
-            this.searchString = ''
+      this.searching = true;
+      try {
+        let { type, id, addressHex } = await qtuminfoGet(`/search`, {
+          params: { query: searchString }
+        });
+        switch (type) {
+          case "address":
+            this.searchString = "";
+            this.$router.push(`/address/${searchString}`);
+            break;
+          case "block":
+            this.searchString = "";
+            this.$router.push(`/block/${searchString}`);
+            break;
+          case "contract":
+            this.searchString = "";
             if (addressHex) {
-              this.$router.push(`/contract/${addressHex}`)
+              this.$router.push(`/contract/${addressHex}`);
             } else {
-              this.$router.push(`/contract/${searchString}`)
+              this.$router.push(`/contract/${searchString}`);
             }
-            break
-          case 'transaction':
-            this.searchString = ''
-            this.$router.push(`/tx/${searchString}`)
-            break
-          }
-        } catch (err) {}
-        this.showMenu = false
-        this.searching = false
-      }
+            break;
+          case "transaction":
+            this.searchString = "";
+            this.$router.push(`/tx/${searchString}`);
+            break;
+        }
+      } catch (err) {}
+      this.showMenu = false;
+      this.searching = false;
     }
   }
+};
 </script>
 
 <style lang="less" scoped>
-  .navbar-logo {
-    display: inline-block;
-    .qtum-icon {
-      vertical-align: middle;
-    }
+.navbar-logo {
+  display: inline-block;
+  .qtum-icon {
+    vertical-align: middle;
   }
-  .navbar-end {
+}
+.navbar-end {
+  flex: auto;
+  align-items: center;
+  .navbar-item {
     flex: auto;
-    align-items: center;
-    .navbar-item {
-      flex: auto;
-      position: relative;
-      input {
-        padding-right: 3em;
-      }
-      button {
-        position: absolute;
-        top: 0.5em;
-        right: 0;
-      }
+    position: relative;
+    input {
+      padding-right: 3em;
+    }
+    button {
+      position: absolute;
+      top: 0.5em;
+      right: 0;
     }
   }
+}
 </style>

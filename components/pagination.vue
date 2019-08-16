@@ -14,6 +14,7 @@
           </nuxt-link>
         </li>
       </template>
+
       <template v-else>
         <li v-if="currentPage > 2">
           <nuxt-link :to="getLink(1)" class="pagination-link">1</nuxt-link>
@@ -22,21 +23,25 @@
           <span class="pagination-ellipsis">&hellip;</span>
         </li>
       </template>
+
       <li v-if="currentPage > 1">
         <nuxt-link :to="getLink(currentPage - 1)" class="pagination-link">
           {{ currentPage - 1 }}
         </nuxt-link>
       </li>
+
       <li>
         <a href="#" class="pagination-link is-current" @click.prevent>
           {{ currentPage }}
         </a>
       </li>
+
       <li v-if="currentPage < pages">
         <nuxt-link :to="getLink(currentPage + 1)" class="pagination-link">
           {{ currentPage + 1 }}
         </nuxt-link>
       </li>
+
       <template v-if="responsive.isTablet">
         <li v-if="currentPage < pages - 1">
           <nuxt-link :to="getLink(currentPage + 2)" class="pagination-link">
@@ -52,6 +57,7 @@
           </nuxt-link>
         </li>
       </template>
+      
       <template v-else>
         <li v-if="currentPage < pages - 2">
           <span class="pagination-ellipsis">&hellip;</span>
@@ -62,6 +68,7 @@
           </nuxt-link>
         </li>
       </template>
+
       <li>
         <form class="pagination-form" @submit.prevent="submit">
           <label class="label">{{ $t('pagination.go_to') }}</label>

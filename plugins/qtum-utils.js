@@ -37,11 +37,15 @@ Vue.filter('timestamp', (time, type = 'datetime') => moment(time * 1000).format(
   time: 'HH:mm:ss'
 }[type]))
 
+Vue.filter('format', (s, pre, last) => {
+  return s.substring(0, pre) + "..." + s.substring(s.length - last);
+})
+
 Vue.component('FromNow', {
   name: 'from-now',
   props: {
-    timestamp: {type: Number, required: true},
-    tag: {type: String, default: 'span'},
+    timestamp: { type: Number, required: true },
+    tag: { type: String, default: 'span' },
   },
   render(createElement) {
     return createElement(this.tag, moment(this.timestamp * 1000).fromNow())

@@ -34,7 +34,6 @@
   },
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.8.1",
-    "bulma": "^0.7.4",
     "echarts": "^4.2.1",
     "less": "^3.9.0",
     "less-loader": "^4.1.0",

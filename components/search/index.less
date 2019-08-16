@@ -1,0 +1,34 @@
+@import '../../styles/variables.less';
+
+
+.size(@data) {
+    @result: (@data * 0.75);
+}
+
+@placeholder-style:{
+    color: @placeholder;
+    font-size: 16px;
+    line-height: 1;
+    min-height: 1;
+}
+
+.input {
+    width: 555px;
+    height: 37px;
+    box-sizing: border-box;
+    padding: 10px 50px 10px 20px;
+    background: @white;
+    color: @input;
+    border: 2px solid transparent;
+    border-radius: 38px;
+}
+
+input[type=text]:focus {
+    outline: none;
+    border: 1px solid @white;
+}
+
+input::placeholder {
+    color: @placeholder;
+    font-size: 14px;
+}

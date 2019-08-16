@@ -1,0 +1,15 @@
+.size(@data) {
+    @result: (@data * 0.75);
+}
+
+.bg(@x: 0, @y, @color: transparent) {
+    background: url('/assets/sprites.png') @x @y no-repeat @color; 
+}
+
+.container {
+    width: .size(1600)[];
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 0 auto;
+}

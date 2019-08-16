@@ -6,18 +6,23 @@
         <output class="monospace">{{ netStakeWeight | qtum(8) }}</output>
       </div>
     </div>
+
     <div class="field">
       <label>{{ $t('misc.stake_calculator.enter_address') }}</label>
       <div class="control">
         <input type="text" class="input monospace" v-model="address">
       </div>
     </div>
+
     <div class="field">
       <label>{{ $t('misc.stake_calculator.weight') }}</label>
       <div class="control">
         <input type="number" class="input monospace" v-model="weightInput" placeholder="0">
       </div>
     </div>
+
+
+
     <template v-if="weight">
       <div class="field">
         <label>{{ $t('misc.stake_calculator.expected_time') }}</label>
@@ -38,6 +43,7 @@
         </div>
       </div>
     </template>
+
     <div class="field">
       <label>{{ $t('misc.stake_calculator.yearly_roi') }}</label>
       <div class="control">
@@ -46,6 +52,7 @@
         </output>
       </div>
     </div>
+
   </form>
 </template>
 

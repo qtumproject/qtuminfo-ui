@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import io from 'socket.io-client'
 
-export default function({app}) {
+export default function ({ app }) {
   let ws = io(
-    (location.protocol === 'https:' ? 'wss:' : 'ws:') + process.env.qtuminfoWSBase,
-    {transports: ['websocket']}
+    'wss:' + process.env.qtuminfoWSBase,
+    { transports: ['websocket'] }
   )
   ws.on('tip', tip => app.store.commit('blockchain/height', tip.height))
   ws.on('reorg', tip => app.store.commit('blockchain/height', tip.height))
@@ -23,7 +23,7 @@ export default function({app}) {
           eventMapping[event] = new Map([[callback, 1]])
         }
       } else {
-        subscriptions[room] = {[event]: new Map([[callback, 1]])}
+        subscriptions[room] = { [event]: new Map([[callback, 1]]) }
         ws.emit('subscribe', room)
       }
       let listener = listeners[event]
