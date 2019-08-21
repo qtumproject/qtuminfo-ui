@@ -1,11 +1,37 @@
 <template>
-    
+  <section class="container" ref="section">
+    <Pagination v-if="pages > 1" :pages="pages" :currentPage="currentPage" :getLink="getLink" />
+    <table class="table is-fullwidth is-bordered is-striped">
+      <thead>
+        <tr>
+          <th>{{ $t('misc.ranking') }}</th>
+          <th>{{ $t('contract.token.name') }}</th>
+          <th>{{ $t('contract.token.total_supply') }}</th>
+          <th>{{ $t('contract.token.token_holders') }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="({addressHex, name, symbol, decimals, totalSupply, holders}, index) of tokens">
+          <td>{{ 20 * (currentPage - 1) + index + 1 }}</td>
+          <td>
+            <AddressLink :address="addressHex">{{ name }}</AddressLink>
+          </td>
+          <td class="monospace break-word">
+            {{ totalSupply | qrc20(decimals, true) }}
+            {{ symbol || name || $t('contract.token.tokens') }}
+          </td>
+          <td>{{ holders }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <Pagination v-if="pages > 1" :pages="pages" :currentPage="currentPage" :getLink="getLink" />
+  </section>
 </template>
+
 <script>
   import Contract from '@/models/contract'
   import {RequestError} from '@/services/qtuminfo-api'
   import {scrollIntoView} from '@/utils/dom'
-  import {Panel} from '@/components/panel'
 
   export default {
     head() {
@@ -13,7 +39,6 @@
         title: this.$t('contract.token.tokens')
       }
     },
-    
     data() {
       return {
         totalCount: 0,
@@ -69,6 +94,9 @@
   }
 </script>
 
-<style lang="less" scoped>
-
+<style scoped>
+  .table {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <Panel width="100%" height="255px" title="区块详情" noMargin="true">
+    <Panel width="100%" title="区块详情" noMargin="true">
       <div class="block-info">
         <div class="block-info-left list">
           <ul>

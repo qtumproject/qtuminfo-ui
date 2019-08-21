@@ -1,12 +1,14 @@
 @import '../../styles/main.less';
-.margin{
+
+.margin {
     margin-bottom: .size(165px)[];
 }
+
 .panel-main {
     height: .size(473px)[];
     background: @white;
     border-radius: 4px;
-    
+
     .panel-title {
         display: flex;
         align-items: center;
@@ -51,11 +53,50 @@
             }
         }
 
+        .select {
+            ul {
+                display: flex;
+                font-size: .size(22px)[];
+                margin: 0 0 .size(20px)[] 0;
+
+                li {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: .size(132px)[];
+                    height: .size(34px)[];
+                    border: 1px solid @select-blue;
+                    cursor: pointer;
+                    a {
+                        color: @font-gray;
+                    }
+                }
+
+                li:first-child {
+                    border-top-left-radius: 5px;
+                    border-bottom-left-radius: 5px;
+                }
+
+                li:last-child {
+                    border-top-right-radius: 5px;
+                    border-bottom-right-radius: 5px;
+                }
+
+                .active {
+                    background: @select-blue;
+                    a {
+                        color: @white;
+                    }
+                }
+            }
+        }
+
         .link {
             color: @title-blue;
             font-size: .size(20px)[];
             display: flex;
             align-items: center;
+
             .arrow {
                 height: .size(30px)[];
                 width: .size(15px)[];

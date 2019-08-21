@@ -1,7 +1,7 @@
 <template>
   <div class="nav-container">
     <nuxt-link to="/" class="anchor">
-      <span class="qtum-icon qtum-icon--qtum "></span>
+      <span class="qtum-icon qtum-icon--qtum"></span>
       <span class="title">Qtum.info</span>
     </nuxt-link>
     <nav class="nav-list">
@@ -13,8 +13,12 @@
           </nuxt-link>
         </div>
         <ul>
-          <li>区块</li>
-          <li>交易</li>
+          <li>
+            <nuxt-link to="/block">区块</nuxt-link>
+          </li>
+          <li>
+            <nuxt-link to="/tx">交易</nuxt-link>
+          </li>
           <li>富豪榜</li>
         </ul>
       </div>
@@ -27,9 +31,14 @@
           </nuxt-link>
         </div>
         <ul>
-          <li>区块</li>
-          <li>交易</li>
-          <li>富豪榜</li>
+          <li>
+            <nuxt-link to="/12">
+              代币概览
+            </nuxt-link>
+          </li>
+          <li><nuxt-link to="/12" >
+              代币交易
+            </nuxt-link></li>
         </ul>
       </div>
 
@@ -63,7 +72,7 @@
         </ul>
       </div>
 
-      <Search class="search"/>
+      <Search class="search" />
     </nav>
   </div>
 </template>

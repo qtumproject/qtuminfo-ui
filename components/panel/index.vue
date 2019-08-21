@@ -1,10 +1,20 @@
 <template>
   <div :class="noMargin? 'panel-main':'panel-main margin'" :style="{width:width,height:height}">
     <div class="panel-title">
-      <div class="logo">
+      <div class="logo" v-if="!address.toString()">
         <i :class="icon"></i>
         <!-- <img src="~/assets/sprites.png" alt=""> -->
         <span>{{title}}</span>
+      </div>
+      <div v-if="address" class="select">
+        <ul>
+          <li
+            :class="{'active': $route.matched.some(route => route.name === item.link)}"
+            v-for="item in address"
+          >
+            <nuxt-link :to="{name: item.link, params: {id:item.id}}">{{item.name}}</nuxt-link>
+          </li>
+        </ul>
       </div>
       <template v-if="link">
         <nuxt-link :to="link" class="link">
@@ -39,9 +49,13 @@ export default {
       type: String,
       default: ""
     },
-    noMargin:{
-      type:String,
-      default:""
+    noMargin: {
+      type: String,
+      default: ""
+    },
+    address: {
+      type: Array,
+      default: () => []
     }
   }
 };

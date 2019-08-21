@@ -158,6 +158,7 @@
       this.renderDailyTransactionsChart()
       this.renderBlockIntervalChart()
       this.renderAddressGrowth()
+      console.log(this.dailyTransactions)
     }
   }
 </script>

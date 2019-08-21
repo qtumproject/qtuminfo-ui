@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <Panel width="100%" height="1110px" title="区块列表">
+    <Panel width="100%" title="区块列表">
       <table>
         <thead>
           <tr>
@@ -25,7 +25,7 @@
             </td>
             <td>{{ transactionCount}}</td>
             <td>{{ size.toLocaleString() }}</td>
-            <td>{{miner}}</td>
+            <td><nuxt-link :to="{name: 'address-id', params: {id: miner}}">{{miner}}</nuxt-link> </td>
             <td>{{ reward | qtum(1) }}</td>
           </tr>
         </tbody>
@@ -67,7 +67,7 @@ export default {
     try {
       let list = await Block.getRecentBlocks({
         params: {
-          count: 13
+          count: 20
         },
         ip: req && req.ip
       });

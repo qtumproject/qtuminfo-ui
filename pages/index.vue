@@ -21,7 +21,9 @@
         </div>
         <div class="info">
           <span class="title">QTUM过去14天交易数</span>
-          <div class="frame"></div>
+          <div class="frame">
+            <div class="chart" ref="daily-transactions"></div>
+          </div>
         </div>
       </div>
     </Panel>
@@ -57,7 +59,7 @@
           </tbody>
         </table>
       </Panel>
-      <Panel title="交易" width="590px" height="720px" icon="icon-deal" link="/deal">
+      <Panel title="交易" width="590px" height="720px" icon="icon-deal" link="/tx">
         <table class="deal-table">
           <thead>
             <tr>
@@ -144,7 +146,8 @@ export default {
       recentBlocks: [],
       recentTransactions: [],
       netStakeWeight: 0,
-      feeRate: 0
+      feeRate: 0,
+      dailyTransactions: []
     };
   },
   async asyncData({ req, error }) {
@@ -152,13 +155,21 @@ export default {
       let [
         recentBlocks,
         recentTransactions,
-        { netStakeWeight, feeRate }
+        { netStakeWeight, feeRate },
+        dailyTransactions
       ] = await Promise.all([
         Block.getRecentBlocks({ ip: req && req.ip }),
         Transaction.getRecentTransactions({ ip: req && req.ip }),
-        Misc.info({ ip: req && req.ip })
+        Misc.info({ ip: req && req.ip }),
+        Misc.dailyTransactions({ ip: req && req.ip })
       ]);
-      return { recentBlocks, recentTransactions, netStakeWeight, feeRate };
+      return {
+        recentBlocks,
+        recentTransactions,
+        netStakeWeight,
+        feeRate,
+        dailyTransactions
+      };
     } catch (err) {
       if (err instanceof RequestError) {
         error({ statusCode: err.code, message: err.message });
@@ -175,7 +186,6 @@ export default {
   methods: {
     onMempoolTransaction(transaction) {
       this.recentTransactions.unshift(transaction);
-
       if (this.recentTransactions.length > 13) {
         this.recentTransactions.pop();
       }
@@ -185,6 +195,100 @@ export default {
     },
     onFeeRate(feeRate) {
       this.feeRate = feeRate;
+    },
+    async renderDailyTransactionsChart() {
+      const [echarts] = await Promise.all([
+        import("echarts/lib/echarts"),
+        import("echarts/lib/chart/bar"),
+        import("echarts/lib/chart/line"),
+        import("echarts/lib/component/title"),
+        import("echarts/lib/component/tooltip"),
+        import("echarts/lib/component/dataZoom")
+      ]);
+      let chart = echarts.init(this.$refs["daily-transactions"]);
+      chart.setOption({
+        tooltip: {
+          trigger: "axis",
+          axisPointer: {
+            type: "cross",
+            label: {
+              backgroundColor: "#6a7985"
+            }
+          }
+        },
+        grid: {
+          top: "6%",
+          left: 0,
+          right: "4%",
+          bottom: "3%",
+          containLabel: true
+        },
+        xAxis: [
+          {
+            type: "category",
+            boundaryGap: false,
+            data: [
+              "01",
+              "02",
+              "03",
+              "04",
+              "05",
+              "06",
+              "07",
+              "08",
+              "09",
+              "10",
+              "11",
+              "12",
+              "13",
+              "14"
+            ]
+          }
+        ],
+        yAxis: [
+          {
+            splitLine: { show: true },
+            type: "value"
+          }
+        ],
+        series: [
+          {
+            name: "Price",
+            type: "line",
+            stack: "总量",
+            color: "#5197D5",
+            label: {
+              normal: {
+                show: false,
+                position: "top"
+              }
+            },
+            areaStyle: {
+              color: {
+                type: "linear",
+                x: 0,
+                y: 0,
+                x2: 0,
+                y2: 1,
+                colorStops: [
+                  {
+                    offset: 0,
+                    color: "#5197D5"
+                  },
+                  {
+                    offset: 1,
+                    color: "#ffffff"
+                  }
+                ],
+                global: false
+              }
+            },
+            data: this.dailyTransactions
+              .slice(-15, -1)
+              .map(item => item.transactionCount)
+          }
+        ]
+      });
     }
   },
 
@@ -211,6 +315,7 @@ export default {
   },
 
   mounted() {
+    this.renderDailyTransactionsChart();
     this._onMempoolTransaction = this.onMempoolTransaction.bind(this);
     this._onStakeWeight = this.onStakeWeight.bind(this);
     this._onFeeRate = this.onFeeRate.bind(this);
@@ -304,6 +409,10 @@ export default {
             margin: 0 auto;
           }
         }
+      }
+      .chart {
+        width: .size(730px) [];
+        height: .size(300px) [];
       }
     }
   }

@@ -4,7 +4,7 @@
       <div class="block-info">
         <div class="block-info-left list">
           <ul>
-            <li>
+            <li v-if="blockHeight">
               <div class="item-title">所属区块</div>
               <div class="item-info">{{blockHeight}}</div>
             </li>

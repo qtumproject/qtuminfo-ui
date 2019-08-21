@@ -6,19 +6,19 @@
           <ul>
             <li>
               <div class="item-title">qtum余额</div>
-              <div class="item-info">{{addressHeight}}</div>
+              <div class="item-info">{{ balance | qtum }} QTUM</div>
             </li>
             <li>
               <div class="item-title">挖矿锁定金额</div>
-              <div class="item-info">{{confirmation}}</div>
+              <div class="item-info">{{ staking | qtum }} QTUM</div>
             </li>
             <li>
               <div class="item-title">Token 余额</div>
-              <div class="item-info">{{timestamp | timestamp}}</div>
+              <div class="item-info"></div>
             </li>
             <li>
               <div class="item-title">可选</div>
-              <div class="item-info">{{size}}</div>
+              <div class="item-info"></div>
             </li>
           </ul>
         </div>
@@ -26,26 +26,26 @@
           <ul>
             <li>
               <div class="item-title">排名</div>
-              <div class="item-info">{{inputsValue | qtum(7)}} QTUM</div>
+              <div class="item-info">{{ ranking }}</div>
             </li>
             <li>
               <div class="item-title">交易数</div>
-              <div class="item-info">{{outputsValue | qtum(7)}} QTUM</div>
+              <div class="item-info">{{ transactionCount }}</div>
             </li>
             <li>
               <div class="item-title">收入合计</div>
-              <div class="item-info">{{fees | qtum(7)}} QTUM</div>
+              <div class="item-info">{{ totalReceived | qtum }} QTUM</div>
             </li>
             <li>
               <div class="item-title">支出合计</div>
-              <div class="item-info">{{outputsValue | qtum(7)}} QTUM</div>
+              <div class="item-info">{{ totalSent | qtum }} QTUM</div>
             </li>
           </ul>
         </div>
       </div>
     </Panel>
-    <Panel width="100%" height="952.5px" title="交易明细\余额变动" class="address-detail">
-        <nuxt-child></nuxt-child>
+    <Panel width="100%" :address="address" class="address-detail">
+      <nuxt-child></nuxt-child>
     </Panel>
   </div>
 </template>
@@ -71,7 +71,19 @@ export default {
       qrc20Balances: [],
       ranking: 0,
       blocksMined: 0,
-      transactionCount: 0
+      transactionCount: 0,
+      address: [
+        {
+          link: "address-id",
+          name: "交易明细",
+          id: this.$route.params.id
+        },
+        {
+          link: "address-id-balance",
+          name: "余额变动",
+          id: this.$route.params.id
+        }
+      ]
     };
   },
   async asyncData({ req, params, query, redirect, error }) {
@@ -84,6 +96,34 @@ export default {
       } else {
         error({ statusCode: 500, message: err.message });
       }
+    }
+  },
+  computed: {
+    id() {
+      return this.$route.params.id;
+    },
+    addresses() {
+      let result = [];
+      for (let address of this.id.split(",")) {
+        if (!result.includes(address)) {
+          result.push(address);
+        }
+      }
+      return result;
+    },
+    existingTokenBalances() {
+      return this.qrc20Balances.filter(token => token.balance !== "0");
+    },
+    myAddresses() {
+      return this.$store.state.address.myAddresses;
+    }
+  },
+  methods: {
+    addMyAddress(address) {
+      this.$store.commit("address/my-addresses/add", address);
+    },
+    removeMyAddress(address) {
+      this.$store.commit("address/my-addresses/remove", address);
     }
   }
 };

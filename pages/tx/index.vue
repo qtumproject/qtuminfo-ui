@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <Panel width="100%" height="1110px" title="交易列表">
+    <Panel width="100%" title="交易列表">
       <table>
         <thead>
           <tr>
@@ -14,8 +14,12 @@
         </thead>
         <tbody>
           <tr v-for="{id, timestamp,outputValue, fees, confirmations} of list">
-            <td>{{id}}</td>
-            <td><FromNow :timestamp="timestamp" /></td>
+            <td>
+              <nuxt-link :to="{name: 'tx-id', params: {id: id}}">{{id | format(15,6)}}</nuxt-link>
+            </td>
+            <td>
+              <FromNow :timestamp="timestamp" />
+            </td>
             <td>{{outputValue | qtum(4)}}</td>
             <td>{{fees | qtum(4)}}</td>
             <td>QTUM类型</td>
@@ -47,13 +51,11 @@ export default {
     try {
       let list = await Transaction.getRecentTransactions({
         params: {
-          count: 13,
+          count: 20,
           confirmations: 1
         },
         ip: req && req.ip
       });
-      list.map(item => item.id = (item.id.substring(0, 15) + "..." + item.id.substring(item.id.length-6)).toLocaleUpperCase());
-      console.log(list)
       return { list };
     } catch (err) {
       if (err instanceof RequestError) {
