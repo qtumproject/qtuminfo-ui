@@ -55,9 +55,10 @@ transaction:
   fee: 手续费
   reward: 奖励
   gas_refund: Gas 退款
-  utxo:
+  script:
     type: 类型
     script: 脚本
+    witness: 见证
     code: 代码
     contract_create: 合约创建
     contract_call: 合约调用

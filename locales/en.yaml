@@ -55,9 +55,10 @@ transaction:
   fee: Fee
   reward: Reward
   gas_refund: Gas 退款
-  utxo:
+  script:
     type: Type
     script: Script
+    witness: Witness
     code: Code
     contract_create: Contract Create
     contract_call: Contract Call

@@ -20,18 +20,53 @@
       </div>
     </div>
     <div class="column is-clearfix collapse">
-      <template v-if="inputs[0].coinbase">{{ $t('transaction.coinbase_input') }}</template>
+      <template v-if="collapsed">
+        <div v-for="input in inputs" class="is-clearfix">
+          <span v-if="input.coinbase" class="is-pulled-left">{{ $t('transaction.coinbase_input') }}</span>
+          <template v-else>
+            <AddressLink v-if="input.address" :address="input.addressHex || input.address" class="is-pulled-left"
+              :plain="input.isInvalidContract" :highlight="highlightAddress" :clipboard="false" />
+            <span v-else class="is-pulled-left">{{ $t('transaction.unparsed_address' )}}</span>
+            <span class="is-pulled-right amount">
+              <TransactionLink :transaction="input.prevTxId" :clipboard="false">
+                <Icon icon="search" />
+              </TransactionLink>
+              {{ input.value | qtum(8) }} QTUM
+            </span>
+          </template>
+        </div>
+      </template>
       <template v-else>
         <div v-for="input in inputs" class="is-clearfix">
-          <AddressLink v-if="input.address" :address="input.addressHex || input.address" class="is-pulled-left"
-            :plain="input.isInvalidContract" :highlight="highlightAddress" :clipboard="false" />
-          <span v-else class="is-pulled-left">{{ $t('transaction.unparsed_address' )}}</span>
-          <span class="is-pulled-right amount">
-            <TransactionLink :transaction="input.prevTxId" :clipboard="false">
-              <Icon icon="search" />
-            </TransactionLink>
-            {{ input.value | qtum(8) }} QTUM
-          </span>
+          <span v-if="input.coinbase" class="is-pulled-left">{{ $t('transaction.coinbase_input') }}</span>
+          <template v-else>
+            <AddressLink v-if="input.address" :address="input.addressHex || input.address" class="is-pulled-left"
+              :plain="input.isInvalidContract" :highlight="highlightAddress" :clipboard="false" />
+            <span v-else class="is-pulled-left">{{ $t('transaction.unparsed_address' )}}</span>
+            <span class="is-pulled-right amount">
+              <TransactionLink :transaction="input.prevTxId" :clipboard="false">
+                <Icon icon="search" />
+              </TransactionLink>
+              {{ input.value | qtum(8) }} QTUM
+            </span>
+          </template>
+          <div class="is-clearfix"></div>
+          <div class="script">
+            <div>
+              <span class="key">{{ $t('transaction.script.type') }}</span>
+              <span class="value">{{ input.scriptSig.type }}</span>
+            </div>
+            <div v-if="input.scriptSig.asm">
+              <span class="key">{{ $t('transaction.script.script') }}</span>
+              <code class="value"><!--
+                -->{{ input.scriptSig.asm | qtum-script }}<!--
+              --></code>
+            </div>
+            <div v-for="witness in input.witness || []">
+              <span class="key">{{ $t('transaction.script.witness') }}</span>
+              <code class="value">{{ witness }}</code>
+            </div>
+          </div>
         </div>
       </template>
     </div>
@@ -55,7 +90,7 @@
             {{ output.value | qtum(8) }} QTUM
           </span>
           <span class="is-pulled-right" v-else-if="contractInfo[index]">
-            {{ $t('transaction.utxo.contract_' + contractInfo[index].type) }}
+            {{ $t('transaction.script.contract_' + contractInfo[index].type) }}
           </span>
         </div>
       </template>
@@ -77,24 +112,24 @@
             {{ output.value | qtum(8) }} QTUM
           </span>
           <span class="is-pulled-right" v-else-if="contractInfo[index]">
-            {{ $t('transaction.utxo.contract_' + contractInfo[index].type) }}
+            {{ $t('transaction.script.contract_' + contractInfo[index].type) }}
           </span>
           <div class="is-clearfix"></div>
-          <div class="output-script">
+          <div class="script">
             <div>
-              <span class="key">{{ $t('transaction.utxo.type') }}</span>
+              <span class="key">{{ $t('transaction.script.type') }}</span>
               <span class="value">{{ output.scriptPubKey.type }}</span>
             </div>
             <div v-if="output.scriptPubKey.asm">
-              <span class="key">{{ $t('transaction.utxo.script') }}</span>
-              <code class="value" :class="{script: contractInfo[index]}"
+              <span class="key">{{ $t('transaction.script.script') }}</span>
+              <code class="value" :class="{'script-code': contractInfo[index]}"
                 @click="$set(showByteCode, index, !showByteCode[index])"><!--
                 -->{{ output.scriptPubKey.asm | qtum-script }}<!--
               --></code>
             </div>
             <template v-if="contractInfo[index]">
               <div v-show="showByteCode[index]">
-                <span class="key">{{ $t('transaction.utxo.code') }}</span>
+                <span class="key">{{ $t('transaction.script.code') }}</span>
                 <code class="value break-word">{{ contractInfo[index].code }}</code>
               </div>
               <template v-if="contractInfo[index].type === 'call' && output.abiList && output.abiList.length">
@@ -447,7 +482,7 @@
     color: white;
   }
 
-  .output-script {
+  .script {
     font-size: 0.8em;
     .key {
       display: inline-block;
@@ -458,7 +493,7 @@
     code {
       word-break: break-all;
     }
-    .script {
+    .script-code {
       cursor: pointer;
     }
     .contract-call-code {
