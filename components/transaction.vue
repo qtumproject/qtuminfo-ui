@@ -114,6 +114,7 @@
           <span class="is-pulled-right" v-else-if="contractInfo[index]">
             {{ $t('transaction.script.contract_' + contractInfo[index].type) }}
           </span>
+          <span class="is-pulled-right" v-else-if="!['nonstandard', 'nulldata'].includes(output.scriptPubKey.type)"></span>
           <div class="is-clearfix"></div>
           <div class="script">
             <div>
