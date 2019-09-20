@@ -24,7 +24,7 @@
         <div v-for="input in inputs" class="is-clearfix">
           <span v-if="input.coinbase" class="is-pulled-left">{{ $t('transaction.coinbase_input') }}</span>
           <template v-else>
-            <AddressLink v-if="input.address" :address="input.addressHex || input.address" class="is-pulled-left"
+            <AddressLink v-if="input.address" :address="input.address" class="is-pulled-left"
               :plain="input.isInvalidContract" :highlight="highlightAddress" :clipboard="false" />
             <span v-else class="is-pulled-left">{{ $t('transaction.unparsed_address' )}}</span>
             <span class="is-pulled-right amount">
@@ -40,7 +40,7 @@
         <div v-for="input in inputs" class="is-clearfix">
           <span v-if="input.coinbase" class="is-pulled-left">{{ $t('transaction.coinbase_input') }}</span>
           <template v-else>
-            <AddressLink v-if="input.address" :address="input.addressHex || input.address" class="is-pulled-left"
+            <AddressLink v-if="input.address" :address="input.address" class="is-pulled-left"
               :plain="input.isInvalidContract" :highlight="highlightAddress" :clipboard="false" />
             <span v-else class="is-pulled-left">{{ $t('transaction.unparsed_address' )}}</span>
             <span class="is-pulled-right amount">
@@ -74,7 +74,7 @@
     <div class="column is-half collapse">
       <template v-if="collapsed">
         <div v-for="(output, index) in outputs" class="is-clearfix">
-          <AddressLink v-if="output.address" :address="output.addressHex || output.address" class="is-pulled-left"
+          <AddressLink v-if="output.address" :address="output.address" class="is-pulled-left"
             :plain="output.isInvalidContract" :highlight="highlightAddress" :clipboard="false" />
           <span v-else-if="output.scriptPubKey.type === 'empty'">
             {{ $t('transaction.empty_output') }}
@@ -96,7 +96,7 @@
       </template>
       <template v-else>
         <div v-for="(output, index) in outputs" class="is-clearfix">
-          <AddressLink v-if="output.address" :address="output.addressHex || output.address" class="is-pulled-left"
+          <AddressLink v-if="output.address" :address="output.address" class="is-pulled-left"
             :plain="output.isInvalidContract" :highlight="highlightAddress" :clipboard="false" />
           <span v-else-if="output.scriptPubKey.type === 'empty'">
             {{ $t('transaction.empty_output') }}
@@ -150,7 +150,7 @@
         <Icon icon="arrow-right" class="arrow" />
         <div class="is-half">
           <div class="is-clearfix">
-            <AddressLink :address="inputs[0].addressHex || inputs[0].address" class="is-pulled-left"
+            <AddressLink :address="inputs[0].address" class="is-pulled-left"
               :highlight="highlightAddress" :clipboard="false" />
             <span class="is-pulled-right amount break-word">
               {{ refundValue | qtum(8) }} QTUM
@@ -163,7 +163,7 @@
       <div class="column is-full flex-full"></div>
       <div class="column is-clearfix collapse">
         <div v-for="input in inputs" class="is-clearfix">
-          <AddressLink :address="input.addressHex || input.address" class="is-pulled-left" :highlight="highlightAddress" :clipboard="false" />
+          <AddressLink :address="input.address" class="is-pulled-left" :highlight="highlightAddress" :clipboard="false" />
           <span class="is-pulled-right amount">
             {{ input.value | qtum(8) }} QTUM
           </span>
@@ -172,14 +172,14 @@
       <Icon icon="arrow-right" class="column arrow collapse" />
       <div class="column is-half collapse">
         <div v-for="output in outputs" class="is-clearfix">
-          <AddressLink :address="output.addressHex || output.address" class="is-pulled-left" :highlight="highlightAddress" :clipboard="false" />
+          <AddressLink :address="output.address" class="is-pulled-left" :highlight="highlightAddress" :clipboard="false" />
           <span class="is-pulled-right amount">
             {{ output.value | qtum(8) }} QTUM
           </span>
         </div>
       </div>
     </template>
-    <template v-for="({addressHex, name, symbol, decimals, from, fromHex, to, toHex, value}, index) in qrc20TokenTransfers">
+    <template v-for="({address, name, symbol, decimals, from, to, value}, index) in qrc20TokenTransfers">
       <div class="column is-full flex-full"></div>
       <AttributeInjector
         class="column collapse token-transfer-list"
@@ -188,16 +188,16 @@
           'last-item': index === qrc20TokenTransfers.length - 1
         }">
         <div class="is-clearfix">
-          <AddressLink v-if="from" :address="fromHex || from" class="is-pulled-left" :highlight="highlightAddress" />
+          <AddressLink v-if="from" :address="from" class="is-pulled-left" :highlight="highlightAddress" />
           <template v-else>{{ $t('contract.token.mint_tokens') }}</template>
         </div>
         <Icon icon="arrow-right" class="arrow" />
         <div class="is-half">
           <div v-if="to" class="is-clearfix">
-            <AddressLink :address="toHex || to" class="is-pulled-left" :highlight="highlightAddress" />
+            <AddressLink :address="to" class="is-pulled-left" :highlight="highlightAddress" />
             <span class="is-pulled-right amount break-word">
               {{ value | qrc20(decimals) }}
-              <AddressLink :address="addressHex" :highlight="highlightAddress">
+              <AddressLink :address="address" :highlight="highlightAddress">
                 {{ symbol || name || $t('contract.token.tokens') }}
               </AddressLink>
             </span>
@@ -206,7 +206,7 @@
         </div>
       </AttributeInjector>
     </template>
-    <template v-for="({addressHex, name, symbol, from, fromHex, to, toHex, tokenId}, index) in qrc721TokenTransfers">
+    <template v-for="({address, name, symbol, from, to, tokenId}, index) in qrc721TokenTransfers">
       <div class="column is-full flex-full"></div>
       <AttributeInjector
         class="column collapse token-transfer-list"
@@ -215,15 +215,15 @@
           'last-item': index === qrc721TokenTransfers.length - 1
         }">
         <div class="is-clearfix">
-          <AddressLink v-if="from" :address="fromHex || from" class="is-pulled-left" :highlight="highlightAddress" />
+          <AddressLink v-if="from" :address="from" class="is-pulled-left" :highlight="highlightAddress" />
           <template v-else>{{ $t('contract.token.mint_tokens') }}</template>
         </div>
         <Icon icon="arrow-right" class="arrow" />
         <div class="is-half">
           <div v-if="to" class="is-clearfix">
-            <AddressLink :address="toHex || to" class="is-pulled-left" :highlight="highlightAddress" />
+            <AddressLink :address="to" class="is-pulled-left" :highlight="highlightAddress" />
             <span class="is-pulled-right amount break-word">
-              <AddressLink :address="addressHex" :highlight="highlightAddress">
+              <AddressLink :address="address" :highlight="highlightAddress">
                 {{ symbol || name || $t('contract.token.tokens') }}
               </AddressLink>
               #0x{{ tokenId.replace(/^0+/, '') || '0' }}

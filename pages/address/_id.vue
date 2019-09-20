@@ -63,7 +63,7 @@
           <div class="column info-value">
             <div v-for="token in existingTokenBalances" class="monospace">
               {{ token.balance | qrc20(token.decimals) }}
-              <AddressLink :address="token.addressHex">
+              <AddressLink :address="token.address">
                 {{ token.symbol || $t('contract.token.tokens') }}
               </AddressLink>
             </div>
@@ -101,7 +101,7 @@
         </li>
       </ul>
     </div>
-    <nuxt-child :tokens="qrc20Balances.map(({address, addressHex, name, symbol}) => ({address, addressHex, name, symbol}))" />
+    <nuxt-child :tokens="qrc20Balances.map(({address, name, symbol}) => ({address, name, symbol}))" />
   </section>
 </template>
 

@@ -69,7 +69,7 @@
               <div class="columns" v-if="receipt.contractAddressHex !== '0'.repeat(40)">
                 <div class="column info-title">{{ $t('transaction.receipt.contract_address') }}</div>
                 <div class="column info-value">
-                  <AddressLink :address="receipt.contractAddressHex" />
+                  <AddressLink :address="receipt.contractAddress" />
                 </div>
               </div>
               <div class="columns" v-if="receipt.gasUsed !== 0">
@@ -86,7 +86,7 @@
                   <ul v-for="log in receipt.logs" class="event-log">
                     <li>
                       <span class="key">{{ $t('transaction.receipt.address') }}</span>
-                      <AddressLink :address="log.addressHex" />
+                      <AddressLink :address="log.address" />
                     </li>
                     <li>
                       <span class="key">{{ $t('transaction.receipt.topics') }}</span>

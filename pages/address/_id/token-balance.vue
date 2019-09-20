@@ -5,7 +5,7 @@
         <input type="radio" value="" v-model="selectedToken"> All
       </label>
       <label v-for="token in tokens" class="radio">
-        <input type="radio" :value="token.addressHex" v-model="selectedToken">
+        <input type="radio" :value="token.address" v-model="selectedToken">
         {{ token.name }} ({{ token.symbol }})
       </label>
     </form>
@@ -38,20 +38,20 @@
                 <TransactionLink :transaction="id" />
               </td>
               <td class="monospace">
-                <div v-for="{addressHex, name, symbol, decimals, balance} in tokens">
+                <div v-for="{address, name, symbol, decimals, balance} in tokens">
                   {{ balance.replace('-', '') | qrc20(decimals) }}
-                  <AddressLink :address="addressHex">
+                  <AddressLink :address="address">
                     {{ symbol || name || $t('contract.token.tokens') }}
                   </AddressLink>
                 </div>
               </td>
               <td class="monospace">
-                <div v-for="{addressHex, name, symbol, decimals, amount} in tokens">
+                <div v-for="{address, name, symbol, decimals, amount} in tokens">
                   <span v-if="amount > 0">+</span>
                   <span v-else-if="amount < 0">-</span>
                   <span v-else>&nbsp;</span>
                   {{ amount.replace('-', '') | qrc20(decimals) }}
-                  <AddressLink :address="addressHex">
+                  <AddressLink :address="address">
                     {{ symbol || name || $t('contract.token.tokens') }}
                   </AddressLink>
                 </div>
@@ -66,20 +66,20 @@
               </tr>
               <tr>
                 <td class="monospace">
-                  <div v-for="{addressHex, name, symbol, decimals, balance} in tokens">
+                  <div v-for="{address, name, symbol, decimals, balance} in tokens">
                     {{ balance.replace('-', '') | qrc20(decimals) }}
-                    <AddressLink :address="addressHex">
+                    <AddressLink :address="address">
                       {{ symbol || name || $t('contract.token.tokens') }}
                     </AddressLink>
                   </div>
                 </td>
                 <td class="monospace">
-                  <div v-for="{addressHex, name, symbol, decimals, amount} in tokens">
+                  <div v-for="{address, name, symbol, decimals, amount} in tokens">
                     <span v-if="amount > 0">+</span>
                     <span v-else-if="amount < 0">-</span>
                     <span v-else>&nbsp;</span>
                     {{ amount.replace('-', '') | qrc20(decimals) }}
-                    <AddressLink :address="addressHex">
+                    <AddressLink :address="address">
                       {{ symbol || name || $t('contract.token.tokens') }}
                     </AddressLink>
                   </div>

@@ -11,7 +11,7 @@
         <div class="columns">
           <div class="column info-title">{{ $t('contract.address') }}</div>
           <div class="column info-value">
-            <AddressLink :address="addressHex" plain />
+            <AddressLink :address="address" plain />
           </div>
         </div>
         <template v-if="qrc20">
@@ -61,7 +61,7 @@
           <div class="column info-value">
             <div v-for="token in existingTokenBalances" class="monospace">
               {{ token.balance | qrc20(token.decimals) }}
-              <AddressLink :address="token.addressHex">
+              <AddressLink :address="token.address">
                 {{ token.symbol || token.name || $t('contract.token.tokens') }}
               </AddressLink>
             </div>
