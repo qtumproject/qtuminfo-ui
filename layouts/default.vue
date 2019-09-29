@@ -50,8 +50,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "../styles/variables.less";
-
 .size(@data) {
   @result: (@data*0.75);
 }
@@ -62,7 +60,7 @@ export default {
   width:100%;
 
   min-height: 100vh;
-  background: @title-blue;
+  background: @qtum-blue;
 }
 .header-container {
   width: .size(1800px) [];

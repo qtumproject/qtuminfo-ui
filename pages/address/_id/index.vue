@@ -12,8 +12,12 @@
     </thead>
     <tbody>
       <tr v-for="transaction in transactions">
-        <td>{{transaction.id  | format(15,6)}}</td>
-        <td><FromNow :timestamp="transaction.timestamp" /></td>
+        <td>
+          <nuxt-link :to="{name: 'address-id', params: {id: id}}">{{id | format(15,6)}}</nuxt-link>
+        </td>
+        <td>
+          <FromNow :timestamp="transaction.timestamp" />
+        </td>
         <td>{{transaction.outputValue - transaction.inputValue}} QTUM</td>
         <td>{{transaction.fees |qtum(3)}} QTUM</td>
         <td>QTUM转账</td>
@@ -164,5 +168,5 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-@import "./index.less";
+@import url("../../../styles/pages/address/_id/index.less");
 </style>

@@ -4,7 +4,7 @@
       <div class="logo" v-if="!address.toString()">
         <i :class="icon"></i>
         <!-- <img src="~/assets/sprites.png" alt=""> -->
-        <span>{{title}}</span>
+        <span :style="{fontSize:titleSize+'px'}">{{title}}</span>
       </div>
       <div v-if="address" class="select">
         <ul>
@@ -41,6 +41,10 @@ export default {
       type: String,
       default: ""
     },
+    titleSize: {
+      type: String,
+      default: "16"
+    },
     icon: {
       type: String,
       default: ""
@@ -61,5 +65,5 @@ export default {
 };
 </script>
 <style lang='less' scoped>
-@import "./index.less";
+@import url('../../styles/components/panel.less');
 </style>

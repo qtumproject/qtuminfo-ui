@@ -54,7 +54,7 @@
     </Panel>
 
     <div class="deal-detail">
-      <Panel width="100%" height="952.5px" title="交易明细">
+      <Panel width="100%" title="交易明细">
         <table>
           <thead>
             <tr>
@@ -67,8 +67,14 @@
           </thead>
           <tbody>
             <tr v-for="transaction in transactions">
-              <td>{{transaction.id | format(15,6)}}</td>
-              <td><FromNow :timestamp="transaction.timestamp" /></td>
+              <td>
+                <nuxt-link
+                  :to="{name: 'tx-id', params: {id: transaction.id}}"
+                >{{transaction.id | format(15,6)}}</nuxt-link>
+              </td>
+              <td>
+                <FromNow :timestamp="transaction.timestamp" />
+              </td>
               <td>{{transaction.fees | qtum(3)}}QTUM</td>
               <td>QTUM类型</td>
               <td>{{transaction.confirmations}}</td>
@@ -89,7 +95,7 @@ export default {
   components: { Panel },
   head() {
     return {
-      title: ''
+      title: ""
     };
   },
   data() {
@@ -109,45 +115,45 @@ export default {
       currentPage: Number(this.$route.query.page || 1)
     };
   },
-    async asyncData({ req, params, query, redirect, error }) {
-      let id = params.id;
-      try {
-        let block = await Block.get(id, { ip: req && req.ip });
+  async asyncData({ req, params, query, redirect, error }) {
+    let id = params.id;
+    try {
+      let block = await Block.get(id, { ip: req && req.ip });
 
-        let transactions = await Transaction.getBrief(
-          block.transactions.slice(0, 20),
-          { ip: req && req.ip }
-        );
-        return {
-          height: block.height,
-          hash: block.hash,
-          timestamp: block.timestamp,
-          size: block.size,
-          weight: block.weight,
-          reward: block.reward,
-          difficulty: block.difficulty,
-          merkleRoot: block.merkleRoot,
-          miner: block.miner || null,
-          prevHash: block.prevHash || null,
-          nextHash: block.nextHash || null,
-          tx: block.transactions,
-          transactions
-        };
-      } catch (err) {
-        if (err instanceof RequestError) {
-          if (err.code === 404) {
-            error({ statusCode: 404, message: `Block ${id} not found` });
-          } else {
-            error({ statusCode: err.code, message: err.message });
-          }
+      let transactions = await Transaction.getBrief(
+        block.transactions.slice(0, 20),
+        { ip: req && req.ip }
+      );
+      return {
+        height: block.height,
+        hash: block.hash,
+        timestamp: block.timestamp,
+        size: block.size,
+        weight: block.weight,
+        reward: block.reward,
+        difficulty: block.difficulty,
+        merkleRoot: block.merkleRoot,
+        miner: block.miner || null,
+        prevHash: block.prevHash || null,
+        nextHash: block.nextHash || null,
+        tx: block.transactions,
+        transactions
+      };
+    } catch (err) {
+      if (err instanceof RequestError) {
+        if (err.code === 404) {
+          error({ statusCode: 404, message: `Block ${id} not found` });
         } else {
-          error({ statusCode: 500, message: err.message });
+          error({ statusCode: err.code, message: err.message });
         }
+      } else {
+        error({ statusCode: 500, message: err.message });
       }
     }
+  }
 };
 </script>
 
 <style lang="less" scoped>
-@import "./_id.less";
+@import url("../../styles/pages/block/_id.less");
 </style>

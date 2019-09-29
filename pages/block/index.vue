@@ -113,5 +113,5 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-@import "./index.less";
+@import url('../../styles/pages/block/index.less');
 </style>

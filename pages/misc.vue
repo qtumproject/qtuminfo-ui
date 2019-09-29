@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <!-- <div class="container">
     <div class="tabs is-centered">
       <ul>
         <li :class="{'is-active': $route.matched.some(route => route.name === 'misc-charts')}">
@@ -19,6 +19,9 @@
         </li>
       </ul>
     </div>
+    
+  </div>-->
+  <div class="container">
     <nuxt-child />
   </div>
 </template>

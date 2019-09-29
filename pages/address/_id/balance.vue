@@ -103,5 +103,5 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-@import "./balance.less";
+@import url('../../../styles/pages/address/_id/balance.less');
 </style>

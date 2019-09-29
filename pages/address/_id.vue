@@ -3,12 +3,12 @@
     <Panel width="100%" height="255px" title="交易概览" noMargin="true">
       <div class="address-info">
         <div class="address-info-left list">
-          <ul>
+          <ul class="border">
             <li>
               <div class="item-title">qtum余额</div>
               <div class="item-info">{{ balance | qtum }} QTUM</div>
             </li>
-            <li>
+            <li >
               <div class="item-title">挖矿锁定金额</div>
               <div class="item-info">{{ staking | qtum }} QTUM</div>
             </li>
@@ -129,5 +129,5 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-@import "./_id.less";
+@import url('../../styles/pages/address/_id.less');
 </style>

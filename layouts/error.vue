@@ -7,8 +7,6 @@
 </template>
 
 <script>
-  import Navigator from '@/components/nav.vue'
-
   export default {
     props: ['error'],
     head() {
@@ -18,8 +16,7 @@
           lang: this.$store.state.locale.language
         }
       }
-    },
-    components: {Navigator}
+    }
   }
 </script>
 

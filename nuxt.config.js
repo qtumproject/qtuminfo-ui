@@ -1,25 +1,13 @@
 import webpack from 'webpack'
 
 export default {
+  mode: 'universal',
   head: {
     titleTemplate: '%s - qtum.info',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1, user-scalable=no' }
     ]
-  },
-  css: [
-    '@fortawesome/fontawesome-free/css/all.css',
-    '@/styles/common.less',
-    '@/styles/card.less',
-    '@/styles/info-table.less',
-    '@/icons/style.css',
-    '@/styles/reset.css'
-  ],
-  render: {
-    bundleRenderer: {
-      shouldPreload: (file, type) => ['script', 'style', 'font'].includes(type)
-    }
   },
   build: {
     extend(config, { isServer }) {
@@ -43,6 +31,22 @@ export default {
       features: {
         customProperties: false
       }
+    }
+  },
+  modules: [
+    '@nuxtjs/style-resources'
+  ],
+  css: [
+    '@fortawesome/fontawesome-free/css/all.css',
+    '@/icons/style.css',
+    '@/styles/reset.css'
+  ],
+  styleResources: {
+    less: ['./styles/mixins.less', './styles/variables.less']
+  },
+  render: {
+    bundleRenderer: {
+      shouldPreload: (file, type) => ['script', 'style', 'font'].includes(type)
     }
   },
   serverMiddleware: ['~/middleware/ip.js'],

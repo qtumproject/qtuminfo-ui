@@ -76,7 +76,9 @@
                 >{{transaction.id | format(10,15)}}</nuxt-link>
               </td>
               <td>{{ transaction.outputValue | qtum(4) }} QTUM</td>
-              <td>一分钟前</td>
+              <td>
+                <FromNow :timestamp="transaction.timestamp" />
+              </td>
             </tr>
           </tbody>
         </table>
@@ -186,7 +188,7 @@ export default {
   methods: {
     onMempoolTransaction(transaction) {
       this.recentTransactions.unshift(transaction);
-      if (this.recentTransactions.length > 13) {
+      if (this.recentTransactions.length > 10) {
         this.recentTransactions.pop();
       }
     },
@@ -210,7 +212,8 @@ export default {
         tooltip: {
           trigger: "axis",
           axisPointer: {
-            type: "cross",
+            type: "line",
+            axis: "auto",
             label: {
               backgroundColor: "#6a7985"
             }
@@ -247,7 +250,7 @@ export default {
         ],
         yAxis: [
           {
-            splitLine: { show: true },
+            splitLine: { show: false },
             type: "value"
           }
         ],
@@ -257,6 +260,7 @@ export default {
             type: "line",
             stack: "总量",
             color: "#5197D5",
+            showSymbol: false,
             label: {
               normal: {
                 show: false,
@@ -340,182 +344,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-@import "../styles/main.less";
-.notification {
-  display: flex;
-  align-items: center;
-  padding: .size(30px) [] 0 .size(13px) [] 0;
-  i {
-    width: .size(30px) [];
-    height: .size(30px) [];
-    display: block;
-    background: url("~assets/sprites.png") 0px -35px no-repeat;
-    background-size: 40 * 0.75px auto;
-  }
-  span {
-    color: @title-blue;
-    font-size: .size(16px) [];
-    width: .size(276px) [];
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
-}
-.detail {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  height: 297.75px;
-  .info {
-    width: 50%;
-    padding: .size(30px) [] .size(40px) [] .size(20px) [] .size(40px) [];
-    span {
-      font-size: .size(16px) [];
-      color: @font-gray;
-    }
-    .frame {
-      border: 1px solid @border-gray;
-      height: .size(315px) [];
-      margin-top: .size(20px) [];
-      border-radius: 6px;
-      display: flex;
-      flex-wrap: wrap;
-      .icon {
-        width: .size(175px) [];
-        height: .size(157px) [];
-        .word {
-          font-size: .size(14px) [];
-          color: @frame-gray;
-          text-align: center;
-        }
-        .border {
-          border-left: 1px solid @frame-gray;
-          border-style: dashed;
-        }
-        .number {
-          padding-top: .size(10px) [];
-          font-size: .size(18px) [];
-          text-align: center;
-        }
-        .icons {
-          width: 100%;
-          margin-top: .size(40px) [];
-          .icon-global {
-            height: .size(45px) [];
-            width: .size(30px) [];
-            display: block;
-            background: url("~assets/sprites.png") 0px -90px no-repeat;
-            background-size: 40 * 0.75px auto;
-            margin: 0 auto;
-          }
-        }
-      }
-      .chart {
-        width: .size(730px) [];
-        height: .size(300px) [];
-      }
-    }
-  }
-  .qtum-deal-chart {
-    width: 50%;
-    padding: .size(30px) [] .size(40px) [] .size(20px) [] .size(40px) [];
-  }
-}
-.block-deal {
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  margin-top: .size(30px) [];
-  .block-table {
-    thead {
-      tr {
-        td {
-          font-size: .size(14px) [];
-          color: @font-gray;
-        }
-        td:nth-child(1) {
-          padding: .size(30px) [] 0 .size(20px) [] .size(30px) [];
-        }
-        .td-block {
-          width: .size(125px) [];
-        }
-        .td-address {
-          width: .size(260px) [];
-        }
-        .td-deal {
-          width: .size(105px) [];
-        }
-        .td-award {
-          width: .size(175px) [];
-        }
-        .td-time {
-          width: .size(85px) [];
-        }
-        .td-trade {
-          width: .size(270px) [];
-        }
-        .td-hash {
-          width: .size(390px) [];
-        }
-      }
-    }
-    tbody {
-      tr {
-        border-bottom: 1px solid @border-gray;
-        a {
-          color: @title-blue;
-        }
-        td {
-          font-size: .size(16px) [];
-        }
-        td:nth-child(1) {
-          padding: .size(30px) [] 0 .size(17px) [] .size(30px) [];
-          color: @title-blue;
-          font-size: .size(18px) [];
-        }
-        td:nth-child(2) {
-          color: @title-blue;
-        }
-      }
-    }
-  }
-  .deal-table {
-    thead {
-      tr {
-        td {
-          font-size: .size(14px) [];
-          color: @font-gray;
-        }
-        td:nth-child(1) {
-          padding: .size(30px) [] 0 .size(20px) [] .size(30px) [];
-        }
-        .td-time {
-          width: .size(85px) [];
-        }
-        .td-trade {
-          width: .size(270px) [];
-        }
-        .td-hash {
-          width: .size(390px) [];
-        }
-      }
-    }
-    tbody {
-      tr {
-        border-bottom: 1px solid @border-gray;
-        td {
-          font-size: .size(16px) [];
-        }
-        td:nth-child(1) {
-          padding: .size(30px) [] 0 .size(17px) [] .size(30px) [];
-          a {
-            color: @title-blue;
-          }
-        }
-      }
-    }
-  }
-}
+@import url("../styles/pages/index.less");
 </style>
 
 

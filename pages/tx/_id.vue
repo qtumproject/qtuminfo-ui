@@ -160,5 +160,5 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "./_id.less";
+@import url("../../styles/pages/tx/_id.less");
 </style>

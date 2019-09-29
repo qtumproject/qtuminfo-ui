@@ -58,34 +58,33 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "../../styles/main.less";
-.breadcrumb {
-  margin-left: 1em;
-  display: flex;
-}
-.breadcrumb-list {
-  display: flex;
-  align-items: center;
-  padding:.size(23px)[] 0 .size(17px)[] 0;
-  li{
-    padding-right:.size(7px)[];
-    font-size: .size(16px) [];
-    a {
-      color: @title-blue;
-    }
-  }
-}
-span:not(:only-child) {
-  &.fab,
-  &.fas {
-    margin-right: 0.3em;
-  }
-}
-@media (max-width: 768px) {
-  span {
-    max-width: 15em;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-}
+// .breadcrumb {
+//   margin-left: 1em;
+//   display: flex;
+// }
+// .breadcrumb-list {
+//   display: flex;
+//   align-items: center;
+//   padding:.size(23px)[] 0 .size(17px)[] 0;
+//   li{
+//     padding-right:.size(7px)[];
+//     font-size: .size(16px) [];
+//     a {
+//       color: @qtum-blue;
+//     }
+//   }
+// }
+// span:not(:only-child) {
+//   &.fab,
+//   &.fas {
+//     margin-right: 0.3em;
+//   }
+// }
+// @media (max-width: 768px) {
+//   span {
+//     max-width: 15em;
+//     overflow: hidden;
+//     text-overflow: ellipsis;
+//   }
+// }
 </style>

@@ -1,0 +1,114 @@
+
+.block-info {
+    display: flex;
+    align-items: center;
+
+    .list {
+        height: .size(165px)[];
+        width: 50%;
+        padding: .size(50px)[] 0 .size(55px)[] .size(35px)[];
+
+        ul {
+            li {
+                display: flex;
+                justify-content: space-between;
+                font-size: .size(16px)[];
+                padding: .size(9px)[] 0 .size(9px)[] 0;
+                width: .size(585px)[];
+
+                .item-title {
+                    color: @font-gray;
+                }
+            }
+
+            .border {
+                border-right: 1px solid @font-gray;
+                border-style: dashed;
+            }
+        }
+    }
+
+    .list:nth-child(2) {
+        padding-left: .size(100px)[]
+    }
+}
+
+.deal-detail {
+    margin-top: .size(10px)[];
+    width: 100%;
+
+    .deal-detail-info {
+        padding: .size(40px)[] 0 .size(60px)[] 0;
+        font-size: .size(16px)[];
+
+        .deal-detail-list {
+            display: flex;
+
+            color: @font-gray;
+            padding: 0 0 .size(70px)[] .size(40px)[];
+            border-bottom: 1.5px solid @panel-gray;
+
+            .list-send {
+                width: .size(550px)[];
+            }
+
+            .list-icon {
+                width: .size(175px)[];
+            }
+
+            .list-receive {
+                width: .size(740px)[];
+
+                ul {
+                    li {
+                        span:nth-child(1) {
+                            color: @qtum-blue;
+                        }
+                    }
+                }
+            }
+
+            ul {
+                li {
+                    padding-top: .size(20px)[];
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    color: @black;
+                }
+            }
+        }
+
+        .script {
+            padding: .size(30px)[] 0 .size(70px)[] .size(40px)[];
+            width: .size(1400px)[];
+            .script-input {
+                padding-bottom: .size(70px)[];
+
+                >* {
+                    padding-bottom: .size(20px)[];
+                    
+                    li {
+                        
+                        padding-bottom: .size(20px)[];
+                    }
+                }
+            }
+
+            .script-output {
+                padding-bottom: .size(60px)[];
+
+                >* {
+                    padding-bottom: .size(15px)[];
+
+                    li {
+                        padding-bottom: .size(15px)[];
+                    }
+                }
+            }
+            .script-caption{
+                font-weight: bolder;
+            }
+        }
+    }
+}

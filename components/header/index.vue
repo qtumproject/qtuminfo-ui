@@ -19,56 +19,65 @@
           <li>
             <nuxt-link to="/tx">交易</nuxt-link>
           </li>
-          <li>富豪榜</li>
+          <li>
+            <nuxt-link to="/misc/rich-list">富豪榜</nuxt-link>
+          </li>
         </ul>
       </div>
 
       <div class="nav-item">
         <div>
-          <nuxt-link to="/12" class="nav-item-main">
+          <nuxt-link to="/contract/tokens" class="nav-item-main">
             代币
             <span></span>
           </nuxt-link>
         </div>
         <ul>
           <li>
-            <nuxt-link to="/12">
-              代币概览
-            </nuxt-link>
+            <nuxt-link to="/contract/tokens">代币概览</nuxt-link>
           </li>
-          <li><nuxt-link to="/12" >
-              代币交易
-            </nuxt-link></li>
+          <li>
+            <nuxt-link to="/">代币交易</nuxt-link>
+          </li>
         </ul>
       </div>
 
       <div class="nav-item">
         <div>
-          <nuxt-link to="/12" class="nav-item-main">
+          <span class="nav-item-main">
             资源
             <span></span>
-          </nuxt-link>
+          </span>
         </div>
         <ul>
-          <li>统计图表</li>
-          <li>挖矿</li>
-          <li>浏览器API</li>
-          <li>测试网络</li>
+          <li>
+            <a href="https://chart.qtum.info/"  target="_Blank">统计图表</a>
+          </li>
+          <li>
+            <nuxt-link to="/misc/biggest-miners">挖矿</nuxt-link>
+          </li>
+          <li>
+            <nuxt-link to="/misc/api">浏览器API</nuxt-link>
+          </li>
+          <li>
+            <a href="https://testnet.qtum.info/"  target="_Blank">测试网络</a>
+          </li>
           <li>工具箱</li>
         </ul>
       </div>
 
       <div class="nav-item">
         <div>
-          <nuxt-link to="/12" class="nav-item-main">
+          <nuxt-link to="/" class="nav-item-main">
             更多
             <span></span>
           </nuxt-link>
         </div>
         <ul>
-          <li>官网</li>
-          <li>论坛</li>
-          <li>钱包&生态</li>
+          <li><a href="https://qtum.org/"  target="_Blank">官网</a></li>
+          <li>
+            <a href="https://forum.qtum.org/"  target="_Blank">论坛</a></li>
+          <li><a href="https://qtumeco.io/wallet"  target="_Blank">钱包&生态</a></li></li>
         </ul>
       </div>
 
@@ -85,7 +94,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "./index.less";
+@import url('../../styles/components/header.less');
 </style>
 
 

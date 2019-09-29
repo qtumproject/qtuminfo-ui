@@ -31,7 +31,7 @@ Vue.filter('qrc20', (amount, decimals = 0, showDecimals = false) => {
   }
 })
 
-Vue.filter('timestamp', (time, type = 'datetime') => moment(time * 1000).format({
+Vue.filter('timestamp', (time = moment(new Date()) / 1000, type = 'datetime') => moment(time * 1000).format({
   datetime: 'YYYY-MM-DD HH:mm:ss',
   date: 'YYYY-MM-DD',
   time: 'HH:mm:ss'
@@ -44,13 +44,14 @@ Vue.filter('format', (s, pre, last) => {
 Vue.component('FromNow', {
   name: 'from-now',
   props: {
-    timestamp: { type: Number, required: true },
+    timestamp: { type: Number, default: moment(new Date()) / 1000 },
     tag: { type: String, default: 'span' },
   },
   render(createElement) {
     return createElement(this.tag, moment(this.timestamp * 1000).fromNow())
   },
   mounted() {
+    console.log(this.timestamp)
     this.$interval = setInterval(() => this.$forceUpdate(), 1000)
   },
   beforeDestroy() {
