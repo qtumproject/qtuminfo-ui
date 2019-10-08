@@ -1,0 +1,35 @@
+.form {
+    padding: .size(40px)[];
+
+    .feedback {
+        box-sizing: border-box;
+        width: 100%;
+        height: .size(260px)[];
+        padding: .size(25px)[];
+        border: 1px solid @frame-gray;
+        border-radius: 5px;
+    }
+
+    .feedback:focus {
+        outline: none;
+        border: 1px solid @qtum-blue;
+    }
+
+    .submit {
+        margin-top: .size(25px)[];
+        display: flex;
+        flex-direction: row-reverse;
+        button {
+            border: 1px solid @qtum-blue;
+            border-radius: 5px;
+            height: .size(35px)[];
+            width: .size(112px)[];
+            background: @white;
+            color: @qtum-blue;
+        }
+        button:hover{
+            color: @white;
+            background:@qtum-blue;
+        }
+    }
+}

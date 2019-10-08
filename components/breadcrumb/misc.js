@@ -5,7 +5,7 @@ export default {
   render(createElement) {
     return [
       createElement('Icon', {props: {icon: 'area-chart'}}),
-      i18n.t('blockchain.misc')
+      '资源'
     ]
   }
 }

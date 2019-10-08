@@ -1,0 +1,43 @@
+.field {
+    display: flex;
+    justify-content: space-between;
+}
+
+.input-frame {
+    width: .size(570px)[];
+    padding: .size(40px)[];
+
+    input {
+        width: .size(570px)[];
+        height: .size(55px)[];
+        border: 1px solid @frame-gray;
+        border-radius: 5px;
+        box-sizing: border-box;
+        padding: 0 10px 0 10px;
+    }
+
+    input:focus {
+        outline: none;
+        border: 1px solid @qtum-blue;
+    }
+}
+
+.output-frame {
+    width: .size(800px)[];
+    padding: .size(40px)[] 0 0 .size(40px)[];
+
+    .result {
+        width: .size(655px)[];
+        padding: .size(20px)[];
+        border: 1px solid @frame-gray;
+        border-radius: 5px;
+
+        .margin-bottom {
+            margin-bottom: .size(20px)[]
+        }
+    }
+}
+
+.margin-bottom {
+    margin-bottom: .size(30px)[]
+}

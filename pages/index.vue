@@ -2,7 +2,7 @@
   <div class="container">
     <div class="notification">
       <i></i>
-      <span>2019 QTUM 黑客松大赛全球征集令开始报名啦</span>
+      <p>2019 QTUM 黑客松大赛全球征集令开始报名啦</p>
     </div>
 
     <Panel title="全网概览" width="100%" height="355px" icon="icon-global" noMargin="true">

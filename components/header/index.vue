@@ -62,7 +62,9 @@
           <li>
             <a href="https://testnet.qtum.info/"  target="_Blank">测试网络</a>
           </li>
-          <li>工具箱</li>
+          <li>
+            <nuxt-link to="/misc/toolbox">工具箱</nuxt-link>
+          </li>
         </ul>
       </div>
 

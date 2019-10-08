@@ -1,20 +1,49 @@
 <template>
-  <Panel width="100%" title="简介" titleSize="32">
+  <div class="flex">
+    <Aside :list="itemlist"></Aside>
     <section>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
+      <nuxt-child></nuxt-child>
     </section>
-  </Panel>
+  </div>
 </template>
 <script>
-import Panel from "@/components/panel";
+import Aside from "@/components/aside";
 export default {
   components: {
-    Panel
+    Aside
+  },
+  data() {
+    return {
+      itemlist: [
+        {
+          info: "简介",
+          url: "/index"
+        },
+        {
+          info: "账户",
+          url: "/index"
+        },
+        {
+          info: "合约",
+          url: "/index"
+        },
+        {
+          info: "事务",
+          url: "/index"
+        },
+        {
+          info: "事件日志",
+          url: "/index"
+        },
+        {
+          info: "令牌",
+          url: "/index"
+        }
+      ]
+    };
   }
 };
 </script>
 <style lang="less" scoped>
+@import url("../../../styles/pages/misc/api/index.less");
 </style>

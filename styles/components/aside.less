@@ -1,20 +1,23 @@
-@import '../../styles/main.less';
-ul{
-    width: .size(185px)[];
-    padding:0 0 .size(110px)[] 0;
+ul {
     background: @white;
     margin-right: .size(25px)[];
+    margin-bottom:.size(155px)[];
     font-size: .size(22px)[];
-    li{
+    height:.size(600px)[];
+    li {
         cursor: pointer;
-        padding:.size(20px)[] 0 .size(25px)[] .size(20px)[];
-        a{
+        width: .size(180px)[];
+        a {
+            display: block;
+            width: 100%;
             color: @black;
+            padding: .size(20px)[] 0 .size(25px)[] .size(20px)[];
         }
     }
-    li:hover{
-        background:@qtum-blue;
-        a{
+
+    li:hover {
+        background: @qtum-blue;
+        a {
             color: @white;
         }
     }

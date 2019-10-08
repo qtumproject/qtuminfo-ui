@@ -1,9 +1,7 @@
 <template>
   <ul>
-    <li v-for="item in this.list">
-        <nuxt-link :to="item.url">
-            {{item.info}}
-        </nuxt-link>
+    <li v-for="item in this.list" :key="item.info">
+      <NuxtLink :to="{ path: '/misc/toolbox/'+item.url }">{{item.info}}</NuxtLink>
     </li>
   </ul>
 </template>
@@ -15,11 +13,11 @@ export default {
       default: () => []
     }
   },
-  mounted(){
-    console.log(this.list)
+  mounted() {
+    console.log(this.list);
   }
 };
 </script>
 <style lang="less" scoped>
-@import url('../../styles/components/aside.less');
+@import url("../../styles/components/aside.less");
 </style>
