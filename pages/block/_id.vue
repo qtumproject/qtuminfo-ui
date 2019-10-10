@@ -81,6 +81,7 @@
             </tr>
           </tbody>
         </table>
+        <pagination />
       </Panel>
     </div>
   </div>
@@ -91,8 +92,9 @@ import Panel from "../../components/panel";
 import Block from "@/models/block";
 import Transaction from "@/models/transaction";
 import RequestError from "@/services/qtuminfo-api";
+import Pagination from "../../components/pagination";
 export default {
-  components: { Panel },
+  components: { Panel, Pagination },
   head() {
     return {
       title: ""

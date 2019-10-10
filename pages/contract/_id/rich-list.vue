@@ -1,34 +1,38 @@
 <template>
-  <table>
-    <thead>
-      <tr>
-        <td>序号</td>
-        <td>地址</td>
-        <td>余额</td>
-        <td>交易数</td>
-        <td>占比</td>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="(item,index) in list">
-        <td>{{index+1}}</td>
-        <td>
-          <nuxt-link :to="{name: 'address-id', params: {id: item.address}}">{{item.address}}</nuxt-link>
-        </td>
-        <td>{{ item.balance | qrc20(qrc20.decimals) }} {{ qrc20.symbol }}</td>
-        <td></td>
-        <td>{{ (Number(item.balance) / Number(qrc20.totalSupply) * 100).toFixed(4) + '%' }}</td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <table>
+      <thead>
+        <tr>
+          <td>序号</td>
+          <td>地址</td>
+          <td>余额</td>
+          <td>交易数</td>
+          <td>占比</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(item,index) in list">
+          <td>{{index+1}}</td>
+          <td>
+            <nuxt-link :to="{name: 'address-id', params: {id: item.address}}">{{item.address}}</nuxt-link>
+          </td>
+          <td>{{ item.balance | qrc20(qrc20.decimals) }} {{ qrc20.symbol }}</td>
+          <td></td>
+          <td>{{ (Number(item.balance) / Number(qrc20.totalSupply) * 100).toFixed(4) + '%' }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <Pagination />
+  </div>
 </template>
 <script>
 import Vue from "vue";
 import Contract from "@/models/contract";
 import { RequestError } from "@/services/qtuminfo-api";
 import { scrollIntoView } from "@/utils/dom";
-
+import Pagination from "@/components/pagination";
 export default {
+  components: { Pagination },
   data() {
     return {
       totalCount: 0,

@@ -1,39 +1,44 @@
 <template>
-  <table>
-    <thead>
-      <tr>
-        <td>交易id</td>
-        <td>时间</td>
-        <td>净收入</td>
-        <td>手续费</td>
-        <td>交易类型</td>
-        <td>确认数</td>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="transaction in transactions">
-        <td>
-          <nuxt-link :to="{name: 'address-id', params: {id: id}}">{{id | format(15,6)}}</nuxt-link>
-        </td>
-        <td>
-          <FromNow :timestamp="transaction.timestamp" />
-        </td>
-        <td>{{transaction.outputValue - transaction.inputValue}} QTUM</td>
-        <td>{{transaction.fees |qtum(3)}} QTUM</td>
-        <td>QTUM转账</td>
-        <td>{{transaction.confirmations}}个确认</td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <table>
+      <thead>
+        <tr>
+          <td>交易id</td>
+          <td>时间</td>
+          <td>净收入</td>
+          <td>手续费</td>
+          <td>交易类型</td>
+          <td>确认数</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="transaction in transactions">
+          <td>
+            <nuxt-link :to="{name: 'address-id', params: {id: id}}">{{id | format(15,6)}}</nuxt-link>
+          </td>
+          <td>
+            <FromNow :timestamp="transaction.timestamp" />
+          </td>
+          <td>{{transaction.outputValue - transaction.inputValue}} QTUM</td>
+          <td>{{transaction.fees |qtum(3)}} QTUM</td>
+          <td>QTUM转账</td>
+          <td>{{transaction.confirmations}}个确认</td>
+        </tr>
+      </tbody>
+    </table>
+    <pagination />
+  </div>
 </template>
 <script>
 import Vue from "vue";
+import Pagination from "@/components/pagination";
 import Address from "@/models/address";
 import Transaction from "@/models/transaction";
 import { RequestError } from "@/services/qtuminfo-api";
 import { extendAddress } from "@/utils/address";
 import { scrollIntoView } from "@/utils/dom";
 export default {
+  components: { Pagination },
   data() {
     return {
       totalCount: 0,

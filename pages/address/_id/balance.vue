@@ -1,31 +1,36 @@
 <template>
-  <table>
-    <thead>
-      <tr>
-        <td>交易id</td>
-        <td>时间</td>
-        <td>账户余额</td>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="{id, blockHeight, timestamp, balance, amount} in transactions">
-        <td>
-          <nuxt-link :to="{name: 'address-id', params: {id: id}}">{{id | format(8,13)}}</nuxt-link>
-        </td>
-        <td>{{ timestamp | timestamp }}</td>
-        <td>{{ balance | qtum(8) }} QTUM</td>
-      </tr>
-    </tbody>
-  </table>
+  <div>
+    <table>
+      <thead>
+        <tr>
+          <td>交易id</td>
+          <td>时间</td>
+          <td>账户余额</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="{id, blockHeight, timestamp, balance, amount} in transactions">
+          <td>
+            <nuxt-link :to="{name: 'address-id', params: {id: id}}">{{id | format(8,13)}}</nuxt-link>
+          </td>
+          <td>{{ timestamp | timestamp }}</td>
+          <td>{{ balance | qtum(8) }} QTUM</td>
+        </tr>
+      </tbody>
+    </table>
+    <pagination />
+  </div>
 </template>
 <script>
 import Vue from "vue";
+import Pagination from "@/components/pagination";
 import { Responsive } from "@/plugins/mixins";
 import Address from "@/models/address";
 import { RequestError } from "@/services/qtuminfo-api";
 import { scrollIntoView } from "@/utils/dom";
 
 export default {
+  components: { Pagination },
   mixins: [Responsive],
   data() {
     return {
@@ -103,5 +108,5 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-@import url('../../../styles/pages/address/_id/balance.less');
+@import url("../../../styles/pages/address/_id/balance.less");
 </style>

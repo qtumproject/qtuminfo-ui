@@ -23,17 +23,19 @@
           </tr>
         </tbody>
       </table>
+      <pagination />
     </Panel>
   </div>
 </template>
 <script>
-import Panel from "../../components/panel";
+import Pagination from "@/components/pagination";
+import Panel from "@/components/panel";
 import Contract from "@/models/contract";
 import { RequestError } from "@/services/qtuminfo-api";
 import { scrollIntoView } from "@/utils/dom";
 
 export default {
-  components: { Panel },
+  components: { Panel, Pagination },
   head() {
     return {
       title: this.$t("contract.token.tokens")

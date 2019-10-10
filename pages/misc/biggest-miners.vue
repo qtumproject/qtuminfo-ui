@@ -18,7 +18,9 @@
             </li>
             <li class="border">
               <div class="item-title">年化收益</div>
-              <div class="item-info"> {{ (reward * 365 * 675 / this.netStakeWeight * 100).toFixed(2) }}% </div>
+              <div
+                class="item-info"
+              >{{ (reward * 365 * 675 / this.netStakeWeight * 100).toFixed(2) }}%</div>
             </li>
           </ul>
         </div>
@@ -67,17 +69,19 @@
             </tr>
           </tbody>
         </table>
+        <pagination />
       </Panel>
     </div>
   </div>
 </template>
 <script>
 import Misc from "@/models/misc";
+import Pagination from "@/components/pagination";
 import { RequestError } from "@/services/qtuminfo-api";
 import { scrollIntoView } from "@/utils/dom";
 import Panel from "../../components/panel";
 export default {
-  components: { Panel },
+  components: { Panel, Pagination },
   head() {
     return {
       title: this.$t("misc.biggest_miners_title")
@@ -88,7 +92,7 @@ export default {
       totalCount: 0,
       list: [],
       currentPage: Number(this.$route.query.page || 1),
-      netStakeWeight:0
+      netStakeWeight: 0
     };
   },
   async asyncData({ req, query, redirect, error }) {
@@ -101,12 +105,12 @@ export default {
         { from: (page - 1) * 100, to: page * 100 },
         { ip: req && req.ip }
       );
-      let {netStakeWeight} = await Misc.info({ip: req && req.ip})
+      let { netStakeWeight } = await Misc.info({ ip: req && req.ip });
       if (page > 1 && totalCount <= (page - 1) * 100) {
         redirect("/misc/biggest-miners", { page: Math.ceil(totalCount / 100) });
       }
-      console.log(list)
-      return { totalCount, list,netStakeWeight };
+      console.log(list);
+      return { totalCount, list, netStakeWeight };
     } catch (err) {
       if (err instanceof RequestError) {
         error({ statusCode: err.code, message: err.message });
@@ -126,11 +130,11 @@ export default {
       return Math.ceil(this.totalCount / 100);
     },
     reward() {
-        let height = this.blockchain.height - 5001
-        let interval = 985500
-        let halvings = Math.floor(height / interval)
-        return halvings === 7 ? 0 : 4e8 >>> halvings
-      }
+      let height = this.blockchain.height - 5001;
+      let interval = 985500;
+      let halvings = Math.floor(height / interval);
+      return halvings === 7 ? 0 : 4e8 >>> halvings;
+    }
   },
   methods: {
     getLink(page) {

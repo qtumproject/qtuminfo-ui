@@ -2,6 +2,7 @@ import webpack from 'webpack'
 
 export default {
   mode: 'universal',
+  loading: "@/components/loading",
   head: {
     titleTemplate: '%s - qtum.info',
     meta: [

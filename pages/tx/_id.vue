@@ -49,7 +49,7 @@
               <div>输入 ({{inputs.length}}) {{inputsValue|qtum(7)}} QTUM</div>
               <ul>
                 <li v-for="input in inputs">
-                  <span>{{input.address}}</span>
+                  <span><nuxt-link :to="{name: 'address-id', params: {id: input.address}}">{{input.address}}</nuxt-link></span>
                   <span>{{input.value | qtum(3)}}QTUM</span>
                 </li>
               </ul>
@@ -59,7 +59,7 @@
               <div>输出 ({{outputs.length}}) {{outputsValue|qtum(7)}} BTC</div>
               <ul>
                 <li v-for="output in outputs">
-                  <span>{{output.address}}</span>
+                  <span><nuxt-link :to="{name: 'address-id', params: {id: output.address}}">{{output.address}}</nuxt-link> </span>
                   <span>{{output.value | qtum(3)}}QTUM</span>
                 </li>
               </ul>

@@ -13,22 +13,24 @@
       <tbody>
         <tr v-for="({address, balance}, index) of list">
           <td>{{ 100 * (currentPage - 1) + index + 1 }}</td>
-          <td>{{address}}</td>
+          <td><nuxt-link :to="{name:'address-id',params:{id:address}}"> {{address}}</nuxt-link></td>
           <td>{{ balance | qtum(8) }}</td>
           <td></td>
           <td>{{ (balance / totalSupply * 100).toFixed(4) + '%' }}</td>
         </tr>
       </tbody>
     </table>
+    <Pagination/>
   </Panel>
 </template>
 <script>
-import Panel from "../../components/panel";
+import Panel from "@/components/panel";
+import Pagination from '@/components/pagination'
 import Misc from "@/models/misc";
 import { RequestError } from "@/services/qtuminfo-api";
 import { scrollIntoView } from "@/utils/dom";
 export default {
-  components: { Panel },
+  components: { Panel,Pagination },
   head() {
     return {
       title: this.$t("misc.rich_list_title")

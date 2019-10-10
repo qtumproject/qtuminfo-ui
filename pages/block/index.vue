@@ -16,7 +16,7 @@
           <tr v-for="{height, timestamp, size, reward, miner, transactionCount} of list">
             <td>
               <div class="frame">
-              BK
+                BK
                 <nuxt-link :to="{name: 'block-id', params: {id: height }}">{{height}}</nuxt-link>
               </div>
             </td>
@@ -25,11 +25,14 @@
             </td>
             <td>{{ transactionCount}}</td>
             <td>{{ size.toLocaleString() }}</td>
-            <td><nuxt-link :to="{name: 'address-id', params: {id: miner}}">{{miner}}</nuxt-link> </td>
+            <td>
+              <nuxt-link :to="{name: 'address-id', params: {id: miner}}">{{miner}}</nuxt-link>
+            </td>
             <td>{{ reward | qtum(1) }}</td>
           </tr>
         </tbody>
       </table>
+      <pagination />
     </Panel>
   </div>
 </template>
@@ -38,6 +41,7 @@ import Panel from "../../components/panel";
 import Block from "@/models/block";
 import { RequestError } from "@/services/qtuminfo-api";
 import { scrollIntoView } from "@/utils/dom";
+import Pagination from "../../components/pagination";
 
 function formatUTCTimestamp(date) {
   let yyyy = date.getUTCFullYear().toString();
@@ -50,7 +54,7 @@ function formatUTCTimestamp(date) {
 }
 
 export default {
-  components: { Panel },
+  components: { Panel, Pagination },
   head() {
     return {
       title: this.$t("block.list.block_list")
@@ -113,5 +117,5 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-@import url('../../styles/pages/block/index.less');
+@import url("../../styles/pages/block/index.less");
 </style>

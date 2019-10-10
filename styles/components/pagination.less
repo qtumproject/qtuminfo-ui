@@ -1,0 +1,48 @@
+.pagination {
+    padding: .size(20px)[] .size(75px)[];
+    background: @white;
+    min-width: 100%;
+    font-size: .size(16px)[];
+    box-sizing: border-box;
+    position: sticky;
+    bottom: 0;
+    z-index: 2;
+
+    .pagination-wrapper {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+
+        button {
+            border-radius: .size(30px)[];
+            line-height: .size(30px)[];
+            border: 1px solid #b2b2b2;
+            cursor: pointer;
+            background: @white;
+            padding: 0 .size(12px)[];
+            margin-left: .size(13px)[];
+            outline: none;
+
+            &[disabled] {
+                color: @font-gray;
+                cursor: not-allowed;
+            }
+        }
+
+        .current {
+            border-radius: .size(30px)[];
+            line-height: .size(30px)[];
+            width: .size(90px)[];
+            text-align: center;
+            border: 1px solid #b2b2b2;
+            background: @white;
+            padding: 0 .size(12px)[];
+            margin-left: .size(13px)[];
+            outline: none;
+        }
+
+        .total {
+            padding-left: .size(20px)[]
+        }
+    }
+}
