@@ -47,8 +47,8 @@ export default {
     align-items: center;
   }
   .dot {
-    width: 16px;
-    height: 16px;
+    width: 12px;
+    height: 12px;
     background: @qtum-blue;
     border-radius: 100%;
     margin-left: 10px;

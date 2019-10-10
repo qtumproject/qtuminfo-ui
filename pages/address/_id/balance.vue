@@ -11,7 +11,7 @@
       <tbody>
         <tr v-for="{id, blockHeight, timestamp, balance, amount} in transactions">
           <td>
-            <nuxt-link :to="{name: 'address-id', params: {id: id}}">{{id | format(8,13)}}</nuxt-link>
+            <nuxt-link :to="{name: 'tx-id', params: {id: id}}">{{id | format(8,13)}}</nuxt-link>
           </td>
           <td>{{ timestamp | timestamp }}</td>
           <td>{{ balance | qtum(8) }} QTUM</td>
