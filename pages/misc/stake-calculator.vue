@@ -88,8 +88,9 @@
         return Math.round(Number(this.weightInput.replace(',')) * 1e8) || 0
       },
       expectedTime() {
-        let p = this.weight / this.netStakeWeight
-        return 128 / (1 - Math.exp(-p))
+        const n = 8
+        let p = 1 - Math.exp(-this.weight / (n * this.netStakeWeight))
+        return n * 16 * (1 / n - p * p) / (p - p * p)
       },
       interval() {
         if (this.expectedTime < 60) {
