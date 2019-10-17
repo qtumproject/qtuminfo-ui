@@ -7,6 +7,7 @@ blockchain:
   token: Token | Tokens
   misc: Misc
   blockchain_height: Blockchain Height
+  current_difficulty: Current Difficulty
   network_weight: Network Weight
   fee_rate: Fee Rate
 block:

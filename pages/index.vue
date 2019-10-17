@@ -17,8 +17,12 @@
               <span class="value">{{ blockchain.height.toLocaleString() }}</span>
             </p>
             <p class="information">
+              <span class="key">{{ $t('blockchain.current_difficulty') }}</span>:
+              <span class="value">{{ difficulty }}</span>
+            </p>
+            <p class="information">
               <span class="key">{{ $t('blockchain.network_weight') }}</span>:
-              <span class="value">{{ netStakeWeight | qtum(8) }}</span>
+              <span class="value">{{ stakeWeight | qtum(8) }}</span>
             </p>
             <p class="information">
               <span class="key">{{ $t('blockchain.fee_rate') }}</span>:
@@ -113,18 +117,20 @@
       return {
         recentBlocks: [],
         recentTransactions: [],
-        netStakeWeight: 0,
+        difficulty: 0,
+        stakeWeight: 0,
         feeRate: 0
       }
     },
-    async asyncData({req, error}) {
+    async asyncData({store, req, error}) {
       try {
-        let [recentBlocks, recentTransactions, {netStakeWeight, feeRate}] = await Promise.all([
+        let [currentBlock, recentBlocks, recentTransactions, {netStakeWeight: stakeWeight, feeRate}] = await Promise.all([
+          Block.get(store.state.blockchain.height),
           Block.getRecentBlocks({ip: req && req.ip}),
           Transaction.getRecentTransactions({ip: req && req.ip}),
           Misc.info({ip: req && req.ip})
         ])
-        return {recentBlocks, recentTransactions, netStakeWeight, feeRate}
+        return {difficulty: currentBlock.difficulty, recentBlocks, recentTransactions, stakeWeight, feeRate}
       } catch (err) {
         if (err instanceof RequestError) {
           error({statusCode: err.code, message: err.message})
@@ -146,7 +152,7 @@
         }
       },
       onStakeWeight(stakeWeight) {
-        this.netStakeWeight = stakeWeight
+        this.stakeWeight = stakeWeight
       },
       onFeeRate(feeRate) {
         this.feeRate = feeRate
@@ -154,8 +160,9 @@
     },
     watch: {
       async 'blockchain.height'(height) {
+        let block = await Block.get(height)
+        this.difficulty = block.difficulty
         if (height === this.recentBlocks[0].height + 1) {
-          let block = await Block.get(height)
           this.recentBlocks.unshift({
             hash: block.hash,
             height: block.height,

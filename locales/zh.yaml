@@ -7,6 +7,7 @@ blockchain:
   token: Token
   misc: 杂项
   blockchain_height: 区块高度
+  current_difficulty: 挖矿难度
   network_weight: 网络权重
   fee_rate: 费率
 block:
