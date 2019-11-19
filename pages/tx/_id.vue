@@ -167,7 +167,7 @@
       } catch (err) {
         if (err instanceof RequestError) {
           if (err.code === 404) {
-            error({statusCode: 404, message: `Transaction ${param.id} not found`})
+            error({statusCode: 404, message: `Transaction ${params.id} not found`})
           } else {
             error({statusCode: err.code, message: err.message})
           }

@@ -18,7 +18,7 @@
             </p>
             <p class="information">
               <span class="key">{{ $t('blockchain.current_difficulty') }}</span>:
-              <span class="value">{{ difficulty }}</span>
+              <span class="value">{{ difficulty.toLocaleString() }}</span>
             </p>
             <p class="information">
               <span class="key">{{ $t('blockchain.network_weight') }}</span>:
