@@ -27,13 +27,13 @@ function hrpExpand(hrp) {
   return ret
 }
 
-function verifyChecksum(hrp, data) {
-  return polymod(hrpExpand(hrp).concat(data)) === 1
+function verifyChecksum(hrp, data, checksumConst) {
+  return polymod(hrpExpand(hrp).concat(data)) === checksumConst
 }
 
-function createChecksum(hrp, data) {
+function createChecksum(hrp, data, checksumConst) {
   let values = hrpExpand(hrp).concat(data).concat([0, 0, 0, 0, 0, 0])
-  let mod = polymod(values) ^ 1
+  let mod = polymod(values) ^ checksumConst
   let ret = []
   for (let p = 0; p < 6; ++p) {
     ret.push((mod >> 5 * (5 - p)) & 31)
@@ -41,48 +41,60 @@ function createChecksum(hrp, data) {
   return ret
 }
 
-export function encode(hrp, data) {
-  let combined = data.concat(createChecksum(hrp, data))
-  let ret = hrp + '1'
-  for (let p = 0; p < combined.length; ++p) {
-    ret += CHARSET.charAt(combined[p])
+class Bech32Base {
+  static checksumConst = 1
+
+  static encode(hrp, data) {
+    let combined = data.concat(createChecksum(hrp, data, this.checksumConst))
+    let ret = hrp + '1'
+    for (let p = 0; p < combined.length; ++p) {
+      ret += CHARSET.charAt(combined[p])
+    }
+    return ret
   }
-  return ret
+
+  static decode(bechString) {
+    let has_lower = false
+    let has_upper = false
+    for (let p = 0; p < bechString.length; ++p) {
+      if (bechString.charCodeAt(p) <= 0x20 || bechString.charCodeAt(p) >= 0x7f) {
+        return null
+      }
+      if (bechString.charCodeAt(p) >= 0x41 && bechString.charCodeAt(p) <= 0x5a) {
+        has_upper = true
+      }
+      if (bechString.charCodeAt(p) >= 0x61 && bechString.charCodeAt(p) <= 0x7a) {
+        has_lower = true
+      }
+    }
+    if (has_lower && has_upper) {
+      return null
+    }
+    bechString = bechString.toLowerCase()
+    let pos = bechString.lastIndexOf('1')
+    if (pos < 1 || pos + 7 > bechString.length || bechString.length > 90) {
+      return null
+    }
+    let hrp = bechString.slice(0, pos)
+    let data = []
+    for (let p = pos + 1; p < bechString.length; ++p) {
+      let d = CHARSET.indexOf(bechString[p])
+      if (d === -1) {
+        return null
+      }
+      data.push(d)
+    }
+    if (!verifyChecksum(hrp, data, this.checksumConst)) {
+      return null
+    }
+    return {hrp, data: data.slice(0, -6)}
+  }
 }
 
-export function decode(bechString) {
-  let has_lower = false
-  let has_upper = false
-  for (let p = 0; p < bechString.length; ++p) {
-    if (bechString.charCodeAt(p) <= 0x20 || bechString.charCodeAt(p) >= 0x7f) {
-      return null
-    }
-    if (bechString.charCodeAt(p) >= 0x41 && bechString.charCodeAt(p) <= 0x5a) {
-      has_upper = true
-    }
-    if (bechString.charCodeAt(p) >= 0x61 && bechString.charCodeAt(p) <= 0x7a) {
-      has_lower = true
-    }
-  }
-  if (has_lower && has_upper) {
-    return null
-  }
-  bechString = bechString.toLowerCase()
-  let pos = bechString.lastIndexOf('1')
-  if (pos < 1 || pos + 7 > bechString.length || bechString.length > 90) {
-    return null
-  }
-  let hrp = bechString.slice(0, pos)
-  let data = []
-  for (let p = pos + 1; p < bechString.length; ++p) {
-    let d = CHARSET.indexOf(bechString[p])
-    if (d === -1) {
-      return null
-    }
-    data.push(d)
-  }
-  if (!verifyChecksum(hrp, data)) {
-    return null
-  }
-  return {hrp, data: data.slice(0, -6)}
+export class Bech32 extends Bech32Base {
+  static checksumConst = 1
+}
+
+export class Bech32m extends Bech32Base {
+  static checksumConst = 0x2bc830a3
 }
